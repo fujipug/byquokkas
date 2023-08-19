@@ -17,7 +17,7 @@ export default function RootLayout({
         <WagmiConfig config={wagmiConfig}>
           <RainbowKitProvider chains={chains} theme={darkTheme()}>
             <Header appName="By Quokkas" showLogo={false} />
-            <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 my-8 sm:my-12 mx-4 sm:mx-0">{children}</div>
+            <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 my-8 sm:my-12 px-4">{children}</div>
             <Analytics />
           </RainbowKitProvider>
         </WagmiConfig>

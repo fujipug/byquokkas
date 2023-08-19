@@ -15,7 +15,7 @@ import {
 import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import '@rainbow-me/rainbowkit/styles.css';
 
-const projectId = process.env.NEXT_PUBLIC_CLOUD_WALLET_API_KEY as string; // connect cloud wallet
+const projectId = "5ebeded86a2892064a847992b9c2ab4b"; // connect cloud wallet; This should be in an env variable but theres a bug
 const appName = "ByQuokkas";
 export const { chains, publicClient } = configureChains(
   [avalanche],
