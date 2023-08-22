@@ -5,6 +5,7 @@ import { getPickassoNfts } from '../../../../apis/nfts'
 import { useAccount } from 'wagmi';
 import OfferContainer from 'ui/OfferContainer';
 import RenderName from 'ui/RenderName';
+import Image from 'next/image'
 
 declare global {
   interface Window {
@@ -22,6 +23,8 @@ export default function CreatePrivateOffer() {
   const [receiverOffers, setReceiverOffers] = useState<any>([]);
   const [collectionList, setCollectionList] = useState([] as string[]);
   const [imutableNftList, setImutableNftList] = useState([] as any[]);
+  const [receiverImutableNftList, setReceiverImutableNftList] = useState([] as any[]);
+  const [nftInfoModal, setNftInfoModal] = useState<any>();
 
   useEffect(() => {
     if (isConnected) {
@@ -46,6 +49,7 @@ export default function CreatePrivateOffer() {
       getPickassoNfts(inputValue).then((nfts) => {
         setViewMyWallet(false)
         setReceiverNfts(nfts)
+        setReceiverImutableNftList(nfts)
       })
     }
 
@@ -75,6 +79,28 @@ export default function CreatePrivateOffer() {
     }
   }
 
+  // Get dropdown list of collections filter for receiver
+  useEffect(() => {
+    const uniqueArray: any[] = [];
+    receiverImutableNftList?.map((item: any) => {
+      if (!uniqueArray.includes(item?.collectionName ? item?.collectionName : item?.name)) {
+        uniqueArray.push(item?.collectionName ? item?.collectionName : item?.name);
+      }
+      setCollectionList(uniqueArray);
+    });
+  }, [receiverImutableNftList]);
+
+  // Filter NFT grid by collection for receiver
+  function filterReceiverCollection(collection: string) {
+    const resetNftList = receiverImutableNftList;
+    if (collection !== 'all') {
+      const filtered = resetNftList.filter((nft: any) => (nft?.collectionName ? nft?.collectionName : nft?.name) == collection);
+      setReceiverNfts(filtered);
+    } else {
+      setReceiverNfts(resetNftList);
+    }
+  }
+
   const handleSelectedNft = (nft: any) => {
     // Set disabled items with a disabled flag
     let myDisabledNfts;
@@ -92,7 +118,6 @@ export default function CreatePrivateOffer() {
 
   // Remove nft from the disabled list
   const handleOnRemove = (offer: any) => {
-    console.log(offer)
     const myFiltered = myOffers.filter((item: any) => item.numTokenId !== offer.numTokenId);
     setMyOffers(myFiltered);
     const myDisabledNfts = nfts.map((original) => original.numTokenId === offer.numTokenId ? { ...original, disabled: false } : original)
@@ -105,7 +130,8 @@ export default function CreatePrivateOffer() {
   }
 
   const handleNftInfoModal = (nft: any) => {
-    console.log(nft)
+    setNftInfoModal(nft)
+    window.nftInfoModal.showModal()
   };
 
   return (
@@ -133,9 +159,9 @@ export default function CreatePrivateOffer() {
 
               <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 bg-base-100 rounded-box w-52 mt-2">
                 {collectionList.map((collectionName: string, index: any) => (
-                  <li key={index}><a onClick={() => filterCollection(collectionName)}>{collectionName}</a></li>
+                  <li key={index}><a onClick={() => viewMyWallet ? filterCollection(collectionName) : filterReceiverCollection(collectionName)}>{collectionName}</a></li>
                 ))}
-                <li><a onClick={() => filterCollection('all')}>Show All</a></li>
+                <li><a onClick={() => viewMyWallet ? filterCollection('all') : filterReceiverCollection('all')}>Show All</a></li>
               </ul>
             </details>
             <button onClick={() => setViewMyWallet(true)} className='btn bg-neutral rounded-box py-2 px-4 drop-shadow-md'>My Wallet</button>
@@ -186,16 +212,27 @@ export default function CreatePrivateOffer() {
         </div>
       </div>
       {/* You can open the modal using ID.showModal() method */}
-      <button className="btn" onClick={() => window.nftInfoModal.showModal()}>open modal</button>
       <dialog id="nftInfoModal" className="modal">
         <form method="dialog" className="modal-box">
-          <h3 className="font-bold text-lg">Hello!</h3>
-          <p className="py-4">Press ESC key or click the button below to close</p>
-          <div className="modal-action">
-            {/* if there is a button in form, it will close the modal */}
-            <button className="btn">Close</button>
-          </div>
-        </form>
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+          <div className="grid grid-cols-1 mt-4 sm:grid-cols-2 sm:space-x-6">
+            <div className="col-span-1">
+              <figure>
+                <Image src={nftInfoModal?.metadata?.pImage ? nftInfoModal?.metadata?.pImage : 'http://placekitten.com/200/200'} className="rounded-lg drop-shadow-md"
+                  width={200} height={200}
+                  alt="NFT image unreachable" />
+              </figure>
+            </div>
+            <div className="col-span-1 mt-4 sm:mt-0 flex flex-col">
+              <div>
+                <p><span className="font-semibold">Collection:</span> {nftInfoModal?.collectionName}</p>
+                <div className="divider"></div>
+                <p><span className="font-semibold">Symbol:</span> {nftInfoModal?.collectionSymbol}</p>
+                <p><span className="font-semibold">Token ID:</span> {nftInfoModal?.tokenId}</p>
+              </div>
+            </div>
+          </div >
+        </form >
       </dialog>
     </>
   )

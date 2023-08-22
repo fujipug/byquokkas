@@ -2,7 +2,7 @@ import md5 from "md5";
 import {
   avvyAbi,
   avvyDomainsAddress
-} from "./avvy-config";
+} from "../packages/avvy-config";
 import {
   getContract,
   getNetwork,
