@@ -6,3 +6,4 @@ export * from "./ThemeToggle";
 export * from "./Table";
 export * from "./NftGrid";
 export * from "./XScroll";
+export * from "./OfferContainer";
