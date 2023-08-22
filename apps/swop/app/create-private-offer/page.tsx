@@ -3,24 +3,32 @@ import React, { useEffect, useState } from 'react'
 import NftGrid from 'ui/NftGrid'
 import { getPickassoNfts } from '../../../../apis/nfts'
 import { useAccount } from 'wagmi';
-import XScroll from 'ui/XScroll';
 import OfferContainer from 'ui/OfferContainer';
+import RenderName from 'ui/RenderName';
+
+declare global {
+  interface Window {
+    nftInfoModal: any;
+  }
+}
 
 export default function CreatePrivateOffer() {
   const { address, isConnected } = useAccount();
   const [nfts, setNfts] = useState<any>([]);
-  const [receiverWallet, setReceiverWallet] = useState<any>([]);
+  const [receiverNfts, setReceiverNfts] = useState<any>([]);
   const [viewMyWallet, setViewMyWallet] = useState<boolean>(true);
   const [inputValue, setInputValue] = useState('');
-  // const [myContainerActive, setMyContainerActive] = useState<boolean>(true);
   const [myOffers, setMyOffers] = useState<any>([]);
   const [receiverOffers, setReceiverOffers] = useState<any>([]);
+  const [collectionList, setCollectionList] = useState([] as string[]);
+  const [imutableNftList, setImutableNftList] = useState([] as any[]);
 
   useEffect(() => {
     if (isConnected) {
       const getNfts = async () => {
         getPickassoNfts(address).then((nfts) => {
           setNfts(nfts)
+          setImutableNftList(nfts)
         })
       }
 
@@ -32,20 +40,73 @@ export default function CreatePrivateOffer() {
     setInputValue(e.target.value);
   }
 
+  // TODO: Check for valid address
   const walletSearch = () => {
     const getReceiverNfts = async () => {
       getPickassoNfts(inputValue).then((nfts) => {
         setViewMyWallet(false)
-        setReceiverWallet(nfts)
+        setReceiverNfts(nfts)
       })
     }
 
+    setReceiverOffers([]) // Clear receiver nfts
     getReceiverNfts();
   }
 
-  const handleSelectedNft = (nft: any) => {
-    if (myOffers.length < 6) setMyOffers([...myOffers, nft])
+  // Get dropdown list of collections filter
+  useEffect(() => {
+    const uniqueArray: any[] = [];
+    imutableNftList?.map((item: any) => {
+      if (!uniqueArray.includes(item?.collectionName ? item?.collectionName : item?.name)) {
+        uniqueArray.push(item?.collectionName ? item?.collectionName : item?.name);
+      }
+      setCollectionList(uniqueArray);
+    });
+  }, [imutableNftList]);
+
+  // Filter NFT grid by collection
+  function filterCollection(collection: string) {
+    const resetNftList = imutableNftList;
+    if (collection !== 'all') {
+      const filtered = resetNftList.filter((nft: any) => (nft?.collectionName ? nft?.collectionName : nft?.name) == collection);
+      setNfts(filtered);
+    } else {
+      setNfts(resetNftList);
+    }
   }
+
+  const handleSelectedNft = (nft: any) => {
+    // Set disabled items with a disabled flag
+    let myDisabledNfts;
+    if (viewMyWallet && myOffers.length < 6) {
+      setMyOffers([...myOffers, nft])
+      myDisabledNfts = nfts.map((original) => original.numTokenId === nft.numTokenId ? { ...original, disabled: true } : original)
+      setNfts(myDisabledNfts);
+    }
+    if (!viewMyWallet && receiverOffers.length < 6) {
+      setReceiverOffers([...receiverOffers, nft])
+      myDisabledNfts = receiverNfts.map((original) => original.numTokenId === nft.numTokenId ? { ...original, disabled: true } : original)
+      setReceiverNfts(myDisabledNfts);
+    }
+  }
+
+  // Remove nft from the disabled list
+  const handleOnRemove = (offer: any) => {
+    console.log(offer)
+    const myFiltered = myOffers.filter((item: any) => item.numTokenId !== offer.numTokenId);
+    setMyOffers(myFiltered);
+    const myDisabledNfts = nfts.map((original) => original.numTokenId === offer.numTokenId ? { ...original, disabled: false } : original)
+    setNfts(myDisabledNfts);
+
+    const receiverFiltered = receiverOffers.filter((item: any) => item.numTokenId !== offer.numTokenId);
+    setReceiverOffers(receiverFiltered);
+    const receiverDisabledNfts = receiverNfts.map((original) => original.numTokenId === offer.numTokenId ? { ...original, disabled: false } : original)
+    setReceiverNfts(receiverDisabledNfts);
+  }
+
+  const handleNftInfoModal = (nft: any) => {
+    console.log(nft)
+  };
 
   return (
     <>
@@ -63,21 +124,25 @@ export default function CreatePrivateOffer() {
         <div className='col-span-1'>
           <div className='flex justify-between items-center mb-2'>
             <details className="dropdown">
-              <summary className="btn bg-neutral rounded-box py-2 px-4">
+              <summary tabIndex={0} className="btn bg-neutral rounded-box py-2 px-4 drop-shadow-md">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
                 </svg>
-                Filter
+                <span>Filter</span>
               </summary>
-              <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-                <li><a>Item 1</a></li>
-                <li><a>Item 2</a></li>
+
+              <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 bg-base-100 rounded-box w-52 mt-2">
+                {collectionList.map((collectionName: string, index: any) => (
+                  <li key={index}><a onClick={() => filterCollection(collectionName)}>{collectionName}</a></li>
+                ))}
+                <li><a onClick={() => filterCollection('all')}>Show All</a></li>
               </ul>
             </details>
-            <button onClick={() => setViewMyWallet(true)} className='btn bg-neutral rounded-box py-2 px-4'>My Wallet</button>
+            <button onClick={() => setViewMyWallet(true)} className='btn bg-neutral rounded-box py-2 px-4 drop-shadow-md'>My Wallet</button>
           </div>
           <div className='h-screen overflow-y-scroll'>
-            <NftGrid nfts={viewMyWallet ? nfts : receiverWallet} onDataEmit={handleSelectedNft} />
+            {/* Maybe remove the disabledList prop from NftGrid.tsx */}
+            <NftGrid nfts={viewMyWallet ? nfts : receiverNfts} onDataEmit={handleSelectedNft} />
           </div>
         </div>
         <div className='col-span-2'>
@@ -89,23 +154,49 @@ export default function CreatePrivateOffer() {
                 <div className='flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md w-36'>You</div>
               }
             </div>
-            <OfferContainer active={viewMyWallet} offers={myOffers} placeholderText={'Choose up to 6 NFTs to offer'} />
+            <OfferContainer active={viewMyWallet} offers={myOffers} placeholderText={'Choose up to 6 NFTs to offer'}
+              onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
           </div>
           <div className='mt-8'>
             <div className='flex justify-end'>
               {!viewMyWallet ?
-                <div className='flex justify-center bg-teal-800 rounded-box py-3 px-4 mb-2 drop-shadow-md w-fit'>{inputValue ? inputValue : 'Reciever'}</div>
+                <div className='flex justify-center bg-teal-800 rounded-box py-3 px-4 mb-2 drop-shadow-md w-fit'>
+                  {inputValue ?
+                    <RenderName address={inputValue} classData={''} />
+                    :
+                    <span>Receiver</span>
+                  }
+                </div>
                 :
-                <div className='flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md w-fit'>{inputValue ? inputValue : 'Reciever'}</div>
+                <div className='flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md w-fit'>
+                  {inputValue ?
+                    <RenderName address={inputValue} classData={''} />
+                    :
+                    <span>Receiver</span>
+                  }
+                </div>
               }
             </div>
-            <OfferContainer active={!viewMyWallet} offers={receiverOffers} placeholderText={'Choose up to 6 NFTs to receive'} />
+            <OfferContainer active={!viewMyWallet} offers={receiverOffers} placeholderText={'Choose up to 6 NFTs to receive'}
+              onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
           </div>
           <div className='flex justify-end'>
-            <button className="btn btn-secondary mt-4">Send Private Offer</button>
+            <button className="btn btn-secondary mt-4 drop-shadow-md">Send Private Offer</button>
           </div>
         </div>
       </div>
+      {/* You can open the modal using ID.showModal() method */}
+      <button className="btn" onClick={() => window.nftInfoModal.showModal()}>open modal</button>
+      <dialog id="nftInfoModal" className="modal">
+        <form method="dialog" className="modal-box">
+          <h3 className="font-bold text-lg">Hello!</h3>
+          <p className="py-4">Press ESC key or click the button below to close</p>
+          <div className="modal-action">
+            {/* if there is a button in form, it will close the modal */}
+            <button className="btn">Close</button>
+          </div>
+        </form>
+      </dialog>
     </>
   )
 }

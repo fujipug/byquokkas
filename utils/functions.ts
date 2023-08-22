@@ -1,4 +1,13 @@
 import md5 from "md5";
+import {
+  avvyAbi,
+  avvyDomainsAddress
+} from "./avvy-config";
+import {
+  getContract,
+  getNetwork,
+  getWalletClient,
+} from "@wagmi/core";
 
 export const Base64 = {
   _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
@@ -97,3 +106,35 @@ export function generateToken() {
   const expires = Date.now() + 30000;
   return `${str}$$${expires}$$${md5(str + expires + process.env.NEXT_PUBLIC_PRIVATE_KEY)}`;
 }
+
+export const truncateAddress = (address: string) => {
+  const firstPart = address.slice(0, 5);
+  const lastPart = address.slice(-4);
+
+  return `${firstPart}...${lastPart}`;
+};
+
+export const avvyAddress = async (
+  address: any,
+  isLoaded: any,
+) => {
+  const network = getNetwork();
+  const walletClient = await getWalletClient({
+    chainId: network.chain?.id,
+  });
+  const avvyContract = getContract({
+    address: avvyDomainsAddress,
+    abi: avvyAbi,
+    walletClient: walletClient as any,
+  });
+  const name = await avvyContract.read.reverseResolveEVMToName([address]);
+  try {
+    if (name == "") {
+      return truncateAddress(address);
+    } else {
+      return name;
+    }
+  } catch (e) {
+    console.log("approval error", e);
+  }
+};

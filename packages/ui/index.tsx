@@ -7,3 +7,4 @@ export * from "./Table";
 export * from "./NftGrid";
 export * from "./XScroll";
 export * from "./OfferContainer";
+export * from "./RenderName";

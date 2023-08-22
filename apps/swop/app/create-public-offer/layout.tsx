@@ -1,5 +1,5 @@
 'use client'
-export default function CreatePrivateOfferLayout({
+export default function CreatePublicOfferLayout({
   children,
 }: {
   children: React.ReactNode;
