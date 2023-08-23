@@ -4,7 +4,7 @@ import {
   getNetwork,
   getWalletClient,
 } from "@wagmi/core";
-import { nftAbi, swopTestContractAddress } from "../packages/swop-config";
+import { nftAbi, swopMainContractAddress } from "../packages/swop-config";
 
 export const verifyApproval = async (
   collectionAAddresses: any[],
@@ -13,7 +13,6 @@ export const verifyApproval = async (
 ) => {
   const network = getNetwork();
   const account = getAccount();
-  const address = swopTestContractAddress;
   const walletClient = await getWalletClient({
     chainId: network.chain?.id,
   });
@@ -25,7 +24,7 @@ export const verifyApproval = async (
     });
     const approved = await collectionContract.read.isApprovedForAll([
       account.address,
-      address,
+      swopMainContractAddress,
     ]);
     try {
       if (!approved) {
@@ -41,17 +40,15 @@ export const verifyApproval = async (
           {
             onLogs() {
               isApprovalStatusLoading(false);
-              write();
               unwatch();
             },
           },
         );
         console.log("a", unwatch);
-      } else {
-        write();
       }
     } catch (e) {
       console.log("approval error", e);
     }
   });
+  write();
 };
