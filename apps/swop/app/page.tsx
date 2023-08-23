@@ -4,44 +4,69 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Offer } from "../types";
-import { getOfferCount, getOffers, getMoreOffers } from "../../../apis/swop";
+import { getPublicOfferCount, getPublicOffers, getMorePublicOffers, getPrivateOffers, getPrivateOfferCount } from "../../../apis/swop";
 
 const tableHeaders = ['Nfts Offered', 'Offer Name', 'Creator', 'Status', 'Created At'];
 
 // TODO: This is more of a swop only component
 export default function Page() {
-  const [offers, setOffers] = useState([]) as Offer[];
-  const [offerCount, setOfferCount] = useState(0);
+  const [publicOffers, setPublicOffers] = useState([]) as Offer[];
+  const [publicOfferCount, setPublicOfferCount] = useState(0);
   const [showMoreButton, setShowMoreButton] = useState(false);
+  const [privateOffers, setPrivateOffers] = useState([]) as Offer[];
+  const [privateOfferCount, setPrivateOfferCount] = useState(0);
 
-  // Get Offers
+  // Get Public Offers
   useEffect(() => {
-    const unsubscribe = getOffers(setOffers);
+    const unsubscribe = getPublicOffers(setPublicOffers);
     return () => {
       unsubscribe(); // Clean up the listener when the component unmounts
     };
   }, []);
 
-  // Get Offer Count
+  // Get Public Offer Count
   useEffect(() => {
-    async function fetchOfferCount() {
-      const count = await getOfferCount();
-      setOfferCount(count);
+    async function fetchPublicOfferCount() {
+      const count = await getPublicOfferCount();
+      setPublicOfferCount(count);
     }
 
-    fetchOfferCount();
+    fetchPublicOfferCount();
   }, []);
 
   // Show More Button
   useEffect(() => {
-    (offers?.length) === offerCount ? setShowMoreButton(false) : setShowMoreButton(true);
-  }, [offers?.length, offerCount]);
+    (publicOffers?.length) === publicOfferCount ? setShowMoreButton(false) : setShowMoreButton(true);
+  }, [publicOffers?.length, publicOfferCount]);
 
-  const fetchMoreOffers = async () => {
-    const moreOffers = await getMoreOffers();
-    const fetchedOffers = setOffers([...offers, ...moreOffers]);
-    (fetchedOffers?.length) < offerCount ? setShowMoreButton(true) : setShowMoreButton(false);
+  const fetchMorePublicOffers = async () => {
+    const morePublicOffers = await getMorePublicOffers();
+    const fetchedPublicOffers = setPublicOffers([...publicOffers, ...morePublicOffers]);
+    (fetchedPublicOffers?.length) < publicOfferCount ? setShowMoreButton(true) : setShowMoreButton(false);
   };
+
+  // Get Private Offers
+  useEffect(() => {
+    const unsubscribe = getPrivateOffers(setPrivateOffers);
+    return () => {
+      unsubscribe(); // Clean up the listener when the component unmounts
+    };
+  }, []);
+
+  // Get Private Offer Count
+  useEffect(() => {
+    async function fetchPrivateOfferCount() {
+      const count = await getPrivateOfferCount();
+      setPrivateOfferCount(count);
+    }
+
+    fetchPrivateOfferCount();
+  }, []);
+
+  // Show More Button
+  useEffect(() => {
+    (privateOffers?.length) === privateOfferCount ? setShowMoreButton(false) : setShowMoreButton(true);
+  }, [privateOffers?.length, privateOfferCount]);
 
   return (
     <>
@@ -57,13 +82,33 @@ export default function Page() {
             <label className="text-2xl sm:text-3xl">My Offers</label>
             <div className="z-0 transform animate-moveUpDown -mt-4 ml-36 fixed"><Image src="/images/Face_2.png" alt="Quokka Face" width={200} height={200}></Image></div>
             <div className="z-30 -mt-7 ml-36 fixed"><Image src="/images/Hands_2.png" alt="Quokka Hands" width={200} height={200}></Image></div>
-            <div className="z-10 p-6 bg-neutral rounded-box drop-shadow-md flex justify-center h-96">
+            <div className="z-10 p-6 bg-neutral rounded-box drop-shadow-md h-96 space-y-2 overflow-y-scroll">
+              {privateOffers?.map((offer, index) => (
+                <div key={index} className="collapse bg-base-200">
+                  <input type="radio" name="private-offers" />
+                  <div className="collapse-title flex items-center justify-between">
+                    <div className="flex items-center">
+                      {offer?.offerA?.map((nft: any, index: number) => (
+                        <Image key={index} className="rounded-lg mr-2 border-solid border-2 border-primary drop-shadow-md" src={nft?.metadata?.pImage} width={75} height={75} alt="Nft Image" />
+                      ))}
+                    </div>
+                    <button className="btn btn-secondary">See Offer</button>
+                  </div>
+                  <div className="collapse-content">
+                    <div className="flex items-center">
+                      {offer?.offerB?.map((nft: any, index: number) => (
+                        <Image key={index} className="rounded-lg mr-2 border-solid border-2 border-secondary drop-shadow-md" src={nft?.metadata?.pImage} width={75} height={75} alt="Nft Image" />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
       <h1 className="font-semibold text-2xl ml-3 my-2">Recent Offers</h1>
-      <Table tableHeaders={tableHeaders} data={offers} />
+      <Table tableHeaders={tableHeaders} data={publicOffers} />
     </>
   );
 }

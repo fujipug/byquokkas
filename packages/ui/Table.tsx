@@ -1,4 +1,3 @@
-import React from 'react'
 import { Offer } from '../../apps/swop/types'
 import Image from 'next/image'
 import RenderName from './RenderName';
@@ -43,9 +42,6 @@ export default function Table(props: { tableHeaders: string[], data: Offer[] }) 
                   minute: '2-digit',
                   hour12: true,
                 })}`}</td>
-                <th>
-                  <button className="btn btn-ghost btn-xs">details</button>
-                </th>
               </tr>
             )}
           </>
