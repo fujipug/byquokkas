@@ -2,10 +2,13 @@
 import React, { useEffect, useState } from 'react'
 import NftGrid from 'ui/NftGrid'
 import { getPickassoNfts } from '../../../../apis/nfts'
-import { useAccount } from 'wagmi';
+import { useAccount, useContractWrite } from 'wagmi';
 import OfferContainer from 'ui/OfferContainer';
 import RenderName from 'ui/RenderName';
 import Image from 'next/image'
+import { verifyApproval } from '../../../../utils/contract-funtions';
+import { swopContractAbi } from '../../../../packages/swop-config';
+import { useSwopContract, useFee } from '../../../../utils/hooks';
 
 declare global {
   interface Window {
@@ -25,6 +28,28 @@ export default function CreatePrivateOffer() {
   const [imutableNftList, setImutableNftList] = useState([] as any[]);
   const [receiverImutableNftList, setReceiverImutableNftList] = useState([] as any[]);
   const [nftInfoModal, setNftInfoModal] = useState<any>();
+  const swopContract = useSwopContract();
+  const fee = useFee();
+  let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
+    address: swopContract?.address,
+    abi: swopContractAbi,
+    functionName: 'createSwap',
+    args: [
+      myOffers.map((offer: any) => offer.collectionAddress), // collectionAAddresses
+      myOffers.map((offer: any) => offer.numTokenId), // tokenAIds
+      0, // AAmount
+      receiverOffers.map((offer: any) => offer.collectionAddress), // collectionBAddresses
+      receiverOffers.map((offer: any) => offer.numTokenId), // tokenBIds
+      0
+    ],
+    value: fee,
+    onSuccess: (res: any) => {
+      // TODO: Call Firebase function to create the lobby
+    },
+    onError(error) {
+      // Display Error Message
+    },
+  });
 
   useEffect(() => {
     if (isConnected) {
@@ -134,6 +159,22 @@ export default function CreatePrivateOffer() {
     window.nftInfoModal.showModal()
   };
 
+  // Finalize offer and create the offer in the blockchain
+  const [isApprovalLoading, setIsApprovalLoading] = useState(false);
+  const handleFinalizePrivateOffer = async () => {
+    if (myOffers.length > 0) {
+      const collectionAAddresses = myOffers.map((offer: any) => offer.collectionAddress);
+      console.log(collectionAAddresses);
+      verifyApproval(collectionAAddresses, write, (isApprovalStatusLoading: boolean) => {
+        setIsApprovalLoading(isApprovalStatusLoading);
+      });
+    }
+  }
+
+  // Create Firebase offer
+  const createFirebaseOffer = () => {
+  }
+
   return (
     <>
       <div className='flex justify-center items-center mb-12'>
@@ -207,7 +248,7 @@ export default function CreatePrivateOffer() {
               onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
           </div>
           <div className='flex justify-end'>
-            <button className="btn btn-secondary mt-4 drop-shadow-md">Send Private Offer</button>
+            <button onClick={() => handleFinalizePrivateOffer()} className="btn btn-secondary mt-4 drop-shadow-md">Send Private Offer</button>
           </div>
         </div>
       </div>
