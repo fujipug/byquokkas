@@ -37,10 +37,6 @@ export default function Table(props: { tableHeaders: string[], data: Offer[] }) 
                   year: 'numeric',
                   month: 'short',
                   day: 'numeric',
-                })}`} at {`${(offer?.createdAt)?.toDate().toLocaleTimeString(undefined, {
-                  hour: 'numeric',
-                  minute: '2-digit',
-                  hour12: true,
                 })}`}</td>
               </tr>
             )}

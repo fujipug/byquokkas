@@ -234,7 +234,6 @@ export default function CreatePrivateOffer() {
             <button onClick={() => setViewMyWallet(true)} className='btn bg-neutral rounded-box py-2 px-4 drop-shadow-md'>My Wallet</button>
           </div>
           <div className='h-screen overflow-y-scroll'>
-            {/* Maybe remove the disabledList prop from NftGrid.tsx */}
             <NftGrid nfts={viewMyWallet ? nfts : receiverNfts} onDataEmit={handleSelectedNft} />
           </div>
         </div>
