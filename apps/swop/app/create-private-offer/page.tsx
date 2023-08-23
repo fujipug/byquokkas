@@ -246,7 +246,7 @@ export default function CreatePrivateOffer() {
                 <div className='flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md w-36'>You</div>
               }
             </div>
-            <OfferContainer active={viewMyWallet} offers={myOffers} placeholderText={'Choose up to 6 NFTs to offer'}
+            <OfferContainer active={viewMyWallet} offers={myOffers} placeholderText={'Choose up to 6 NFTs to offer'} showRemove={true}
               onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
           </div>
           <div className='mt-8'>
@@ -269,7 +269,7 @@ export default function CreatePrivateOffer() {
                 </div>
               }
             </div>
-            <OfferContainer active={!viewMyWallet} offers={receiverOffers} placeholderText={'Choose up to 6 NFTs to receive'}
+            <OfferContainer active={!viewMyWallet} offers={receiverOffers} placeholderText={'Choose up to 6 NFTs to receive'} showRemove={true}
               onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
           </div>
           <div className='flex justify-end'>

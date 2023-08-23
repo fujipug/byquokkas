@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { collection, doc, getCountFromServer, getDocs, getFirestore, limit, onSnapshot, orderBy, query, startAfter, updateDoc, where } from "firebase/firestore";
+import { collection, doc, getCountFromServer, getDoc, getDocs, getFirestore, limit, onSnapshot, orderBy, query, startAfter, updateDoc, where } from "firebase/firestore";
 import { firebaseConfig } from "../packages/firebase-config";
 import { Offer } from '../apps/swop/types';
 
@@ -78,5 +78,16 @@ export const getPrivateOfferCount = async () => {
   } catch (error) {
     console.error('Error getting document count:', error);
     return 0;
+  }
+};
+
+export const getOfferById = async (offerId: string) => {
+  const docRef = doc(db, 'offers', offerId);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data();
+  } else {
+    console.log("No such document!");
   }
 };

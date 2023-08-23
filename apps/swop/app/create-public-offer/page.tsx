@@ -184,7 +184,7 @@ export default function CreatePublicOffer() {
             <div className='flex justify-start'>
               <div className='flex justify-center bg-teal-800 rounded-box py-3 px-4 mb-2 drop-shadow-md w-36'>You</div>
             </div>
-            <OfferContainer active={true} offers={myOffers} placeholderText={'Choose up to 6 NFTs to offer'}
+            <OfferContainer active={true} offers={myOffers} placeholderText={'Choose up to 6 NFTs to offer'} showRemove={true}
               onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
           </div>
           <div className='mt-8'>
