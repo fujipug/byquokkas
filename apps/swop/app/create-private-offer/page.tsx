@@ -9,6 +9,14 @@ import Image from 'next/image'
 import { verifyApproval } from '../../../../utils/contract-funtions';
 import { swopContractAbi } from '../../../../packages/swop-config';
 import { useSwopContract, useFee } from '../../../../utils/hooks';
+import { initializeApp } from "firebase/app";
+import { Timestamp, addDoc, collection, getFirestore } from "firebase/firestore";
+import { firebaseConfig } from '../../../../packages/firebase-config';
+import { Offer } from '../../types';
+
+//Initialize firebase backend
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 declare global {
   interface Window {
@@ -44,7 +52,9 @@ export default function CreatePrivateOffer() {
     ],
     value: fee,
     onSuccess: (res: any) => {
-      // TODO: Call Firebase function to create the lobby
+      // TODO: Call read to get swapId
+      console.log('sucess: ', res);
+      createFirebaseOffer();
     },
     onError(error) {
       // Display Error Message
@@ -172,7 +182,23 @@ export default function CreatePrivateOffer() {
   }
 
   // Create Firebase offer
-  const createFirebaseOffer = () => {
+  const createFirebaseOffer = async () => {
+    const offer: Offer = {
+      sender: address,
+      receiver: inputValue,
+      offerA: myOffers,
+      amountA: 0,
+      offerB: receiverOffers,
+      amountB: 0,
+      status: 'Open',
+      type: 'Private',
+      createdAt: Timestamp.now(),
+    }
+    addDoc(collection(db, 'offers'), offer).then((response) => {
+      // TODO: Maybe a share link to the offer
+    }).catch((error) => {
+      console.error("Error adding document: ", error);
+    });
   }
 
   return (

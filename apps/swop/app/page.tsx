@@ -1,10 +1,48 @@
+'use client'
 import Table from "ui/Table";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Offer } from "../types";
+import { getOfferCount, getOffers, getMoreOffers } from "../../../apis/swop";
 
-const tableHeaders = ['test1', 'test2', 'test3', 'test4'];
+const tableHeaders = ['Nfts Offered', 'Offer Name', 'Creator', 'Status', 'Created At'];
 
+// TODO: This is more of a swop only component
 export default function Page() {
+  const [offers, setOffers] = useState([]) as Offer[];
+  const [offerCount, setOfferCount] = useState(0);
+  const [showMoreButton, setShowMoreButton] = useState(false);
+
+  // Get Offers
+  useEffect(() => {
+    const unsubscribe = getOffers(setOffers);
+    return () => {
+      unsubscribe(); // Clean up the listener when the component unmounts
+    };
+  }, []);
+
+  // Get Offer Count
+  useEffect(() => {
+    async function fetchOfferCount() {
+      const count = await getOfferCount();
+      setOfferCount(count);
+    }
+
+    fetchOfferCount();
+  }, []);
+
+  // Show More Button
+  useEffect(() => {
+    (offers?.length) === offerCount ? setShowMoreButton(false) : setShowMoreButton(true);
+  }, [offers?.length, offerCount]);
+
+  const fetchMoreOffers = async () => {
+    const moreOffers = await getMoreOffers();
+    const fetchedOffers = setOffers([...offers, ...moreOffers]);
+    (fetchedOffers?.length) < offerCount ? setShowMoreButton(true) : setShowMoreButton(false);
+  };
+
   return (
     <>
       <div className="bg-base-200">
@@ -24,7 +62,8 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <Table label={'Recent public offers'} tableHeaders={tableHeaders} />
+      <h1 className="font-semibold text-2xl ml-3 my-2">Recent Offers</h1>
+      <Table tableHeaders={tableHeaders} data={offers} />
     </>
   );
 }

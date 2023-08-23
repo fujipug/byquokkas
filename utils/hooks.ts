@@ -27,7 +27,7 @@ export const useFee = () => {
   const network = getNetwork();
   const [fee, setFee] = useState<bigint>(0n);
   let fees = new Map<number, bigint>([
-    [43114, 100000000000000000n], // avalanche
+    [43114, 0n], // avalanche
   ]);
 
   useEffect(() => {
