@@ -1,6 +1,7 @@
 import { Offer } from '../../apps/swop/types'
 import Image from 'next/image'
 import RenderName from './RenderName';
+import Link from 'next/link';
 
 export default function Table(props: { tableHeaders: string[], data: Offer[] }) {
   return (
@@ -30,7 +31,11 @@ export default function Table(props: { tableHeaders: string[], data: Offer[] }) 
                     </div>
                   </div>
                 </td>
-                <td>{offer?.offerName}</td>
+                <td>
+                  <Link href={`/offer-details/${offer.id}`} className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
+                    {offer?.offerName}
+                  </Link>
+                </td>
                 <td><RenderName address={offer?.sender} classData={''} /></td>
                 <td>{offer?.status}</td>
                 <td>{`${(offer?.createdAt)?.toDate().toLocaleDateString(undefined, {

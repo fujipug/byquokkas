@@ -68,6 +68,12 @@ export default function Page() {
     (privateOffers?.length) === privateOfferCount ? setShowMoreButton(false) : setShowMoreButton(true);
   }, [privateOffers?.length, privateOfferCount]);
 
+  const handleButtonClick = (e, offerId) => {
+    console.log('offerId', offerId);
+    e.stopPropagation(); // Prevent event propagation
+    window.location.href = `/accept-offer/${offerId}`;
+  };
+
   return (
     <>
       <div className="bg-base-200">
@@ -92,7 +98,7 @@ export default function Page() {
                         <Image key={index} className="rounded-lg mr-2 border-solid border-2 border-primary drop-shadow-md" src={nft?.metadata?.pImage} width={75} height={75} alt="Nft Image" />
                       ))}
                     </div>
-                    <button className="btn btn-secondary">See Offer</button>
+                    <button onClick={e => handleButtonClick(e, offer.id)} className="btn btn-secondary z-50">See Offer</button>
                   </div>
                   <div className="collapse-content">
                     <div className="flex items-center">
@@ -107,7 +113,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <h1 className="font-semibold text-2xl ml-3 my-2">Recent Offers</h1>
+      <h1 className="font-semibold text-2xl ml-3 my-2">Recent Public Offers</h1>
       <Table tableHeaders={tableHeaders} data={publicOffers} />
     </>
   );
