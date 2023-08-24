@@ -5,6 +5,7 @@ import { Offer } from "../../swop/types";
 import { getPublicOffers } from "../../../apis/swop";
 
 const swopTableHeaders = ['Nfts Offered', 'Offer Name', 'Creator', 'Status', 'Created At'];
+const rabbleTableHeaders = ['Nfts Offered', 'Offer Name', 'Creator', 'Status', 'Created At'];
 
 export default function Page() {
   const [publicOffers, setPublicOffers] = useState([]) as Offer[];

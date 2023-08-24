@@ -1,3 +1,5 @@
+const { SWOP_URL } = process.env;
+
 module.exports = {
   reactStrictMode: true,
   transpilePackages: ["ui"],
