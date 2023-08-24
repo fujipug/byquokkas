@@ -8,10 +8,10 @@ module.exports = {
   },
   async rewrites() {
     return [
-      {
-        source: '/:path*',
-        destination: `/:path*`,
-      },
+      // {
+      //   source: '/:path*',
+      //   destination: `/:path*`,
+      // },
       {
         source: '/swop',
         destination: `https://byquokkas.vercel.app/swop`,
