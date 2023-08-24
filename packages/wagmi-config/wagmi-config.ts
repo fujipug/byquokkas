@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { configureChains, createConfig } from "wagmi";
 import { avalanche } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
@@ -13,7 +13,7 @@ import {
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { connectorsForWallets } from "@rainbow-me/rainbowkit";
-import '@rainbow-me/rainbowkit/styles.css';
+import "@rainbow-me/rainbowkit/styles.css";
 
 const projectId = "5ebeded86a2892064a847992b9c2ab4b"; // connect cloud wallet; This should be in an env variable but theres a bug
 const appName = "ByQuokkas";
