@@ -37,6 +37,7 @@ export default function CreatePrivateOffer() {
   const [imutableNftList, setImutableNftList] = useState([] as any[]);
   const [receiverImutableNftList, setReceiverImutableNftList] = useState([] as any[]);
   const [nftInfoModal, setNftInfoModal] = useState<any>();
+  const [showError, setShowError] = useState<boolean>(false);
   const swopContract = useSwopContract();
   const fee = useFee();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
@@ -176,12 +177,16 @@ export default function CreatePrivateOffer() {
   // Finalize offer and create the offer in the blockchain
   const [isApprovalLoading, setIsApprovalLoading] = useState(false);
   const handleFinalizePrivateOffer = async () => {
-    if (myOffers.length > 0) {
+    if (myOffers.length > 0 && receiverOffers.length > 0) {
       const collectionAAddresses = myOffers.map((offer: any) => offer.collectionAddress);
-      console.log(collectionAAddresses);
       verifyApproval(collectionAAddresses, write, (isApprovalStatusLoading: boolean) => {
         setIsApprovalLoading(isApprovalStatusLoading);
       });
+    } else {
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 3000);
     }
   }
 
@@ -210,6 +215,12 @@ export default function CreatePrivateOffer() {
 
   return (
     <>
+      {showError &&
+        <div className="alert alert-error">
+          <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          <span>Sender and receiver must have at least 1 NFT each.</span>
+        </div>
+      }
       <div className='flex justify-center items-center mb-12'>
         <span className='mr-4 text-lg'>Search Wallet:</span>
         <input type="text" onChange={handleInputChange} placeholder="Ex: 0x00000000000000" className="input input-bordered w-full max-w-xs" />
@@ -248,9 +259,9 @@ export default function CreatePrivateOffer() {
           <div>
             <div className='flex justify-start'>
               {viewMyWallet ?
-                <div className='flex justify-center bg-teal-800 rounded-box py-3 px-4 mb-2 drop-shadow-md w-36'>You</div>
+                <div onClick={() => setViewMyWallet(true)} className='cursor-pointer flex justify-center bg-teal-800 rounded-box py-3 px-4 mb-2 drop-shadow-md w-36'>You</div>
                 :
-                <div className='flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md w-36'>You</div>
+                <div onClick={() => setViewMyWallet(true)} className='cursor-pointer flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md w-36'>You</div>
               }
             </div>
             <OfferContainer active={viewMyWallet} offers={myOffers} placeholderText={'Choose up to 6 NFTs to offer'} showRemove={true}
@@ -259,7 +270,7 @@ export default function CreatePrivateOffer() {
           <div className='mt-8'>
             <div className='flex justify-end'>
               {!viewMyWallet ?
-                <div className='flex justify-center bg-teal-800 rounded-box py-3 px-4 mb-2 drop-shadow-md w-fit'>
+                <div onClick={() => setViewMyWallet(false)} className='cursor-pointer flex justify-center bg-teal-800 rounded-box py-3 px-4 mb-2 drop-shadow-md w-fit'>
                   {inputValue ?
                     <RenderName address={inputValue} classData={''} />
                     :
@@ -267,7 +278,7 @@ export default function CreatePrivateOffer() {
                   }
                 </div>
                 :
-                <div className='flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md w-fit'>
+                <div onClick={() => setViewMyWallet(false)} className='cursor-pointer flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md w-fit'>
                   {inputValue ?
                     <RenderName address={inputValue} classData={''} />
                     :
@@ -291,7 +302,7 @@ export default function CreatePrivateOffer() {
           <div className="grid grid-cols-1 mt-4 sm:grid-cols-2 sm:space-x-6">
             <div className="col-span-1">
               <figure>
-                <Image src={nftInfoModal?.metadata?.pImage ? nftInfoModal?.metadata?.pImage : 'http://placekitten.com/200/200'} className="rounded-lg drop-shadow-md"
+                <Image src={nftInfoModal?.metadata?.pImage ? nftInfoModal?.metadata?.pImage : '/images/no-image.png'} className="rounded-lg drop-shadow-md"
                   width={200} height={200}
                   alt="NFT image unreachable" />
               </figure>

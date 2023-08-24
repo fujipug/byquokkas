@@ -4,24 +4,35 @@ export const swopMainContractAddress =
   "0x613FcaF6a06Bf6D7D3A219b509B4782F2C28d29c"; // Same as test for now
 export const swopContractAbi = [
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_wrapper",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
     "inputs": [],
     "name": "InvalidLength",
-    "type": "error",
+    "type": "error"
   },
   {
     "inputs": [],
     "name": "NotDecider",
-    "type": "error",
+    "type": "error"
   },
   {
     "inputs": [],
     "name": "NotParticipant",
-    "type": "error",
+    "type": "error"
   },
   {
     "inputs": [],
     "name": "UnableToSwitch",
-    "type": "error",
+    "type": "error"
   },
   {
     "anonymous": false,
@@ -30,59 +41,17 @@ export const swopContractAbi = [
         "indexed": false,
         "internalType": "uint256",
         "name": "swapId",
-        "type": "uint256",
+        "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "address",
-        "name": "a",
-        "type": "address",
-      },
-      {
-        "indexed": false,
-        "internalType": "contract IERC721[]",
-        "name": "aCollections",
-        "type": "address[]",
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256[]",
-        "name": "aTokenIds",
-        "type": "uint256[]",
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "aAmount",
-        "type": "uint256",
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "b",
-        "type": "address",
-      },
-      {
-        "indexed": false,
-        "internalType": "contract IERC721[]",
-        "name": "bCollections",
-        "type": "address[]",
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256[]",
-        "name": "bTokenIds",
-        "type": "uint256[]",
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "bAmount",
-        "type": "uint256",
-      },
+        "name": "msgSender",
+        "type": "address"
+      }
     ],
     "name": "SwapAccepted",
-    "type": "event",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -91,11 +60,11 @@ export const swopContractAbi = [
         "indexed": false,
         "internalType": "uint256",
         "name": "swapId",
-        "type": "uint256",
-      },
+        "type": "uint256"
+      }
     ],
     "name": "SwapCanceled",
-    "type": "event",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -104,59 +73,59 @@ export const swopContractAbi = [
         "indexed": false,
         "internalType": "address",
         "name": "a",
-        "type": "address",
+        "type": "address"
       },
       {
         "indexed": false,
         "internalType": "contract IERC721[]",
         "name": "aCollections",
-        "type": "address[]",
+        "type": "address[]"
       },
       {
         "indexed": false,
         "internalType": "uint256[]",
         "name": "aTokenIds",
-        "type": "uint256[]",
+        "type": "uint256[]"
       },
       {
         "indexed": false,
         "internalType": "uint256",
         "name": "aAmount",
-        "type": "uint256",
+        "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "address",
         "name": "b",
-        "type": "address",
+        "type": "address"
       },
       {
         "indexed": false,
         "internalType": "contract IERC721[]",
         "name": "bCollections",
-        "type": "address[]",
+        "type": "address[]"
       },
       {
         "indexed": false,
         "internalType": "uint256[]",
         "name": "bTokenIds",
-        "type": "uint256[]",
+        "type": "uint256[]"
       },
       {
         "indexed": false,
         "internalType": "uint256",
         "name": "bAmount",
-        "type": "uint256",
+        "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "address",
         "name": "toDecide",
-        "type": "address",
-      },
+        "type": "address"
+      }
     ],
     "name": "SwapCreated",
-    "type": "event",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -165,172 +134,172 @@ export const swopContractAbi = [
         "indexed": false,
         "internalType": "uint256",
         "name": "swapId",
-        "type": "uint256",
+        "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "address",
         "name": "a",
-        "type": "address",
+        "type": "address"
       },
       {
         "indexed": false,
         "internalType": "contract IERC721[]",
         "name": "aCollections",
-        "type": "address[]",
+        "type": "address[]"
       },
       {
         "indexed": false,
         "internalType": "uint256[]",
         "name": "aTokenIds",
-        "type": "uint256[]",
+        "type": "uint256[]"
       },
       {
         "indexed": false,
         "internalType": "uint256",
         "name": "aAmount",
-        "type": "uint256",
+        "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "address",
         "name": "b",
-        "type": "address",
+        "type": "address"
       },
       {
         "indexed": false,
         "internalType": "contract IERC721[]",
         "name": "bCollections",
-        "type": "address[]",
+        "type": "address[]"
       },
       {
         "indexed": false,
         "internalType": "uint256[]",
         "name": "bTokenIds",
-        "type": "uint256[]",
+        "type": "uint256[]"
       },
       {
         "indexed": false,
         "internalType": "uint256",
         "name": "bAmount",
-        "type": "uint256",
+        "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "address",
         "name": "toDecide",
-        "type": "address",
-      },
+        "type": "address"
+      }
     ],
     "name": "SwapUpdated",
-    "type": "event",
+    "type": "event"
   },
   {
     "inputs": [
       {
         "internalType": "uint256",
         "name": "_swapId",
-        "type": "uint256",
-      },
+        "type": "uint256"
+      }
     ],
     "name": "acceptSwap",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function",
+    "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "uint256",
         "name": "_swapId",
-        "type": "uint256",
-      },
+        "type": "uint256"
+      }
     ],
     "name": "cancelSwap",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function",
+    "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "uint256",
         "name": "_swapId",
-        "type": "uint256",
+        "type": "uint256"
       },
       {
         "internalType": "contract IERC721[]",
         "name": "aCollections",
-        "type": "address[]",
+        "type": "address[]"
       },
       {
         "internalType": "uint256[]",
         "name": "aTokenIds",
-        "type": "uint256[]",
+        "type": "uint256[]"
       },
       {
         "internalType": "uint256",
         "name": "aAmount",
-        "type": "uint256",
+        "type": "uint256"
       },
       {
         "internalType": "contract IERC721[]",
         "name": "bCollections",
-        "type": "address[]",
+        "type": "address[]"
       },
       {
         "internalType": "uint256[]",
         "name": "bTokenIds",
-        "type": "uint256[]",
+        "type": "uint256[]"
       },
       {
         "internalType": "uint256",
         "name": "bAmount",
-        "type": "uint256",
-      },
+        "type": "uint256"
+      }
     ],
     "name": "counterSwap",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function",
+    "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "contract IERC721[]",
         "name": "aCollections",
-        "type": "address[]",
+        "type": "address[]"
       },
       {
         "internalType": "uint256[]",
         "name": "aTokenIds",
-        "type": "uint256[]",
+        "type": "uint256[]"
       },
       {
         "internalType": "uint256",
         "name": "aAmount",
-        "type": "uint256",
+        "type": "uint256"
       },
       {
         "internalType": "contract IERC721[]",
         "name": "bCollections",
-        "type": "address[]",
+        "type": "address[]"
       },
       {
         "internalType": "uint256[]",
         "name": "bTokenIds",
-        "type": "uint256[]",
+        "type": "uint256[]"
       },
       {
         "internalType": "uint256",
         "name": "bAmount",
-        "type": "uint256",
-      },
+        "type": "uint256"
+      }
     ],
     "name": "createSwap",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function",
+    "type": "function"
   },
   {
     "inputs": [],
@@ -339,51 +308,64 @@ export const swopContractAbi = [
       {
         "internalType": "uint256",
         "name": "",
-        "type": "uint256",
-      },
+        "type": "uint256"
+      }
     ],
     "stateMutability": "view",
-    "type": "function",
+    "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "uint256",
         "name": "",
-        "type": "uint256",
-      },
+        "type": "uint256"
+      }
     ],
     "name": "swaps",
     "outputs": [
       {
         "internalType": "address",
         "name": "a",
-        "type": "address",
+        "type": "address"
       },
       {
         "internalType": "uint256",
         "name": "aAmount",
-        "type": "uint256",
+        "type": "uint256"
       },
       {
         "internalType": "address",
         "name": "b",
-        "type": "address",
+        "type": "address"
       },
       {
         "internalType": "uint256",
         "name": "bAmount",
-        "type": "uint256",
+        "type": "uint256"
       },
       {
         "internalType": "address",
         "name": "toDecide",
-        "type": "address",
-      },
+        "type": "address"
+      }
     ],
     "stateMutability": "view",
-    "type": "function",
+    "type": "function"
   },
+  {
+    "inputs": [],
+    "name": "wrapper",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
 ];
 
 export const nftAbi = [

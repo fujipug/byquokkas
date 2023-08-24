@@ -29,7 +29,7 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
   const { address, isConnected } = useAccount();
   const [nfts, setNfts] = useState<any>([]);
   const [myOffers, setMyOffers] = useState<any>([]);
-  const [senderAddress, setSenderAddress] = useState<any>('');
+  const [senderAddress, setSenderAddress] = useState<string>('');
   const [senderOffers, setSenderOffers] = useState<any>([]);
   const [collectionList, setCollectionList] = useState([] as string[]);
   const [imutableNftList, setImutableNftList] = useState([] as any[]);
@@ -60,8 +60,8 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
   });
 
   useEffect(() => {
-    getOfferById(params.id).then((res) => {
-      console.log(res);
+    getOfferById(params.id).then((res: Offer) => {
+      console.log('response: ', res);
       setSenderAddress(res?.sender)
       setSenderOffers(res?.offerA)
     });
@@ -130,7 +130,6 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
   const handleOfferRequest = async () => {
     if (myOffers.length > 0) {
       const collectionBAddresses = myOffers.map((offer: any) => offer.collectionAddress);
-      console.log(collectionBAddresses);
       verifyApproval(collectionBAddresses, write, (isApprovalStatusLoading: boolean) => {
         setIsApprovalLoading(isApprovalStatusLoading);
       });

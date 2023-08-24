@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import OfferContainer from 'ui/OfferContainer'
 import { getOfferById } from '../../../../../apis/swop'
 import RenderName from 'ui/RenderName';
@@ -11,6 +11,7 @@ import { getSwapId, verifyApproval } from '../../../../../utils/contract-funtion
 import { doc, getFirestore, updateDoc } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../../../../packages/firebase-config';
+import { Offer } from '../../../types';
 
 declare global {
   interface Window {
@@ -22,7 +23,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export default function AcceptOffer({ params }: { params: { id: string } }) {
-  const [offer, setOffer] = useState<any>(null);
+  const [offer, setOffer] = useState<Offer>(null);
   const [nftInfoModal, setNftInfoModal] = useState<any>();
   const [swapId, setSwapId] = useState<any>(null);
   const swopContract = useSwopContract();
@@ -68,9 +69,22 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
     });
   }
 
+  useEffect(() => {
+    const updateViewed = async () => {
+      const offerRef = doc(db, 'offers', offer.id);
+      await updateDoc(offerRef, {
+        viewed: true,
+      });
+    }
+
+    if (offer && !offer?.viewed) {
+      updateViewed();
+    }
+  }, [offer, offer?.id, offer?.viewed]);
+
   const updateFirebaseOffer = async () => {
     const offerRef = doc(db, 'offers', offer.id);
-    updateDoc(offerRef, {
+    await updateDoc(offerRef, {
       status: 'Closed',
     });
   }

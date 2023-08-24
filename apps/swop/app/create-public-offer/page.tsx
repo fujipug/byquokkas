@@ -33,6 +33,7 @@ export default function CreatePublicOffer() {
   const [collectionList, setCollectionList] = useState([] as string[]);
   const [imutableNftList, setImutableNftList] = useState([] as any[]);
   const [nftInfoModal, setNftInfoModal] = useState<any>();
+  const [showError, setShowError] = useState<boolean>(false);
   const swopContract = useSwopContract();
   const fee = useFee();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
@@ -135,6 +136,11 @@ export default function CreatePublicOffer() {
       verifyApproval(collectionAAddresses, write, (isApprovalStatusLoading: boolean) => {
         setIsApprovalLoading(isApprovalStatusLoading);
       });
+    } else {
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 3000);
     }
   }
 
@@ -161,6 +167,12 @@ export default function CreatePublicOffer() {
 
   return (
     <>
+      {showError &&
+        <div className="alert alert-error">
+          <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          <span>Sender must have at least 1 NFT.</span>
+        </div>
+      }
       <div className='grid grid-cols-3 space-x-8'>
         <div className='col-span-1'>
           <div className='flex justify-between items-center mb-2'>
@@ -212,7 +224,7 @@ export default function CreatePublicOffer() {
           <div className="grid grid-cols-1 mt-4 sm:grid-cols-2 sm:space-x-6">
             <div className="col-span-1">
               <figure>
-                <Image src={nftInfoModal?.metadata?.pImage ? nftInfoModal?.metadata?.pImage : 'http://placekitten.com/200/200'} className="rounded-lg drop-shadow-md"
+                <Image src={nftInfoModal?.metadata?.pImage ? nftInfoModal?.metadata?.pImage : '/images/no-image.png'} className="rounded-lg drop-shadow-md"
                   width={200} height={200}
                   alt="NFT image unreachable" />
               </figure>

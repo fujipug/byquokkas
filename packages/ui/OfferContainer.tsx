@@ -38,7 +38,11 @@ export default function OfferContainer({ active, offers, placeholderText, showRe
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.9} stroke="currentColor" className="w-5 h-5 absolute right-2 top-2 bg-base-200 rounded-full cursor-pointer">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                     </svg>
-                    <Image src={offer.metadata.pImage} height={200} width={200} alt="NFT Image" />
+                    {offer?.metadata?.pImage ?
+                      <Image src={offer?.metadata?.pImage} height={200} width={200} alt="NFT Image" />
+                      :
+                      <Image src="/images/no-image.png" height={200} width={200} alt="NFT Image" />
+                    }
                   </figure>
                   <div className="card-body w-40">
                     {showRemove &&
@@ -61,7 +65,11 @@ export default function OfferContainer({ active, offers, placeholderText, showRe
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.9} stroke="currentColor" className="w-5 h-5 absolute right-2 top-2 bg-base-200 rounded-full cursor-pointer">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                     </svg>
-                    <Image src={offer.metadata.pImage} height={200} width={200} alt="NFT Image" />
+                    {offer?.metadata?.pImage ?
+                      <Image src={offer?.metadata?.pImage} height={200} width={200} alt="NFT Image" />
+                      :
+                      <Image src="/images/no-image.png" height={200} width={200} alt="NFT Image" />
+                    }
                   </figure>
                   <div className="card-body w-40">
                     {showRemove &&
