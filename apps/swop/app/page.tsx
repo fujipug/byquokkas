@@ -87,8 +87,8 @@ export default function Page() {
                 </div>
                 <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-6xl"><span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">SWOP</span> With A partner</h1>
               </div>
-              <Link href="/create-public-offer" className="btn btn-secondary drop-shadow-md">Create a public offfer</Link>
-              <Link href="/create-private-offer" className="btn btn-secondary drop-shadow-md">Create a private offer</Link>
+              <div><Link href="/create-public-offer" className="btn btn-secondary drop-shadow-md">Create a public offfer</Link></div>
+              <div><Link href="/create-private-offer" className="btn btn-secondary drop-shadow-md">Create a private offer</Link></div>
             </div>
           </div>
           <div className="col-span-2">
@@ -120,7 +120,7 @@ export default function Page() {
             </div>
           </div>
         </div>
-      </div>
+      </div >
       <h1 className="font-semibold text-2xl ml-3 my-2">Recent Public Offers</h1>
       <Table tableHeaders={tableHeaders} data={publicOffers} />
       <div className="relative my-4">
@@ -134,7 +134,8 @@ export default function Page() {
             </span></span>
         </div>
       </div>
-      {showMoreButton &&
+      {
+        showMoreButton &&
         <div className="flex justify-center my-2">
           <button onClick={() => fetchMorePublicOffers()} className="btn btn-outline btn-primary">Load More</button>
         </div>
