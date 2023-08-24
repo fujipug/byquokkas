@@ -50,11 +50,9 @@ export default function Page() {
 
   // Get Private Offers
   useEffect(() => {
-    if (account && account?.address) {
-      const unsubscribe = getPrivateOffers(account?.address, setPrivateOffers);
-      return () => {
-        unsubscribe(); // Clean up the listener when the component unmounts
-      };
+    const unsubscribe = getPrivateOffers(account?.address, setPrivateOffers);
+    return () => {
+      unsubscribe(); // Clean up the listener when the component unmounts
     }
   }, [account, account?.address]);
 
