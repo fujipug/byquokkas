@@ -58,7 +58,7 @@ export const getSwapId = async () => {
   const swapId = await readContract({
     address: swopMainContractAddress,
     abi: swopContractAbi,
-    functionName: "swaps",
+    functionName: "swapId",
   });
 
   return swapId;

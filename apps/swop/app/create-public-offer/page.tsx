@@ -132,7 +132,6 @@ export default function CreatePublicOffer() {
   const handleFinalizePublicOffer = async () => {
     if (myOffers.length > 0) {
       const collectionAAddresses = myOffers.map((offer: any) => offer.collectionAddress);
-      console.log(collectionAAddresses);
       verifyApproval(collectionAAddresses, write, (isApprovalStatusLoading: boolean) => {
         setIsApprovalLoading(isApprovalStatusLoading);
       });
