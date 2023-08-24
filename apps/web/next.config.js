@@ -1,5 +1,3 @@
-const { SWOP_URL } = process.env;
-
 module.exports = {
   reactStrictMode: true,
   transpilePackages: ["ui"],
@@ -8,18 +6,18 @@ module.exports = {
   },
   async rewrites() {
     return [
-      // {
-      //   source: '/:path*',
-      //   destination: `/:path*`,
-      // },
+      {
+        source: '/:path*',
+        destination: `/:path*`,
+      },
       {
         source: '/swop',
-        destination: `https://byquokkas.vercel.app/swop`,
+        destination: 'https://byquokkas.vercel.app/swop',
       },
-      // {
-      //   source: '/swop/:path*',
-      //   destination: `https://byquokkas.vercel.app/swop/:path*`,
-      // },
+      {
+        source: '/swop/:path*',
+        destination: 'https://byquokkas.vercel.app/swop/:path*',
+      }
     ]
   },
   webpack: config => {
