@@ -12,11 +12,11 @@ module.exports = {
       },
       {
         source: '/swop',
-        destination: 'https://byquokkas.vercel.app/swop',
+        destination: 'https://byquokkas-swop.vercel.app/swop',
       },
       {
         source: '/swop/:path*',
-        destination: 'https://byquokkas.vercel.app/swop/:path*',
+        destination: 'https://byquokkas-swop.vercel.app/swop/:path*',
       }
     ]
   },
