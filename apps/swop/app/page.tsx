@@ -56,7 +56,7 @@ export default function Page() {
         unsubscribe(); // Clean up the listener when the component unmounts
       };
     }
-  }, [account?.address]);
+  }, [account, account?.address]);
 
   // Get Private Offer Count
   useEffect(() => {
