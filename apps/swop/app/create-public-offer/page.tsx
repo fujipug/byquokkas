@@ -53,7 +53,7 @@ export default function CreatePublicOffer() {
       console.log('sucess: ', res);
       getSwapId().then((swapId) => {
         console.log('swapId: ', swapId);
-        createFirebaseOffer(swapId);
+        createFirebaseOffer(Number(swapId));
       })
     },
     onError(error) {
