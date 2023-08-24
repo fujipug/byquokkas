@@ -1,17 +1,30 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import OfferContainer from 'ui/OfferContainer'
 import { getOfferById } from '../../../../../apis/swop'
 import RenderName from 'ui/RenderName';
+import Image from 'next/image'
+
+declare global {
+  interface Window {
+    nftInfoModal: any;
+  }
+}
 
 export default function AcceptOffer({ params }: { params: { id: string } }) {
-  const [offer, setOffer] = React.useState<any>(null);
+  const [offer, setOffer] = useState<any>(null);
+  const [nftInfoModal, setNftInfoModal] = useState<any>();
+
   useEffect(() => {
     getOfferById(params.id).then((res) => {
-      console.log(res)
       setOffer(res)
     });
   }, [params.id]);
+
+  const handleInfoModal = (info: any) => {
+    setNftInfoModal(info);
+    window.nftInfoModal.showModal();
+  }
 
   return (
     <>
@@ -20,7 +33,7 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
         <div className='flex justify-end'>
           <div className='flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md w-36'>You</div>
         </div>
-        <OfferContainer active={false} offers={offer?.offerA} placeholderText='Loading ...' showRemove={false} />
+        <OfferContainer active={false} offers={offer?.offerA} placeholderText='Loading ...' showRemove={false} onSelectedNftEmit={handleInfoModal} />
       </div>
       <div className='my-6'>
         <div className='flex justify-start'>
@@ -28,7 +41,7 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
             <RenderName address={offer?.sender} classData={''} />
           </div>
         </div>
-        <OfferContainer active={false} offers={offer?.offerB} placeholderText='Loading ...' showRemove={false} />
+        <OfferContainer active={false} offers={offer?.offerB} placeholderText='Loading ...' showRemove={false} onSelectedNftEmit={handleInfoModal} />
       </div>
       <div className='flex justify-evenly items-center'>
         <button className='btn btn-secondary'>
@@ -44,6 +57,30 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
           Counter Offer
         </button>
       </div>
+
+      {/* You can open the modal using ID.showModal() method */}
+      <dialog id="nftInfoModal" className="modal">
+        <form method="dialog" className="modal-box">
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+          <div className="grid grid-cols-1 mt-4 sm:grid-cols-2 sm:space-x-6">
+            <div className="col-span-1">
+              <figure>
+                <Image src={nftInfoModal?.metadata?.pImage ? nftInfoModal?.metadata?.pImage : 'http://placekitten.com/200/200'} className="rounded-lg drop-shadow-md"
+                  width={200} height={200}
+                  alt="NFT image unreachable" />
+              </figure>
+            </div>
+            <div className="col-span-1 mt-4 sm:mt-0 flex flex-col">
+              <div>
+                <p><span className="font-semibold">Collection:</span> {nftInfoModal?.collectionName}</p>
+                <div className="divider"></div>
+                <p><span className="font-semibold">Symbol:</span> {nftInfoModal?.collectionSymbol}</p>
+                <p><span className="font-semibold">Token ID:</span> {nftInfoModal?.tokenId}</p>
+              </div>
+            </div>
+          </div >
+        </form >
+      </dialog>
     </>
   )
 }

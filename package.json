@@ -27,6 +27,7 @@
     "@avvy/client": "^4.2.6",
     "@rainbow-me/rainbowkit": "^1.0.8",
     "@vercel/analytics": "^1.0.2",
+    "canvas-confetti": "^1.6.0",
     "dotenv-cli": "^7.3.0",
     "ethers": "^5.7.2",
     "firebase": "^10.3.0",

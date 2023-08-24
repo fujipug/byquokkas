@@ -141,8 +141,8 @@ export default function CreatePublicOffer() {
       sender: address,
       offerA: myOffers,
       amountA: 0,
-      offerName: inputValue,
-      description: textAreaValue,
+      offerName: inputValue && inputValue,
+      description: textAreaValue && textAreaValue,
       status: 'Open',
       type: 'Public',
       createdAt: Timestamp.now(),
@@ -189,10 +189,10 @@ export default function CreatePublicOffer() {
           </div>
           <div className='mt-8'>
             <div className='flex justify-end items-center mb-4'>
-              <input onChange={handleInputChange} type="text" placeholder="Lobby name" className="input input-bordered w-full max-w-lg" />
+              <input onChange={handleInputChange} type="text" placeholder="Lobby name (optional)" className="input input-bordered w-full max-w-lg" />
             </div>
             <div className='flex justify-end items-center'>
-              <textarea onChange={handleTextAreaChange} className="textarea textarea-bordered w-full max-w-lg" placeholder="Description of your offer. What are you looking for?"></textarea>
+              <textarea onChange={handleTextAreaChange} className="textarea textarea-bordered w-full max-w-lg" placeholder="Description of your offer. What are you looking for? (optional)"></textarea>
             </div>
           </div>
           <div className='flex justify-end'>

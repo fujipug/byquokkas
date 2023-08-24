@@ -1,4 +1,5 @@
 import md5 from "md5";
+import confetti from "canvas-confetti";
 import {
   avvyAbi,
   avvyDomainsAddress
@@ -98,6 +99,22 @@ export const Base64 = {
     return t;
   },
 };
+
+const fireConfetti = (particleRatio: number, opts: any) => {
+  const defaults = {
+    origin: { y: 0.7 }
+  };
+  confetti(Object.assign({}, defaults, opts, {
+    particleCount: Math.floor(200 * particleRatio)
+  }));
+};
+export function fireAction() {
+  fireConfetti(0.25, { spread: 26, startVelocity: 55 });
+  fireConfetti(0.2, { spread: 60 });
+  fireConfetti(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+  fireConfetti(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+  fireConfetti(0.1, { spread: 120, startVelocity: 45 });
+}
 
 export function generateToken() {
   const str = Base64.encode(JSON.stringify({

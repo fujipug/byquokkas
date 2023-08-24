@@ -21,23 +21,31 @@ export default function Table(props: { tableHeaders: string[], data: Offer[] }) 
             {props?.data?.map((offer, index) =>
               <tr key={index}>
                 <td>
-                  <div className="flex items-center space-x-3">
-                    <div className="avatar">
-                      <div className="mask mask-squircle w-12 h-12">
-                        {offer?.offerA.map((nft: any, index: number) =>
-                          <Image key={index} src={nft?.metadata?.pImage} height={100} width={100} alt="Avatar Tailwind CSS Component" />
-                        )}
-                      </div>
+                  <Link href={`/offer-details/${offer.id}`}>
+                    <div className="avatar-group -space-x-6">
+                      {offer?.offerA.map((nft: any, index: number) =>
+                        <div key={index} className="avatar">
+                          <div className="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                            <Image key={index} src={nft?.metadata?.pImage} height={150} width={150} alt="Nft Image" />
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  </div>
+                  </Link>
                 </td>
                 <td>
                   <Link href={`/offer-details/${offer.id}`} className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
-                    {offer?.offerName}
+                    {offer?.offerName ? offer?.offerName : offer.id}
                   </Link>
                 </td>
                 <td><RenderName address={offer?.sender} classData={''} /></td>
-                <td>{offer?.status}</td>
+                <td>
+                  {offer?.status === 'Open' ?
+                    <div className="badge badge-success badge-outline">{offer?.status}</div>
+                    :
+                    <div className="badge badge-error badge-outline">{offer?.status}</div>
+                  }
+                </td>
                 <td>{`${(offer?.createdAt)?.toDate().toLocaleDateString(undefined, {
                   year: 'numeric',
                   month: 'short',
@@ -48,6 +56,6 @@ export default function Table(props: { tableHeaders: string[], data: Offer[] }) 
           </>
         </tbody>
       </table>
-    </div>
+    </div >
   )
 }

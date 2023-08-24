@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Offer } from "../types";
 import { getPublicOfferCount, getPublicOffers, getMorePublicOffers, getPrivateOffers, getPrivateOfferCount } from "../../../apis/swop";
+import { fireAction } from "../../../utils/functions";
 
 const tableHeaders = ['Nfts Offered', 'Offer Name', 'Creator', 'Status', 'Created At'];
 
@@ -78,8 +79,19 @@ export default function Page() {
     <>
       <div className="bg-base-200">
         <div className="grid grid-cols-3 item-center mx-auto max-w-7xl sm:px-6 lg:px-8 py-8 sm:py-12 px-4 drop-shadow-md">
-          <div className="col-span-1 space-y-5 flex items-center">
-            <div className="space-y-5">
+          <div className="col-span-1 space-y-5 flex">
+            <div className="space-y-5 block">
+              <div>
+                <div className="mt-24 sm:mt-32 lg:mt-16">
+                  <a onClick={() => fireAction()} className="inline-flex space-x-6 cursor-pointer">
+                    <div className="badge badge-outline p-3">What&apos;s new</div>
+                    <span className="inline-flex items-center space-x-2 text-sm font-medium leading-6">
+                      <span>Just shipped Beta v1.0  🎉</span>
+                    </span>
+                  </a>
+                </div>
+                <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-6xl"><span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">SWOP</span> With A partner</h1>
+              </div>
               <Link href="/create-public-offer" className="btn btn-secondary drop-shadow-md">Create a public offfer</Link>
               <Link href="/create-private-offer" className="btn btn-secondary drop-shadow-md">Create a private offer</Link>
             </div>
@@ -100,7 +112,8 @@ export default function Page() {
                     </div>
                     <button onClick={e => handleButtonClick(e, offer.id)} className="btn btn-secondary z-50">See Offer</button>
                   </div>
-                  <div className="collapse-content">
+                  <div className="collapse-content -mt-4">
+                    <div className="divider my-1 text-sm">For your</div>
                     <div className="flex items-center">
                       {offer?.offerB?.map((nft: any, index: number) => (
                         <Image key={index} className="rounded-lg mr-2 border-solid border-2 border-secondary drop-shadow-md" src={nft?.metadata?.pImage} width={75} height={75} alt="Nft Image" />
