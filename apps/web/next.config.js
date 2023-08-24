@@ -16,10 +16,10 @@ module.exports = {
         source: '/swop',
         destination: `https://byquokkas.vercel.app/swop`,
       },
-      {
-        source: '/swop/:path*',
-        destination: `https://byquokkas.vercel.app/swop/:path*`,
-      },
+      // {
+      //   source: '/swop/:path*',
+      //   destination: `https://byquokkas.vercel.app/swop/:path*`,
+      // },
     ]
   },
   webpack: config => {
