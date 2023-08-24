@@ -4,14 +4,14 @@ import {
   getNetwork,
   getWalletClient,
 } from "@wagmi/core";
-import { swopContractAbi, swopTestContractAddress } from "../packages/swop-config";
+import { swopContractAbi, swopMainContractAddress } from "../packages/swop-config";
 
 export const useSwopContract = () => {
   const [contract, setContract] = useState<any | null>(null);
   const network = getNetwork();
 
   useEffect(() => {
-    const address = swopTestContractAddress;
+    const address = swopMainContractAddress;
     const contract = getContract({
       address: address,
       abi: swopContractAbi,

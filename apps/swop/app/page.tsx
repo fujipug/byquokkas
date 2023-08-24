@@ -54,7 +54,7 @@ export default function Page() {
     return () => {
       unsubscribe(); // Clean up the listener when the component unmounts
     };
-  }, []);
+  }, [account?.address]);
 
   // Get Private Offer Count
   useEffect(() => {
@@ -64,10 +64,9 @@ export default function Page() {
     }
 
     fetchPrivateOfferCount();
-  }, []);
+  }, [account?.address]);
 
   const handleButtonClick = (e, offerId) => {
-    console.log('offerId', offerId);
     e.stopPropagation(); // Prevent event propagation
     window.location.href = `/accept-offer/${offerId}`;
   };
