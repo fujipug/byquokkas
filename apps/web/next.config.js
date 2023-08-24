@@ -12,10 +12,10 @@ module.exports = {
       //   source: '/:path*',
       //   destination: `/:path*`,
       // },
-      // {
-      //   source: '/swop',
-      //   destination: `https://byquokkas.vercel.app/swop`,
-      // },
+      {
+        source: '/swop',
+        destination: `https://byquokkas.vercel.app/swop`,
+      },
       // {
       //   source: '/swop/:path*',
       //   destination: `https://byquokkas.vercel.app/swop/:path*`,
