@@ -64,11 +64,6 @@ export default function Page() {
     fetchPrivateOfferCount();
   }, []);
 
-  // Show More Button
-  useEffect(() => {
-    (privateOffers?.length) === privateOfferCount ? setShowMoreButton(false) : setShowMoreButton(true);
-  }, [privateOffers?.length, privateOfferCount]);
-
   const handleButtonClick = (e, offerId) => {
     console.log('offerId', offerId);
     e.stopPropagation(); // Prevent event propagation
@@ -128,6 +123,22 @@ export default function Page() {
       </div>
       <h1 className="font-semibold text-2xl ml-3 my-2">Recent Public Offers</h1>
       <Table tableHeaders={tableHeaders} data={publicOffers} />
+      <div className="relative my-4">
+        <div className="absolute inset-0 flex items-center pl-2" aria-hidden="true">
+          <div className="w-full border-t" />
+        </div>
+        <div className="relative flex justify-end">
+          <span className="bg-base-100 pl-2 text-sm">
+            <span className="badge badge-outline mr-2">
+              {publicOffers?.length}/{publicOfferCount}
+            </span></span>
+        </div>
+      </div>
+      {showMoreButton &&
+        <div className="flex justify-center my-2">
+          <button onClick={() => fetchMorePublicOffers()} className="btn btn-outline btn-primary">Load More</button>
+        </div>
+      }
     </>
   );
 }
