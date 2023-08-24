@@ -86,7 +86,7 @@ export default function Page() {
                     </span>
                   </a>
                 </div>
-                <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-6xl"><span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">SWOP</span> With A partner</h1>
+                <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-6xl"><span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">SWOP</span> With A Partner</h1>
               </div>
               <div><Link href="/create-public-offer" className="btn btn-secondary drop-shadow-md">Create a public offfer</Link></div>
               <div><Link href="/create-private-offer" className="btn btn-secondary drop-shadow-md">Create a private offer</Link></div>
@@ -94,7 +94,15 @@ export default function Page() {
           </div>
           <div className="col-span-2">
             <label className="text-2xl sm:text-3xl">My Offers</label>
-            <div className="z-0 transform animate-moveUpDown -mt-4 ml-36 fixed"><Image src="/images/Face_2.png" alt="Quokka Face" width={200} height={200}></Image></div>
+            {/* Chat Bubble */}
+            <div className="z-0 transform animate-moveUpDown ml-80 fixed">
+              <div className="chat chat-start">
+                <div className="chat-bubble border">Swap with <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">ZERO</span> fees!</div>
+              </div>
+            </div>
+            <div className="z-0 transform animate-moveUpDown -mt-4 ml-36 fixed">
+              <Image src="/images/Face_2.png" alt="Quokka Face" width={200} height={200}></Image>
+            </div>
             <div className="z-30 -mt-7 ml-36 fixed"><Image src="/images/Hands_2.png" alt="Quokka Hands" width={200} height={200}></Image></div>
             <div className="z-10 p-6 bg-neutral rounded-box drop-shadow-md h-96 space-y-2 overflow-y-scroll">
               {privateOffers?.map((offer, index) => (
@@ -119,7 +127,7 @@ export default function Page() {
                       </div>
                     </div>
                     <div className="collapse-content -mt-4">
-                      <div className="divider my-1 text-sm">For your</div>
+                      <div className="divider my-1 text-sm">Swap for your</div>
                       <div className="flex items-center">
                         {offer?.offerB?.map((nft: any, index: number) => (
                           <Image key={index} className="rounded-lg mr-2 border-solid border-2 border-secondary drop-shadow-md" src={nft?.metadata?.pImage ? nft?.metadata?.pImage : "/images/no-image.png"} width={75} height={75} alt="Nft Image" />
