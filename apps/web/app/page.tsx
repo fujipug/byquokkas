@@ -1,4 +1,22 @@
+'use client'
+import { useEffect, useState } from "react";
+import Table from "ui/Table";
+import { Offer } from "../../swop/types";
+import { getPublicOffers } from "../../../apis/swop";
+
+const swopTableHeaders = ['Nfts Offered', 'Offer Name', 'Creator', 'Status', 'Created At'];
+
 export default function Page() {
+  const [publicOffers, setPublicOffers] = useState([]) as Offer[];
+
+  // Get Public Offers
+  useEffect(() => {
+    const unsubscribe = getPublicOffers(setPublicOffers);
+    return () => {
+      unsubscribe(); // Clean up the listener when the component unmounts
+    };
+  }, []);
+
   return (
     <>
       <h1 className="text-2xl sm:text-3xl text-center">Welcome to ByQuokkas</h1>
@@ -16,7 +34,8 @@ export default function Page() {
           <span>RABBLE RABBLE LOBBIES</span>
         </div>
         <div className="cols-span-1">
-          <span>SWOP OFFERS</span>
+          <h1 className="font-semibold text-2xl ml-3 my-2">Recent Public Offers</h1>
+          <Table tableHeaders={swopTableHeaders} data={publicOffers} />
         </div>
       </div>
     </>
