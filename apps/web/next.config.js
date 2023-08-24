@@ -1,6 +1,7 @@
 const { SWOP_URL } = process.env;
+const withImages = require("next-images");
 
-module.exports = {
+module.exports = withImages({
   reactStrictMode: true,
   transpilePackages: ["ui"],
   images: {
@@ -26,4 +27,4 @@ module.exports = {
     config.resolve.fallback = { fs: false, net: false, tls: false };
     return config;
   },
-};
+});

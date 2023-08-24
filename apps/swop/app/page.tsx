@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Offer } from "../types";
 import { getPublicOfferCount, getPublicOffers, getMorePublicOffers, getPrivateOffers, getPrivateOfferCount } from "../../../apis/swop";
 import { fireAction } from "../../../utils/functions";
+import quokkaFace2 from "../../../public/images/Face_2.png";
 
 const tableHeaders = ['Nfts Offered', 'Offer Name', 'Creator', 'Status', 'Created At'];
 
@@ -16,7 +17,7 @@ export default function Page() {
   const [publicOfferCount, setPublicOfferCount] = useState(0);
   const [showMoreButton, setShowMoreButton] = useState(false);
   const [privateOffers, setPrivateOffers] = useState([]) as Offer[];
-  const [privateOfferCount, setPrivateOfferCount] = useState(0);
+  // const [privateOfferCount, setPrivateOfferCount] = useState(0);
   const account = getAccount();
 
   // Get Public Offers
@@ -59,14 +60,14 @@ export default function Page() {
   }, [account, account?.address]);
 
   // Get Private Offer Count
-  useEffect(() => {
-    async function fetchPrivateOfferCount() {
-      const count = await getPrivateOfferCount(account?.address);
-      setPrivateOfferCount(count);
-    }
+  // useEffect(() => {
+  //   async function fetchPrivateOfferCount() {
+  //     const count = await getPrivateOfferCount(account?.address);
+  //     setPrivateOfferCount(count);
+  //   }
 
-    fetchPrivateOfferCount();
-  }, [account?.address]);
+  //   if (account?.address) fetchPrivateOfferCount();
+  // }, [account?.address]);
 
   const handleButtonClick = (e, offerId) => {
     e.stopPropagation(); // Prevent event propagation
@@ -103,7 +104,7 @@ export default function Page() {
               </div>
             </div>
             <div className="z-0 transform animate-moveUpDown -mt-4 ml-36 fixed">
-              <Image src="/images/Face_2.png" alt="Quokka Face" width={200} height={200}></Image>
+              <Image src={'/images/Face_2.png'} alt="Quokka Face" width={200} height={200}></Image>
             </div>
             <div className="z-30 -mt-7 ml-36 fixed"><Image src="/images/Hands_2.png" alt="Quokka Hands" width={200} height={200}></Image></div>
             <div className="z-10 p-6 bg-neutral rounded-box drop-shadow-md h-96 space-y-2 overflow-y-scroll">
