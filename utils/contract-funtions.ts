@@ -3,8 +3,9 @@ import {
   getContract,
   getNetwork,
   getWalletClient,
+  readContract
 } from "@wagmi/core";
-import { nftAbi, swopMainContractAddress } from "../packages/swop-config";
+import { nftAbi, swopContractAbi, swopMainContractAddress } from "../packages/swop-config";
 
 export const verifyApproval = async (
   collectionAAddresses: any[],
@@ -51,4 +52,14 @@ export const verifyApproval = async (
     }
   });
   write();
+};
+
+export const getSwapId = async () => {
+  const swapId = await readContract({
+    address: swopMainContractAddress,
+    abi: swopContractAbi,
+    functionName: "swaps",
+  });
+
+  return swapId;
 };

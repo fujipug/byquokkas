@@ -2,6 +2,7 @@
 import Table from "ui/Table";
 import Image from "next/image";
 import Link from "next/link";
+import { getAccount } from "@wagmi/core";
 import { useEffect, useState } from "react";
 import { Offer } from "../types";
 import { getPublicOfferCount, getPublicOffers, getMorePublicOffers, getPrivateOffers, getPrivateOfferCount } from "../../../apis/swop";
@@ -16,6 +17,7 @@ export default function Page() {
   const [showMoreButton, setShowMoreButton] = useState(false);
   const [privateOffers, setPrivateOffers] = useState([]) as Offer[];
   const [privateOfferCount, setPrivateOfferCount] = useState(0);
+  const account = getAccount();
 
   // Get Public Offers
   useEffect(() => {
@@ -48,7 +50,7 @@ export default function Page() {
 
   // Get Private Offers
   useEffect(() => {
-    const unsubscribe = getPrivateOffers(setPrivateOffers);
+    const unsubscribe = getPrivateOffers(account?.address, setPrivateOffers);
     return () => {
       unsubscribe(); // Clean up the listener when the component unmounts
     };
@@ -57,7 +59,7 @@ export default function Page() {
   // Get Private Offer Count
   useEffect(() => {
     async function fetchPrivateOfferCount() {
-      const count = await getPrivateOfferCount();
+      const count = await getPrivateOfferCount(account?.address);
       setPrivateOfferCount(count);
     }
 

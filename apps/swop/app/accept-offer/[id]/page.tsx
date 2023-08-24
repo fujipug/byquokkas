@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useContractWrite } from 'wagmi';
 import { useFee, useSwopContract } from '../../../../../utils/hooks';
 import { swopContractAbi } from '../../../../../packages/swop-config';
+import { getSwapId } from '../../../../../utils/contract-funtions';
 
 declare global {
   interface Window {
@@ -17,15 +18,14 @@ declare global {
 export default function AcceptOffer({ params }: { params: { id: string } }) {
   const [offer, setOffer] = useState<any>(null);
   const [nftInfoModal, setNftInfoModal] = useState<any>();
+  const [swapId, setSwapId] = useState<any>(null);
   const swopContract = useSwopContract();
   const fee = useFee();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
     address: swopContract?.address,
     abi: swopContractAbi,
     functionName: 'acceptSwap',
-    args: [
-      // THe swap id is the arg
-    ],
+    args: [swapId],
     value: fee,
     onSuccess: (res: any) => {
       // TODO: Call read to get swapId
@@ -40,6 +40,11 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
   useEffect(() => {
     getOfferById(params.id).then((res) => {
       setOffer(res)
+    });
+
+    getSwapId().then((swapId) => {
+      console.log('swapId: ', swapId);
+      setSwapId(swapId);
     });
   }, [params.id]);
 

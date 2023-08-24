@@ -5,13 +5,14 @@ import { getPickassoNfts } from '../../../../apis/nfts'
 import { useAccount, useContractWrite } from 'wagmi';
 import OfferContainer from 'ui/OfferContainer';
 import Image from 'next/image'
-import { verifyApproval } from '../../../../utils/contract-funtions';
+import { getSwapId, verifyApproval } from '../../../../utils/contract-funtions';
 import { swopContractAbi } from '../../../../packages/swop-config';
 import { useSwopContract, useFee } from '../../../../utils/hooks';
 import { initializeApp } from "firebase/app";
 import { Timestamp, addDoc, collection, getFirestore } from "firebase/firestore";
 import { firebaseConfig } from '../../../../packages/firebase-config';
 import { Offer } from '../../types';
+import { fireAction } from '../../../../utils/functions';
 
 //Initialize firebase backend
 const app = initializeApp(firebaseConfig);
@@ -50,7 +51,10 @@ export default function CreatePublicOffer() {
     onSuccess: (res: any) => {
       // TODO: Call read to get swapId
       console.log('sucess: ', res);
-      createFirebaseOffer();
+      getSwapId().then((swapId) => {
+        console.log('swapId: ', swapId);
+        createFirebaseOffer(swapId);
+      })
     },
     onError(error) {
       // Display Error Message
@@ -136,8 +140,9 @@ export default function CreatePublicOffer() {
   }
 
   // Create Firebase offer
-  const createFirebaseOffer = async () => {
+  const createFirebaseOffer = async (swapId) => {
     const offer: Offer = {
+      swapId: swapId,
       sender: address,
       offerA: myOffers,
       amountA: 0,
@@ -149,6 +154,7 @@ export default function CreatePublicOffer() {
     }
     addDoc(collection(db, 'offers'), offer).then((response) => {
       // TODO: Maybe a share link to the offer
+      fireAction();
     }).catch((error) => {
       console.error("Error adding document: ", error);
     });
