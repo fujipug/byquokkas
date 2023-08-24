@@ -10,7 +10,7 @@ import { verifyApproval } from '../../../../../utils/contract-funtions';
 import { swopContractAbi } from '../../../../../packages/swop-config';
 import { useSwopContract, useFee } from '../../../../../utils/hooks';
 import { initializeApp } from "firebase/app";
-import { Timestamp, addDoc, collection, getFirestore } from "firebase/firestore";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { firebaseConfig } from '../../../../../packages/firebase-config';
 import { Offer } from '../../../types';
 import { getOfferById } from '../../../../../apis/swop';

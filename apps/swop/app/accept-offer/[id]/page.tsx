@@ -4,6 +4,9 @@ import OfferContainer from 'ui/OfferContainer'
 import { getOfferById } from '../../../../../apis/swop'
 import RenderName from 'ui/RenderName';
 import Image from 'next/image'
+import { useContractWrite } from 'wagmi';
+import { useFee, useSwopContract } from '../../../../../utils/hooks';
+import { swopContractAbi } from '../../../../../packages/swop-config';
 
 declare global {
   interface Window {
@@ -14,6 +17,25 @@ declare global {
 export default function AcceptOffer({ params }: { params: { id: string } }) {
   const [offer, setOffer] = useState<any>(null);
   const [nftInfoModal, setNftInfoModal] = useState<any>();
+  const swopContract = useSwopContract();
+  const fee = useFee();
+  let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
+    address: swopContract?.address,
+    abi: swopContractAbi,
+    functionName: 'acceptSwap',
+    args: [
+      // THe swap id is the arg
+    ],
+    value: fee,
+    onSuccess: (res: any) => {
+      // TODO: Call read to get swapId
+      console.log('sucess: ', res);
+      // createFirebaseOffer();
+    },
+    onError(error) {
+      // Display Error Message
+    },
+  });
 
   useEffect(() => {
     getOfferById(params.id).then((res) => {
