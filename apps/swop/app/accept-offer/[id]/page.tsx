@@ -128,7 +128,7 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
           <div className="grid grid-cols-1 mt-4 sm:grid-cols-2 sm:space-x-6">
             <div className="col-span-1">
               <figure>
-                <Image src={nftInfoModal?.metadata?.pImage ? nftInfoModal?.metadata?.pImage : 'http://placekitten.com/200/200'} className="rounded-lg drop-shadow-md"
+                <Image src={nftInfoModal?.metadata?.pImage ? nftInfoModal?.metadata?.pImage : '/images/no-image.png'} className="rounded-lg drop-shadow-md"
                   width={200} height={200}
                   alt="NFT image unreachable" />
               </figure>

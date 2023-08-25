@@ -31,7 +31,7 @@ export default function OfferContainer({ active, offers, placeholderText, showRe
       {offers?.length > 0 ?
         <>
           {active ?
-            <div className="p-6 space-x-4 bg-teal-800 rounded-box flex snap-mandatory snap-x overflow-x-scroll drop-shadow-md">
+            <div className="p-6 space-x-4 border-solid border-2 border-teal-500 rounded-box flex snap-mandatory snap-x overflow-x-scroll drop-shadow-md">
               {offers.map((offer: any, index: any) => (
                 <div key={index} className="card card-compact w-40 bg-base-100 shadow-xl snap-center">
                   <figure onClick={() => handleSelectedNftInfo(offer)} className='cursor-pointer'>

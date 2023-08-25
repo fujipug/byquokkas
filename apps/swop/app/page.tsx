@@ -90,8 +90,10 @@ export default function Page() {
                 </div>
                 <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-6xl"><span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">SWOP</span> With A Partner</h1>
               </div>
-              <div><Link href="/create-public-offer" className="btn btn-secondary drop-shadow-md">Create a public offfer</Link></div>
-              <div><Link href="/create-private-offer" className="btn btn-secondary drop-shadow-md">Create a private offer</Link></div>
+              <div className="flex gap-x-4 items-center pt-2">
+                <div><Link href="/create-public-offer" className="btn text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 outline outline-offset-2 outline-1 outline-yellow-400 drop-shadow-md">Create A <br />Public Offfer</Link></div>
+                <div><Link href="/create-private-offer" className="btn text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 outline outline-offset-2 outline-1 outline-yellow-400 drop-shadow-md">Create A <br />Private Offer</Link></div>
+              </div>
             </div>
           </div>
           <div className="col-span-2">
@@ -125,7 +127,7 @@ export default function Page() {
                           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5" />
                         </svg>
 
-                        <button onClick={e => handleButtonClick(e, offer.id)} className="btn btn-secondary z-50">See Offer</button>
+                        <button onClick={e => handleButtonClick(e, offer.id)} className="btn btn-warning z-50">See Offer</button>
                       </div>
                     </div>
                     <div className="collapse-content -mt-4">
