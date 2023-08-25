@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { Offer } from "../types";
 import { getPublicOfferCount, getPublicOffers, getMorePublicOffers, getPrivateOffers, getPrivateOfferCount } from "../../../apis/swop";
 import { fireAction } from "../../../utils/functions";
-import quokkaFace2 from "../../../public/images/Face_2.png";
 
 const tableHeaders = ['Nfts Offered', 'Offer Name', 'Creator', 'Status', 'Created At'];
 
