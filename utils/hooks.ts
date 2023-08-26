@@ -1,10 +1,106 @@
 import { useEffect, useState } from "react";
 import {
+  getAccount,
   getContract,
   getNetwork,
   getWalletClient,
 } from "@wagmi/core";
-import { swopContractAbi, swopMainContractAddress } from "../packages/swop-config";
+import { useNetwork } from "wagmi";
+import {
+  swopContractAbi,
+  swopMainContractAddress,
+} from "../packages/swop-config";
+import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  uri: "https://data.staging.arkiver.net/primata/swop-agnostic/graphql",
+  // uri: "http://localhost:4000/graphql",
+});
+
+export function useUserSwaps() {
+  const [swaps, setSwaps] = useState([]);
+  const account = getAccount();
+  const { chain } = useNetwork();
+
+  useEffect(() => {
+    function handleChainChange() {
+      let swaps;
+      const query = gql`query QuerySwaps {
+                  Swaps(filter: {a: ${account}, chain: ${chain?.id}}) {
+                    swapId
+                    a
+                    aCollections
+                    aTokenIds
+                    aAmount
+                    b
+                    bCollections
+                    bTokenIds
+                    bAmount
+                    toDecide
+                  }
+                  Swaps(filter: {b: ${account}, chain: ${chain?.id}}) {
+                    swapId
+                    a
+                    aCollections
+                    aTokenIds
+                    aAmount
+                    b
+                    bCollections
+                    bTokenIds
+                    bAmount
+                    toDecide
+                  }
+                }`;
+      client.query({
+        query: query,
+      }).then((result) => {
+        swaps = [...result.data.Swaps];
+        setSwaps(swaps);
+      }).catch((e) => {
+        console.log("set blacklist error", e);
+      });
+    }
+    handleChainChange();
+  }, [chain]);
+  return swaps;
+}
+
+export function usePendingSwaps() {
+  const [swaps, setSwaps] = useState([]);
+  const addressZero = "0x00000000000000000000000000000000";
+  const { chain } = useNetwork();
+
+  useEffect(() => {
+    function handleChainChange() {
+      let swaps;
+      const query = gql`query QuerySwaps {
+                  Swaps(filter: {toDecide: ${addressZero}, chain: ${chain?.id}}) {
+                    swapId
+                    a
+                    aCollections
+                    aTokenIds
+                    aAmount
+                    b
+                    bCollections
+                    bTokenIds
+                    bAmount
+                    toDecide
+                  }
+                }`;
+      client.query({
+        query: query,
+      }).then((result) => {
+        swaps = [...result.data.Swaps];
+        setSwaps(swaps);
+      }).catch((e) => {
+        console.log("set blacklist error", e);
+      });
+    }
+    handleChainChange();
+  }, [chain]);
+  return swaps;
+}
 
 export const useSwopContract = () => {
   const [contract, setContract] = useState<any | null>(null);
