@@ -14,6 +14,7 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { firebaseConfig } from '../../../../../packages/firebase-config';
 import { Offer } from '../../../types';
 import { getOfferById } from '../../../../../apis/swop';
+import { useUserSwaps } from '../../../../../utils/hooks';
 
 //Initialize firebase backend
 const app = initializeApp(firebaseConfig);
@@ -36,6 +37,7 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
   const [nftInfoModal, setNftInfoModal] = useState<any>();
   const [swopId, setSwopId] = useState<number>();
   const swopContract = useSwopContract();
+  const userSwaps = useUserSwaps();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
     address: swopContract?.address,
     abi: swopContractAbi,
@@ -60,6 +62,7 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
   });
 
   useEffect(() => {
+    console.log(userSwaps);
     getOfferById(params.id).then((res: Offer) => {
       console.log('response: ', res);
       setSwopId(res?.swapId)
