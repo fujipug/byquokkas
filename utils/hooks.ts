@@ -14,7 +14,7 @@ import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  uri: "https://data.staging.arkiver.net/primata/swop-agnostic/graphql",
+  uri: "https://data.staging.arkiver.net/primata/swop-events/graphql",
   // uri: "http://localhost:4000/graphql",
 });
 
@@ -39,18 +39,6 @@ export function useUserSwaps() {
                     bAmount
                     toDecide
                   }
-                  Swaps(filter: {b: ${account}, chain: ${chain?.id}}) {
-                    swapId
-                    a
-                    aCollections
-                    aTokenIds
-                    aAmount
-                    b
-                    bCollections
-                    bTokenIds
-                    bAmount
-                    toDecide
-                  }
                 }`;
       client.query({
         query: query,
@@ -58,7 +46,7 @@ export function useUserSwaps() {
         swaps = [...result.data.Swaps];
         setSwaps(swaps);
       }).catch((e) => {
-        console.log("set blacklist error", e);
+        console.log("set a swaps error", e);
       });
     }
     handleChainChange();
