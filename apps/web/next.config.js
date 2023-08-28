@@ -9,10 +9,10 @@ module.exports = withImages({
   },
   async rewrites() {
     return [
-      {
-        source: '/:path*',
-        destination: `/:path*`,
-      },
+      // {
+      //   source: '/:path*',
+      //   destination: `/:path*`,
+      // },
       {
         source: '/swop',
         destination: `https://byquokkas-swop.vercel.app/swop`,
@@ -20,7 +20,19 @@ module.exports = withImages({
       {
         source: '/swop/:path*',
         destination: `https://byquokkas-swop.vercel.app/swop/:path*`,
-      }
+      },
+      {
+        source: '/swop/accept-offer/:path',
+        destination: `https://byquokkas-swop.vercel.app/swop/accept-offer/:path`,
+      },
+      // {
+      //   source: '/swop/accept-offer/:path*',
+      //   destination: `https://byquokkas-swop.vercel.app/swop/accept-offer/:path*`,
+      // },
+      // {
+      //   source: '/swop/_next/:path*',
+      //   destination: `https://byquokkas-swop.vercel.app/swop/_next/:path*`,
+      // }
     ]
   },
   webpack: config => {

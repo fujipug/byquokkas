@@ -101,7 +101,7 @@ export default function Page() {
             {/* Chat Bubble */}
             <div className="z-0 transform animate-moveUpDown ml-80 fixed">
               <div className="chat chat-start">
-                <div className="chat-bubble border">Swap with <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">ZERO</span> fees!</div>
+                <div className="chat-bubble border border-yellow-400">Swap with <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">ZERO</span> fees!</div>
               </div>
             </div>
             <div className="z-0 transform animate-moveUpDown -mt-4 ml-36 fixed">
@@ -119,7 +119,9 @@ export default function Page() {
                     <div className="collapse-title flex items-center justify-between">
                       <div className="flex items-center">
                         {offer?.offerA?.map((nft: any, index: number) => (
-                          <Image key={index} className="rounded-lg mr-2 border-solid border-2 border-primary drop-shadow-md" src={nft?.metadata?.pImage ? nft?.metadata?.pImage : "/images/no-image.png"} width={75} height={75} alt="Nft Image" />
+                          <div key={index} className="rounded-md bg-gradient-to-b from-yellow-400 to-orange-500 p-0.5 mr-2 drop-shadow-md">
+                            <Image key={index} className="rounded-md" src={nft?.metadata?.pImage ? nft?.metadata?.pImage : "/images/no-image.png"} width={75} height={75} alt="Nft Image" />
+                          </div>
                         ))}
                       </div>
                       <div className="flex items-center">
@@ -134,7 +136,9 @@ export default function Page() {
                       <div className="divider my-1 text-sm">Swap for your</div>
                       <div className="flex items-center">
                         {offer?.offerB?.map((nft: any, index: number) => (
-                          <Image key={index} className="rounded-lg mr-2 border-solid border-2 border-secondary drop-shadow-md" src={nft?.metadata?.pImage ? nft?.metadata?.pImage : "/images/no-image.png"} width={75} height={75} alt="Nft Image" />
+                          <div key={index} className="rounded-md bg-gradient-to-t from-yellow-400 to-orange-500 p-0.5 mr-2 drop-shadow-md">
+                            <Image key={index} className="rounded-md" src={nft?.metadata?.pImage ? nft?.metadata?.pImage : "/images/no-image.png"} width={75} height={75} alt="Nft Image" />
+                          </div>
                         ))}
                       </div>
                     </div>
