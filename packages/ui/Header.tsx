@@ -1,33 +1,9 @@
 'use client'
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
 import Image from "next/image";
-import ThemeToggle from "./ThemeToggle";
-import { useEffect, useState } from "react";
-import AVVY from '@avvy/client';
-import { useAccount } from "wagmi";
-import { providers } from 'ethers';
+import CustomConnectButton from "./CustomConnectButton";
 
 export default function Header(props: { appName: string, showLogo?: boolean }) {
-  const provider = new providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc')
-  const { address } = useAccount();
-  const [avvyName, setAvvy] = useState('');
-
-  const fetchAvvy = async () => {
-    const avvy = new AVVY(provider, {});
-    // @ts-ignore
-    const hash = await avvy.reverse(AVVY.RECORDS.EVM, address)
-    let name;
-    try {
-      name = await hash?.lookup();
-      setAvvy(name?.name);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-  useEffect(() => {
-    fetchAvvy();
-  }, [address]);
   return (
     <div className="navbar bg-neutral flex justify-between drop-shadow-md items-center">
       <Link className="flex sm:hidden" href="/"><Image src="/images/Face_2.png" alt="ByQuokkas Logo" width={60} height={60} /></Link>
@@ -43,99 +19,12 @@ export default function Header(props: { appName: string, showLogo?: boolean }) {
         }
       </div>
       <div className="flex items-center">
-        <ConnectButton.Custom>
-          {({
-            account,
-            chain,
-            openAccountModal,
-            openChainModal,
-            openConnectModal,
-            authenticationStatus,
-            mounted,
-          }) => {
-            // Note: If your app doesn't use authentication, you
-            // can remove all 'authenticationStatus' checks
-            const ready = mounted && authenticationStatus !== 'loading';
-            const connected =
-              ready &&
-              account &&
-              chain &&
-              (!authenticationStatus ||
-                authenticationStatus === 'authenticated');
-
-            return (
-              <div
-                {...(!ready && {
-                  'aria-hidden': true,
-                  'style': {
-                    opacity: 0,
-                    pointerEvents: 'none',
-                    userSelect: 'none',
-                  },
-                })}
-              >
-                {(() => {
-                  if (!connected) {
-                    return (
-                      <button className="btn btn-outline btn-warning" onClick={openConnectModal} type="button">
-                        Connect Wallet
-                      </button>
-                    );
-                  }
-
-                  if (chain.unsupported) {
-                    return (
-                      <button className="btn btn-outline btn-warning" onClick={openChainModal} type="button">
-                        Wrong network
-                      </button>
-                    );
-                  }
-
-                  return (
-                    <div style={{ display: 'flex', gap: 12 }}>
-                      <button
-                        className="flex items-center text-gray-100"
-                        onClick={openChainModal}
-                        type="button"
-                      >
-                        {chain.hasIcon && (
-                          <div
-                            style={{
-                              background: chain.iconBackground,
-                              borderRadius: 999,
-                              overflow: 'hidden',
-                              marginRight: 4,
-                            }}
-                            className="w-5 h-5"
-                          >
-                            {chain.iconUrl && (
-                              <img
-                                alt={chain.name ?? 'Chain icon'}
-                                src={chain.iconUrl}
-                                className="w-5 h-5"
-                              />
-                            )}
-                          </div>
-                        )}
-                        <span className="hidden sm:flex">{chain.name}</span>
-                      </button>
-
-                      <button className="btn btn-outline btn-warning" onClick={openAccountModal} type="button">
-                        {avvyName ? avvyName
-                          //  : ensName ? ensName
-                          : account.displayName}
-                        {account.displayBalance
-                          ? ` (${account.displayBalance})`
-                          : ''}
-                      </button>
-                    </div>
-                  );
-                })()}
-              </div>
-            );
-          }}
-        </ConnectButton.Custom>
-        <span className="ml-4"><ThemeToggle /></span>
+        <CustomConnectButton />
+        <Link href={"/profile"}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.3} stroke="currentColor" className="w-10 h-10 ml-4">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </Link>
       </div>
     </div >
 
