@@ -40,6 +40,7 @@ export default function CreatePrivateOffer() {
   const [showError, setShowError] = useState<boolean>(false);
   const [inputAAmountValue, setInputAAmountValue] = useState('');
   const [inputBAmountValue, setInputBAmountValue] = useState('');
+  const [stepper, setStepper] = useState(() => 0);
   const swopContract = useSwopContract();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
     address: swopContract?.address,
@@ -206,7 +207,7 @@ export default function CreatePrivateOffer() {
       viewed: false
     }
     addDoc(collection(db, 'offers'), offer).then((response) => {
-      // TODO: Maybe a share link to the offer
+      setStepper(1);
       fireAction();
     }).catch((error) => {
       console.error("Error adding document: ", error);
@@ -228,132 +229,152 @@ export default function CreatePrivateOffer() {
   return (
     <>
       {showError &&
-        <div className="alert alert-error">
-          <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-          <span>Sender and receiver must have at least 1 NFT each.</span>
+        <div className="z-50 toast toast-center toast-middle">
+          <div className="alert alert-error">
+            <span>Sender and receiver must have at least 1 NFT each.</span>
+          </div>
         </div>
       }
-      <div className='flex justify-center items-center mb-12'>
-        <span className='hidden sm:flex mr-4 text-lg'>Search Wallet:</span>
-        <input type="text" onChange={handleInputChange} placeholder="Ex: 0x00000000000000" className="input input-bordered w-full max-w-xs" />
-        <button onClick={() => walletSearch()} className="btn btn-warning ml-4">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-          </svg>
-          <span className='hidden sm:flex'>Search</span>
-        </button>
-      </div>
-      <div className='grid grid-cols-1 sm:grid-cols-3 sm:space-x-8'>
-        <div className='col-span-1'>
-          <div className='flex justify-between items-center mb-2'>
-            <details className="dropdown">
-              <summary tabIndex={0} className="btn bg-neutral rounded-box py-2 px-4 drop-shadow-md">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
-                </svg>
-                <span>Filter</span>
-              </summary>
 
-              <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 bg-base-100 rounded-box w-52 mt-2">
-                {collectionList.map((collectionName: string, index: any) => (
-                  <li key={index}><a onClick={() => viewMyWallet ? filterCollection(collectionName) : filterReceiverCollection(collectionName)}>{collectionName}</a></li>
-                ))}
-                <li><a onClick={() => viewMyWallet ? filterCollection('all') : filterReceiverCollection('all')}>Show All</a></li>
-              </ul>
-            </details>
-            <button onClick={() => setViewMyWallet(true)} className='btn bg-neutral rounded-box py-2 px-4 drop-shadow-md'>My Wallet</button>
+      {stepper === 0 && (
+        <>
+          <div className='flex justify-center items-center mb-12'>
+            <span className='hidden sm:flex mr-4 text-lg'>Search Wallet:</span>
+            <input type="text" onChange={handleInputChange} placeholder="Ex: 0x00000000000000" className="input input-bordered w-full max-w-xs" />
+            <button onClick={() => walletSearch()} className="btn btn-warning ml-4">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+              <span className='hidden sm:flex'>Search</span>
+            </button>
           </div>
-          <div className='h-5/6 overflow-y-scroll'>
-            <NftGrid nfts={viewMyWallet ? nfts : receiverNfts} onDataEmit={handleSelectedNft} />
-          </div>
-        </div>
-        <div className='col-span-1 sm:col-span-2'>
-          <div>
-            <div className='flex justify-between mb-2'>
-              {viewMyWallet ?
-                <>
-                  <div onClick={() => setViewMyWallet(true)} className='cursor-pointer flex justify-center bg-teal-800 rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
-                  <div className="join items-center">
-                    <input type="text" value={inputAAmountValue} onChange={handleInputAAmountChange} placeholder="Amount (Optional)" className="join-item input bg-teal-800 w-full max-w-xs" />
-                    <div className="dropdown join-item">
-                      <label tabIndex={0} className="btn bg-teal-800 rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
-                      {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+          <div className='grid grid-cols-1 sm:grid-cols-3 sm:space-x-8'>
+            <div className='col-span-1'>
+              <div className='flex justify-between items-center mb-2'>
+                <details className="dropdown">
+                  <summary tabIndex={0} className="btn bg-neutral rounded-box py-2 px-4 drop-shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+                    </svg>
+                    <span>Filter</span>
+                  </summary>
+
+                  <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 bg-base-100 rounded-box w-52 mt-2">
+                    {collectionList.map((collectionName: string, index: any) => (
+                      <li key={index}><a onClick={() => viewMyWallet ? filterCollection(collectionName) : filterReceiverCollection(collectionName)}>{collectionName}</a></li>
+                    ))}
+                    <li><a onClick={() => viewMyWallet ? filterCollection('all') : filterReceiverCollection('all')}>Show All</a></li>
+                  </ul>
+                </details>
+                <button onClick={() => setViewMyWallet(true)} className='btn bg-neutral rounded-box py-2 px-4 drop-shadow-md'>My Wallet</button>
+              </div>
+              <div className='h-5/6 overflow-y-scroll'>
+                <NftGrid nfts={viewMyWallet ? nfts : receiverNfts} onDataEmit={handleSelectedNft} />
+              </div>
+            </div>
+            <div className='col-span-1 sm:col-span-2'>
+              <div>
+                <div className='flex justify-between mb-2'>
+                  {viewMyWallet ?
+                    <>
+                      <div onClick={() => setViewMyWallet(true)} className='cursor-pointer flex justify-center bg-teal-800 rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
+                      <div className="join items-center">
+                        <input type="text" value={inputAAmountValue} onChange={handleInputAAmountChange} placeholder="Amount (Optional)" className="join-item input bg-teal-800 w-full max-w-xs" />
+                        <div className="dropdown join-item">
+                          <label tabIndex={0} className="btn bg-teal-800 rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
+                          {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                 <li><a>WAVAX</a></li>
                 <li><a>WETH</a></li>
               </ul> */}
-                    </div>
-                  </div>
-                </>
-                :
-                <>
-                  <div onClick={() => setViewMyWallet(true)} className='cursor-pointer flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
-                  <div className="join items-center">
-                    <input type="text" value={inputAAmountValue} onChange={handleInputAAmountChange} placeholder="Amount (Optional)" className="join-item input bg-neutral w-full max-w-xs" />
-                    <div className="dropdown join-item">
-                      <label tabIndex={0} className="btn bg-neutral rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
-                      {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                        </div>
+                      </div>
+                    </>
+                    :
+                    <>
+                      <div onClick={() => setViewMyWallet(true)} className='cursor-pointer flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
+                      <div className="join items-center">
+                        <input type="text" value={inputAAmountValue} onChange={handleInputAAmountChange} placeholder="Amount (Optional)" className="join-item input bg-neutral w-full max-w-xs" />
+                        <div className="dropdown join-item">
+                          <label tabIndex={0} className="btn bg-neutral rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
+                          {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
             <li><a>WAVAX</a></li>
             <li><a>WETH</a></li>
           </ul> */}
-                    </div>
-                  </div>
-                </>
-              }
-            </div>
-            <OfferContainer active={viewMyWallet} offers={myOffers} placeholderText={'Choose up to 6 NFTs to offer'} showRemove={true}
-              onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
-          </div>
-          <div className='mt-8'>
-            <div className='flex justify-between mb-2'>
-              {!viewMyWallet ?
-                <div className="join items-center">
-                  <input type="text" value={inputBAmountValue} onChange={handleInputBAmountChange} placeholder="Amount (Optional)" className="join-item input bg-teal-800 w-full max-w-xs" />
-                  <div className="dropdown join-item">
-                    <label tabIndex={0} className="btn bg-teal-800 rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
-                    {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                        </div>
+                      </div>
+                    </>
+                  }
+                </div>
+                <OfferContainer active={viewMyWallet} offers={myOffers} placeholderText={'Choose up to 6 NFTs to offer'} showRemove={true}
+                  onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
+              </div>
+              <div className='mt-8'>
+                <div className='flex justify-between mb-2'>
+                  {!viewMyWallet ?
+                    <div className="join items-center">
+                      <input type="text" value={inputBAmountValue} onChange={handleInputBAmountChange} placeholder="Amount (Optional)" className="join-item input bg-teal-800 w-full max-w-xs" />
+                      <div className="dropdown join-item">
+                        <label tabIndex={0} className="btn bg-teal-800 rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
+                        {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                 <li><a>WAVAX</a></li>
                 <li><a>WETH</a></li>
               </ul> */}
-                  </div>
-                </div>
-                :
-                <div className="join items-center">
-                  <input type="text" value={inputBAmountValue} onChange={handleInputBAmountChange} placeholder="Amount (Optional)" className="join-item input bg-neutral w-full max-w-xs" />
-                  <div className="dropdown join-item">
-                    <label tabIndex={0} className="btn bg-neutral rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
-                    {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                      </div>
+                    </div>
+                    :
+                    <div className="join items-center">
+                      <input type="text" value={inputBAmountValue} onChange={handleInputBAmountChange} placeholder="Amount (Optional)" className="join-item input bg-neutral w-full max-w-xs" />
+                      <div className="dropdown join-item">
+                        <label tabIndex={0} className="btn bg-neutral rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
+                        {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
               <li><a>WAVAX</a></li>
               <li><a>WETH</a></li>
             </ul> */}
-                  </div>
-                </div>
-              }
-              {!viewMyWallet ?
-                <div onClick={() => setViewMyWallet(false)} className='cursor-pointer flex justify-center bg-teal-800 rounded-box py-3 px-4 drop-shadow-md w-fit'>
-                  {inputValue ?
-                    <RenderName address={inputValue} classData={''} />
+                      </div>
+                    </div>
+                  }
+                  {!viewMyWallet ?
+                    <div onClick={() => setViewMyWallet(false)} className='cursor-pointer flex justify-center bg-teal-800 rounded-box py-3 px-4 drop-shadow-md w-fit'>
+                      {inputValue ?
+                        <RenderName address={inputValue} classData={''} />
+                        :
+                        <span>Receiver</span>
+                      }
+                    </div>
                     :
-                    <span>Receiver</span>
+                    <div onClick={() => setViewMyWallet(false)} className='cursor-pointer flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md w-fit'>
+                      {inputValue ?
+                        <RenderName address={inputValue} classData={''} />
+                        :
+                        <span>Receiver</span>
+                      }
+                    </div>
                   }
                 </div>
-                :
-                <div onClick={() => setViewMyWallet(false)} className='cursor-pointer flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md w-fit'>
-                  {inputValue ?
-                    <RenderName address={inputValue} classData={''} />
-                    :
-                    <span>Receiver</span>
-                  }
-                </div>
-              }
+                <OfferContainer active={!viewMyWallet} offers={receiverOffers} placeholderText={'Choose up to 6 NFTs to receive'} showRemove={true}
+                  onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
+              </div>
+              <div className='flex justify-end'>
+                <button onClick={() => handleFinalizePrivateOffer()} className="btn btn-warning mt-4 drop-shadow-md">Send Private Offer</button>
+              </div>
             </div>
-            <OfferContainer active={!viewMyWallet} offers={receiverOffers} placeholderText={'Choose up to 6 NFTs to receive'} showRemove={true}
-              onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
           </div>
-          <div className='flex justify-end'>
-            <button onClick={() => handleFinalizePrivateOffer()} className="btn btn-warning mt-4 drop-shadow-md">Send Private Offer</button>
-          </div>
+        </>
+      )}
+
+      {stepper === 1 && (
+        <div className='bg-beutral rounded-box py-3 px-4 drop-shadow-md'>
+          <h1 className="font-semibold text-2xl">Private Offer Sent</h1>
+          <p className="block sm:hidden text-center text-lg leading-8">
+            A notification has been sent to
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
+              <RenderName address={inputValue} classData={''} />
+            </span>
+            You will be notified if they accept your offer or provide a counter offer.
+          </p>
         </div>
-      </div>
+      )}
+
       {/* You can open the modal using ID.showModal() method */}
       <dialog id="nftInfoModal" className="modal">
         <form method="dialog" className="modal-box">
