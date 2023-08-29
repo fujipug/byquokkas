@@ -114,7 +114,7 @@ export default function Page() {
                   {!offer?.viewed &&
                     <span className="indicator-item indicator-start badge badge-secondary ml-2">New</span>
                   }
-                  <div className="collapse bg-base-200">
+                  <div className="collapse bg-base-200 collapse-arrow">
                     <input type="radio" name="private-offers" />
                     <div className="collapse-title flex items-center justify-between">
                       <div className="flex items-center">

@@ -1,7 +1,7 @@
 export const swopTestContractAddress =
-  "0x767163510130B9cDb4Cc50848d90372dfCb21bbc";
+  "0x098296F8777cE606fb19BEbD7f5FE16d3d13675c";
 export const swopMainContractAddress =
-  "0x613FcaF6a06Bf6D7D3A219b509B4782F2C28d29c"; // Same as test for now
+  "0x098296F8777cE606fb19BEbD7f5FE16d3d13675c"; // Same as test for now
 export const swopContractAbi = [
   {
     "inputs": [
@@ -61,6 +61,12 @@ export const swopContractAbi = [
         "internalType": "uint256",
         "name": "swapId",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "msgSender",
+        "type": "address"
       }
     ],
     "name": "SwapCanceled",
@@ -69,6 +75,12 @@ export const swopContractAbi = [
   {
     "anonymous": false,
     "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "swapId",
+        "type": "uint256"
+      },
       {
         "indexed": false,
         "internalType": "address",
@@ -259,6 +271,29 @@ export const swopContractAbi = [
       }
     ],
     "name": "counterSwap",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IERC721[]",
+        "name": "aCollections",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "aTokenIds",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "aAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "createPublicSwap",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

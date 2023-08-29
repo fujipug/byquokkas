@@ -39,14 +39,11 @@ export default function CreatePublicOffer() {
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
     address: swopContract?.address,
     abi: swopContractAbi,
-    functionName: 'createSwap',
+    functionName: 'createPublicSwap',
     args: [
       myOffers.map((offer: any) => offer.collectionAddress), // collectionAAddresses
       myOffers.map((offer: any) => offer.numTokenId), // tokenAIds
       0, // AAmount
-      [],
-      [],
-      0
     ],
     value: fee,
     onSuccess: (res: any) => {
