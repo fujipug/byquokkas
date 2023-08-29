@@ -401,7 +401,7 @@ export const swopContractAbi = [
     "stateMutability": "view",
     "type": "function"
   }
-];
+]
 
 export const nftAbi = [
   {

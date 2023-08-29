@@ -1,14 +1,7 @@
 import md5 from "md5";
 import confetti from "canvas-confetti";
-import {
-  avvyAbi,
-  avvyDomainsAddress
-} from "../packages/avvy-config";
-import {
-  getContract,
-  getNetwork,
-  getWalletClient,
-} from "@wagmi/core";
+import { avvyAbi, avvyDomainsAddress } from "../packages/avvy-config";
+import { getContract, getNetwork, getWalletClient } from "@wagmi/core";
 
 export const Base64 = {
   _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
@@ -102,17 +95,22 @@ export const Base64 = {
 
 const fireConfetti = (particleRatio: number, opts: any) => {
   const defaults = {
-    origin: { y: 0.7 }
+    origin: { y: 0.7 },
   };
   confetti(Object.assign({}, defaults, opts, {
-    particleCount: Math.floor(200 * particleRatio)
+    particleCount: Math.floor(200 * particleRatio),
   }));
 };
 export function fireAction() {
   fireConfetti(0.25, { spread: 26, startVelocity: 55 });
   fireConfetti(0.2, { spread: 60 });
   fireConfetti(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
-  fireConfetti(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+  fireConfetti(0.1, {
+    spread: 120,
+    startVelocity: 25,
+    decay: 0.92,
+    scalar: 1.2,
+  });
   fireConfetti(0.1, { spread: 120, startVelocity: 45 });
 }
 
@@ -121,7 +119,9 @@ export function generateToken() {
     publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY,
   }));
   const expires = Date.now() + 30000;
-  return `${str}$$${expires}$$${md5(str + expires + process.env.NEXT_PUBLIC_PRIVATE_KEY)}`;
+  return `${str}$$${expires}$$${
+    md5(str + expires + process.env.NEXT_PUBLIC_PRIVATE_KEY)
+  }`;
 }
 
 export const truncateAddress = (address: string) => {
