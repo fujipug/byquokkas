@@ -82,6 +82,7 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
         })
       }
 
+      setMyOffers([]);
       getNfts();
     }
   }, [address, isConnected])

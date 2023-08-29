@@ -31,7 +31,7 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
     address: swopContract?.address,
     abi: swopContractAbi,
     functionName: 'acceptSwap',
-    args: [swapId && swapId],
+    args: [swapId && BigInt(swapId)],
     onSuccess: (res: any) => {
       // TODO: Call read to get swapId
       console.log('sucess: ', res);
