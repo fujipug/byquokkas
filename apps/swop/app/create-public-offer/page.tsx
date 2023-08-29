@@ -7,7 +7,7 @@ import OfferContainer from 'ui/OfferContainer';
 import Image from 'next/image'
 import { getSwapId, verifyApproval } from '../../../../utils/contract-funtions';
 import { swopContractAbi } from '../../../../packages/swop-config';
-import { useSwopContract, useFee } from '../../../../utils/hooks';
+import { useSwopContract } from '../../../../utils/hooks';
 import { initializeApp } from "firebase/app";
 import { Timestamp, addDoc, collection, getFirestore } from "firebase/firestore";
 import { firebaseConfig } from '../../../../packages/firebase-config';
@@ -35,7 +35,6 @@ export default function CreatePublicOffer() {
   const [nftInfoModal, setNftInfoModal] = useState<any>();
   const [showError, setShowError] = useState<boolean>(false);
   const swopContract = useSwopContract();
-  const fee = useFee();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
     address: swopContract?.address,
     abi: swopContractAbi,
@@ -45,7 +44,6 @@ export default function CreatePublicOffer() {
       myOffers.map((offer: any) => offer.numTokenId), // tokenAIds
       0, // AAmount
     ],
-    value: fee,
     onSuccess: (res: any) => {
       // TODO: Call read to get swapId
       console.log('sucess: ', res);

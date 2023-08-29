@@ -5,7 +5,7 @@ import { getOfferById } from '../../../../../apis/swop'
 import RenderName from 'ui/RenderName';
 import Image from 'next/image'
 import { useContractWrite } from 'wagmi';
-import { useFee, useSwopContract } from '../../../../../utils/hooks';
+import { useSwopContract } from '../../../../../utils/hooks';
 import { swopContractAbi } from '../../../../../packages/swop-config';
 import { getSwapId, verifyApproval } from '../../../../../utils/contract-funtions';
 import { doc, getFirestore, updateDoc } from 'firebase/firestore';
@@ -27,7 +27,6 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
   const [nftInfoModal, setNftInfoModal] = useState<any>();
   const [swapId, setSwapId] = useState<any>(null);
   const swopContract = useSwopContract();
-  const fee = useFee();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
     address: swopContract?.address,
     abi: swopContractAbi,

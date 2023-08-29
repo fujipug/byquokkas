@@ -8,7 +8,7 @@ import RenderName from 'ui/RenderName';
 import Image from 'next/image'
 import { verifyApproval } from '../../../../../utils/contract-funtions';
 import { swopContractAbi } from '../../../../../packages/swop-config';
-import { useSwopContract, useFee } from '../../../../../utils/hooks';
+import { useSwopContract } from '../../../../../utils/hooks';
 import { initializeApp } from "firebase/app";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { firebaseConfig } from '../../../../../packages/firebase-config';
@@ -35,20 +35,18 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
   const [imutableNftList, setImutableNftList] = useState([] as any[]);
   const [nftInfoModal, setNftInfoModal] = useState<any>();
   const swopContract = useSwopContract();
-  const fee = useFee();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
     address: swopContract?.address,
     abi: swopContractAbi,
-    functionName: 'createSwap',
+    functionName: 'counterSwap',
     args: [
-      // myOffers.map((offer: any) => offer.collectionAddress), // collectionAAddresses
-      // myOffers.map((offer: any) => offer.numTokenId), // tokenAIds
-      // 0, // AAmount
-      // receiverOffers.map((offer: any) => offer.collectionAddress), // collectionBAddresses
-      // receiverOffers.map((offer: any) => offer.numTokenId), // tokenBIds
+      senderOffers.map((offer: any) => offer.collectionAddress), // collectionAAddresses
+      senderOffers.map((offer: any) => offer.numTokenId), // tokenAIds
+      0,
+      myOffers.map((offer: any) => offer.collectionAddress), // collectionBAddresses
+      myOffers.map((offer: any) => offer.numTokenId), // tokenBIds
       0
     ],
-    value: fee,
     onSuccess: (res: any) => {
       // TODO: Call read to get swapId
       console.log('sucess: ', res);

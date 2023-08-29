@@ -21,6 +21,7 @@ export default function Page() {
 
   // Get Public Offers
   useEffect(() => {
+    console.log('useEffect');
     const unsubscribe = getPublicOffers(setPublicOffers);
     return () => {
       unsubscribe(); // Clean up the listener when the component unmounts
@@ -56,7 +57,7 @@ export default function Page() {
         unsubscribe(); // Clean up the listener when the component unmounts
       };
     }
-  }, [account, account?.address]);
+  }, [account?.address]);
 
   // Get Private Offer Count
   // useEffect(() => {

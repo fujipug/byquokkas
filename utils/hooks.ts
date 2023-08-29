@@ -23,16 +23,16 @@ export const useSwopContract = () => {
   return contract;
 };
 
-export const useFee = () => {
-  const network = getNetwork();
-  const [fee, setFee] = useState<bigint>(0n);
-  let fees = new Map<number, bigint>([
-    [43114, 0n], // avalanche
-  ]);
+// export const useFee = () => {
+//   const network = getNetwork();
+//   const [fee, setFee] = useState<bigint>(0n);
+//   let fees = new Map<number, bigint>([
+//     [43114, 0n], // avalanche
+//   ]);
 
-  useEffect(() => {
-    setFee(fees.get(network.chain?.id || 0) || 0n);
-  }, [network.chain?.id]);
+//   useEffect(() => {
+//     setFee(fees.get(network.chain?.id || 0) || 0n);
+//   }, [network.chain?.id]);
 
-  return fee;
-};
+//   return fee;
+// };
