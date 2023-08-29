@@ -46,7 +46,6 @@ export default function CreatePublicOffer() {
       inputAAmountValue ? BigInt(inputAAmountValue) : 0, // AAmount
     ],
     onSuccess: (res: any) => {
-      // TODO: Call read to get swapId
       console.log('sucess: ', res);
       getSwapId().then((swapId) => {
         console.log('swapId: ', swapId);

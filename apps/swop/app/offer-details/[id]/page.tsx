@@ -46,11 +46,11 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
     functionName: 'counterSwap',
     args: [
       details?.swapId,
-      senderOffers.map((offer: any) => offer.collectionAddress), // collectionAAddresses
-      senderOffers.map((offer: any) => offer.numTokenId), // tokenAIds
+      senderOffers?.map((offer: any) => offer.collectionAddress), // collectionAAddresses
+      senderOffers?.map((offer: any) => offer.numTokenId), // tokenAIds
       details?.amountA ? BigInt(details?.amountA) : 0,
-      myOffers.map((offer: any) => offer.collectionAddress), // collectionBAddresses
-      myOffers.map((offer: any) => offer.numTokenId), // tokenBIds
+      myOffers?.map((offer: any) => offer.collectionAddress), // collectionBAddresses
+      myOffers?.map((offer: any) => offer.numTokenId), // tokenBIds
       inputBAmountValue ? BigInt(inputBAmountValue) : 0
     ],
     onSuccess: (res: any) => {

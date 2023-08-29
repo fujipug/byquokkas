@@ -111,42 +111,49 @@ export default function Page() {
             </div>
             <div className="hidden sm:block z-30 -mt-7 ml-36 absolute"><Image src="/images/Hands_2.png" alt="Quokka Hands" width={200} height={200}></Image></div>
             <div className="z-10 p-6 bg-neutral rounded-box drop-shadow-md h-96 space-y-2 overflow-y-scroll">
-              {privateOffers?.map((offer, index) => (
-                <div key={index} className="indicator w-full">
-                  {!offer?.viewed &&
-                    <span className="indicator-item indicator-start badge badge-secondary ml-2">New</span>
-                  }
-                  <div className="collapse bg-base-200 collapse-arrow">
-                    <input type="radio" name="private-offers" />
-                    <div className="collapse-title flex items-center justify-between">
-                      <div className="flex items-center">
-                        {offer?.offerA?.map((nft: any, index: number) => (
-                          <div key={index} className="rounded-md bg-gradient-to-b from-yellow-400 to-orange-500 p-0.5 mr-2 drop-shadow-md">
-                            <Image key={index} className="rounded-md" src={nft?.metadata?.pImage ? nft?.metadata?.pImage : "/images/no-image.png"} width={75} height={75} alt="Nft Image" />
+              {privateOffers && privateOffers?.length > 0 ?
+                <div>
+                  {privateOffers?.map((offer, index) => (
+                    <div key={index} className="indicator w-full">
+                      {!offer?.viewed &&
+                        <span className="indicator-item indicator-start badge badge-secondary ml-2">New</span>
+                      }
+                      <div className="collapse bg-base-200 collapse-arrow">
+                        <input type="radio" name="private-offers" />
+                        <div className="collapse-title flex items-center justify-between">
+                          <div className="flex items-center">
+                            {offer?.offerA?.map((nft: any, index: number) => (
+                              <div key={index} className="rounded-md bg-gradient-to-b from-yellow-400 to-orange-500 p-0.5 mr-2 drop-shadow-md">
+                                <Image key={index} className="rounded-md" src={nft?.metadata?.pImage ? nft?.metadata?.pImage : "/images/no-image.png"} width={75} height={75} alt="Nft Image" />
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                      <div className="flex items-center">
-                        {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-2">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5" />
-                        </svg> */}
-
-                        <button onClick={e => handleButtonClick(e, offer.id)} className="btn btn-warning z-50">See Offer</button>
+                          <div className="flex items-center">
+                            <button onClick={e => handleButtonClick(e, offer.id)} className="btn btn-warning z-50">See Offer</button>
+                          </div>
+                        </div>
+                        <div className="collapse-content -mt-4">
+                          <div className="divider my-1 text-sm">Swap for your</div>
+                          <div className="flex items-center">
+                            {offer?.offerB?.map((nft: any, index: number) => (
+                              <div key={index} className="rounded-md bg-gradient-to-t from-yellow-400 to-orange-500 p-0.5 mr-2 drop-shadow-md">
+                                <Image key={index} className="rounded-md" src={nft?.metadata?.pImage ? nft?.metadata?.pImage : "/images/no-image.png"} width={75} height={75} alt="Nft Image" />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className="collapse-content -mt-4">
-                      <div className="divider my-1 text-sm">Swap for your</div>
-                      <div className="flex items-center">
-                        {offer?.offerB?.map((nft: any, index: number) => (
-                          <div key={index} className="rounded-md bg-gradient-to-t from-yellow-400 to-orange-500 p-0.5 mr-2 drop-shadow-md">
-                            <Image key={index} className="rounded-md" src={nft?.metadata?.pImage ? nft?.metadata?.pImage : "/images/no-image.png"} width={75} height={75} alt="Nft Image" />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
+                :
+                <div className="flex justify-center items-center h-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 mr-2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                  </svg>
+                  <p className="text-xl">You have no private offers at this time</p>
+                </div>
+              }
             </div>
           </div>
         </div>

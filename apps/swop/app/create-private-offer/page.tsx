@@ -54,7 +54,6 @@ export default function CreatePrivateOffer() {
       inputBAmountValue ? BigInt(inputBAmountValue) : 0
     ],
     onSuccess: (res: any) => {
-      // TODO: Call read to get swapId
       console.log('sucess: ', res);
       getSwapId().then((swapId) => {
         console.log('swapId: ', swapId);
