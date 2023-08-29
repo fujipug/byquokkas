@@ -13,7 +13,7 @@ import { initializeApp } from "firebase/app";
 import { Timestamp, addDoc, collection, getFirestore } from "firebase/firestore";
 import { firebaseConfig } from '../../../../packages/firebase-config';
 import { Offer } from '../../types';
-import { fireAction } from '../../../../utils/functions';
+import { fireAction, maskDecimalInput } from '../../../../utils/functions';
 
 //Initialize firebase backend
 const app = initializeApp(firebaseConfig);
@@ -38,6 +38,8 @@ export default function CreatePrivateOffer() {
   const [receiverImutableNftList, setReceiverImutableNftList] = useState([] as any[]);
   const [nftInfoModal, setNftInfoModal] = useState<any>();
   const [showError, setShowError] = useState<boolean>(false);
+  const [inputAAmountValue, setInputAAmountValue] = useState('');
+  const [inputBAmountValue, setInputBAmountValue] = useState('');
   const swopContract = useSwopContract();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
     address: swopContract?.address,
@@ -46,10 +48,10 @@ export default function CreatePrivateOffer() {
     args: [
       myOffers.map((offer: any) => offer.collectionAddress), // collectionAAddresses
       myOffers.map((offer: any) => offer.numTokenId), // tokenAIds
-      0, // AAmount
+      inputAAmountValue ? BigInt(inputAAmountValue) : 0, // AAmount
       receiverOffers.map((offer: any) => offer.collectionAddress), // collectionBAddresses
       receiverOffers.map((offer: any) => offer.numTokenId), // tokenBIds
-      0
+      inputBAmountValue ? BigInt(inputBAmountValue) : 0
     ],
     onSuccess: (res: any) => {
       // TODO: Call read to get swapId
@@ -195,9 +197,9 @@ export default function CreatePrivateOffer() {
       sender: address,
       receiver: inputValue,
       offerA: myOffers,
-      amountA: 0,
+      amountA: inputAAmountValue ? Number(inputAAmountValue) : 0,
       offerB: receiverOffers,
-      amountB: 0,
+      amountB: inputBAmountValue ? Number(inputBAmountValue) : 0,
       status: 'Open',
       type: 'Private',
       createdAt: Timestamp.now(),
@@ -211,6 +213,18 @@ export default function CreatePrivateOffer() {
     });
   }
 
+  const handleInputAAmountChange = (event) => {
+    const newValue = event.target.value;
+    const maskedValue = maskDecimalInput(newValue);
+    setInputAAmountValue(maskedValue);
+  };
+
+  const handleInputBAmountChange = (event) => {
+    const newValue = event.target.value;
+    const maskedValue = maskDecimalInput(newValue);
+    setInputBAmountValue(maskedValue);
+  };
+
   return (
     <>
       {showError &&
@@ -222,7 +236,7 @@ export default function CreatePrivateOffer() {
       <div className='flex justify-center items-center mb-12'>
         <span className='hidden sm:flex mr-4 text-lg'>Search Wallet:</span>
         <input type="text" onChange={handleInputChange} placeholder="Ex: 0x00000000000000" className="input input-bordered w-full max-w-xs" />
-        <button onClick={() => walletSearch()} className="btn btn-secondary ml-4">
+        <button onClick={() => walletSearch()} className="btn btn-warning ml-4">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
           </svg>
@@ -249,26 +263,73 @@ export default function CreatePrivateOffer() {
             </details>
             <button onClick={() => setViewMyWallet(true)} className='btn bg-neutral rounded-box py-2 px-4 drop-shadow-md'>My Wallet</button>
           </div>
-          <div className='h-screen overflow-y-scroll'>
+          <div className='h-5/6 overflow-y-scroll'>
             <NftGrid nfts={viewMyWallet ? nfts : receiverNfts} onDataEmit={handleSelectedNft} />
           </div>
         </div>
         <div className='col-span-1 sm:col-span-2'>
           <div>
-            <div className='flex justify-start'>
+            <div className='flex justify-between mb-2'>
               {viewMyWallet ?
-                <div onClick={() => setViewMyWallet(true)} className='cursor-pointer flex justify-center bg-teal-800 rounded-box py-3 px-4 mb-2 drop-shadow-md w-36'>You</div>
+                <>
+                  <div onClick={() => setViewMyWallet(true)} className='cursor-pointer flex justify-center bg-teal-800 rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
+                  <div className="join items-center">
+                    <input type="text" value={inputAAmountValue} onChange={handleInputAAmountChange} placeholder="Amount (Optional)" className="join-item input bg-teal-800 w-full max-w-xs" />
+                    <div className="dropdown join-item">
+                      <label tabIndex={0} className="btn bg-teal-800 rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
+                      {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a>WAVAX</a></li>
+                <li><a>WETH</a></li>
+              </ul> */}
+                    </div>
+                  </div>
+                </>
                 :
-                <div onClick={() => setViewMyWallet(true)} className='cursor-pointer flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md w-36'>You</div>
+                <>
+                  <div onClick={() => setViewMyWallet(true)} className='cursor-pointer flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
+                  <div className="join items-center">
+                    <input type="text" value={inputAAmountValue} onChange={handleInputAAmountChange} placeholder="Amount (Optional)" className="join-item input bg-neutral w-full max-w-xs" />
+                    <div className="dropdown join-item">
+                      <label tabIndex={0} className="btn bg-neutral rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
+                      {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+            <li><a>WAVAX</a></li>
+            <li><a>WETH</a></li>
+          </ul> */}
+                    </div>
+                  </div>
+                </>
               }
             </div>
             <OfferContainer active={viewMyWallet} offers={myOffers} placeholderText={'Choose up to 6 NFTs to offer'} showRemove={true}
               onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
           </div>
           <div className='mt-8'>
-            <div className='flex justify-end'>
+            <div className='flex justify-between mb-2'>
               {!viewMyWallet ?
-                <div onClick={() => setViewMyWallet(false)} className='cursor-pointer flex justify-center bg-teal-800 rounded-box py-3 px-4 mb-2 drop-shadow-md w-fit'>
+                <div className="join items-center">
+                  <input type="text" value={inputBAmountValue} onChange={handleInputBAmountChange} placeholder="Amount (Optional)" className="join-item input bg-teal-800 w-full max-w-xs" />
+                  <div className="dropdown join-item">
+                    <label tabIndex={0} className="btn bg-teal-800 rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
+                    {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a>WAVAX</a></li>
+                <li><a>WETH</a></li>
+              </ul> */}
+                  </div>
+                </div>
+                :
+                <div className="join items-center">
+                  <input type="text" value={inputBAmountValue} onChange={handleInputBAmountChange} placeholder="Amount (Optional)" className="join-item input bg-neutral w-full max-w-xs" />
+                  <div className="dropdown join-item">
+                    <label tabIndex={0} className="btn bg-neutral rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
+                    {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+              <li><a>WAVAX</a></li>
+              <li><a>WETH</a></li>
+            </ul> */}
+                  </div>
+                </div>
+              }
+              {!viewMyWallet ?
+                <div onClick={() => setViewMyWallet(false)} className='cursor-pointer flex justify-center bg-teal-800 rounded-box py-3 px-4 drop-shadow-md w-fit'>
                   {inputValue ?
                     <RenderName address={inputValue} classData={''} />
                     :
@@ -276,7 +337,7 @@ export default function CreatePrivateOffer() {
                   }
                 </div>
                 :
-                <div onClick={() => setViewMyWallet(false)} className='cursor-pointer flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md w-fit'>
+                <div onClick={() => setViewMyWallet(false)} className='cursor-pointer flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md w-fit'>
                   {inputValue ?
                     <RenderName address={inputValue} classData={''} />
                     :
@@ -289,7 +350,7 @@ export default function CreatePrivateOffer() {
               onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
           </div>
           <div className='flex justify-end'>
-            <button onClick={() => handleFinalizePrivateOffer()} className="btn btn-secondary mt-4 drop-shadow-md">Send Private Offer</button>
+            <button onClick={() => handleFinalizePrivateOffer()} className="btn btn-warning mt-4 drop-shadow-md">Send Private Offer</button>
           </div>
         </div>
       </div>

@@ -8,3 +8,4 @@ export * from "./NftGrid";
 export * from "./XScroll";
 export * from "./OfferContainer";
 export * from "./RenderName";
+export * from "./CustomConnectButton";

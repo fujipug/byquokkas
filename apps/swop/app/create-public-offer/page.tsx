@@ -12,7 +12,7 @@ import { initializeApp } from "firebase/app";
 import { Timestamp, addDoc, collection, getFirestore } from "firebase/firestore";
 import { firebaseConfig } from '../../../../packages/firebase-config';
 import { Offer } from '../../types';
-import { fireAction } from '../../../../utils/functions';
+import { fireAction, maskDecimalInput } from '../../../../utils/functions';
 
 //Initialize firebase backend
 const app = initializeApp(firebaseConfig);
@@ -34,6 +34,7 @@ export default function CreatePublicOffer() {
   const [imutableNftList, setImutableNftList] = useState([] as any[]);
   const [nftInfoModal, setNftInfoModal] = useState<any>();
   const [showError, setShowError] = useState<boolean>(false);
+  const [inputAAmountValue, setInputAAmountValue] = useState('');
   const swopContract = useSwopContract();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
     address: swopContract?.address,
@@ -42,7 +43,7 @@ export default function CreatePublicOffer() {
     args: [
       myOffers.map((offer: any) => offer.collectionAddress), // collectionAAddresses
       myOffers.map((offer: any) => offer.numTokenId), // tokenAIds
-      0, // AAmount
+      inputAAmountValue ? BigInt(inputAAmountValue) : 0, // AAmount
     ],
     onSuccess: (res: any) => {
       // TODO: Call read to get swapId
@@ -145,7 +146,7 @@ export default function CreatePublicOffer() {
       swapId: swapId,
       sender: address,
       offerA: myOffers,
-      amountA: 0,
+      amountA: inputAAmountValue ? Number(inputAAmountValue) : 0,
       offerName: inputValue && inputValue,
       description: textAreaValue && textAreaValue,
       status: 'Open',
@@ -159,6 +160,12 @@ export default function CreatePublicOffer() {
       console.error("Error adding document: ", error);
     });
   }
+
+  const handleInputAAmountChange = (event) => {
+    const newValue = event.target.value;
+    const maskedValue = maskDecimalInput(newValue);
+    setInputAAmountValue(maskedValue);
+  };
 
   return (
     <>
@@ -187,7 +194,7 @@ export default function CreatePublicOffer() {
               </ul>
             </details>
           </div>
-          <div className='h-screen overflow-y-scroll'>
+          <div className='h-5/6 overflow-y-scroll'>
             <NftGrid nfts={nfts} onDataEmit={handleSelectedNft} />
           </div>
         </div>
@@ -196,7 +203,7 @@ export default function CreatePublicOffer() {
             <div className='flex justify-between items-center mb-2'>
               <div className='flex justify-center bg-teal-800 rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
               <div className="join items-center">
-                <input type="number" placeholder="Amount (Optional)" className="join-item input bg-teal-800 w-full max-w-xs" />
+                <input type="text" value={inputAAmountValue} onChange={handleInputAAmountChange} placeholder="Amount (Optional)" className="join-item input bg-teal-800 w-full max-w-xs" />
                 <div className="dropdown join-item">
                   <label tabIndex={0} className="btn bg-teal-800 rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
                   {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
@@ -218,7 +225,7 @@ export default function CreatePublicOffer() {
             </div>
           </div>
           <div className='flex justify-end'>
-            <button onClick={() => handleFinalizePublicOffer()} className="btn btn-secondary mt-4 drop-shadow-md">Create Public Offer</button>
+            <button onClick={() => handleFinalizePublicOffer()} className="btn btn-warning mt-4 drop-shadow-md">Create Public Offer</button>
           </div>
         </div>
       </div>
