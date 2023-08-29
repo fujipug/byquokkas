@@ -1,5 +1,5 @@
 'use client'
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NftGrid from 'ui/NftGrid'
 import { getPickassoNfts } from '../../../../../apis/nfts'
 import { useAccount, useContractWrite } from 'wagmi';
@@ -14,7 +14,6 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { firebaseConfig } from '../../../../../packages/firebase-config';
 import { Offer } from '../../../types';
 import { getOfferById } from '../../../../../apis/swop';
-import { useUserSwaps } from '../../../../../utils/hooks';
 import { maskDecimalInput } from '../../../../../utils/functions';
 
 //Initialize firebase backend
@@ -39,7 +38,6 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
   const [details, setDetails] = useState<any>();
   const [inputBAmountValue, setInputBAmountValue] = useState('');
   const swopContract = useSwopContract();
-  const userSwaps = useUserSwaps();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
     address: swopContract?.address,
     abi: swopContractAbi,
@@ -56,7 +54,7 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
     onSuccess: (res: any) => {
       // TODO: Call read to get swapId
       console.log('sucess: ', res);
-      // createFirebaseOffer();
+      createFirebaseOffer();
     },
     onError(error) {
       // Display Error Message
@@ -64,9 +62,7 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
   });
 
   useEffect(() => {
-    console.log('what is this', userSwaps);
     getOfferById(params.id).then((res: Offer) => {
-      console.log('response: ', res);
       setDetails(res)
       setSenderAddress(res?.sender)
       setSenderOffers(res?.offerA)

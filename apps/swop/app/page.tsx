@@ -21,7 +21,6 @@ export default function Page() {
 
   // Get Public Offers
   useEffect(() => {
-    console.log('useEffect');
     const unsubscribe = getPublicOffers(setPublicOffers);
     return () => {
       unsubscribe(); // Clean up the listener when the component unmounts

@@ -363,15 +363,13 @@ export default function CreatePrivateOffer() {
       )}
 
       {stepper === 1 && (
-        <div className='bg-beutral rounded-box py-3 px-4 drop-shadow-md'>
-          <h1 className="font-semibold text-2xl">Private Offer Sent</h1>
-          <p className="block sm:hidden text-center text-lg leading-8">
-            A notification has been sent to
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
-              <RenderName address={inputValue} classData={''} />
-            </span>
-            You will be notified if they accept your offer or provide a counter offer.
-          </p>
+        <div className='bg-neutral rounded-box py-3 px-4 drop-shadow-md'>
+          <h1 className="font-semibold text-2xl text-center text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">Private Offer Sent</h1>
+          <div className="text-lg flex items-center justify-center leading-8">
+            A notification has been sent to: &nbsp;
+            <RenderName address={inputValue} classData="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500" />
+          </div>
+          <p className='text-center text-md'>You will be notified if they accept your offer or provide a counter offer.</p>
         </div>
       )}
 

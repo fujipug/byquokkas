@@ -1,9 +1,14 @@
 'use client';
-import { useState } from 'react'
-import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import { useUserSwaps } from '../../../../utils/hooks';
 
 export default function Profile() {
   const [activeTab, setActiveTab] = useState(0);
+  const userSwaps = useUserSwaps();
+
+  useEffect(() => {
+    console.log('userSwaps: ', userSwaps);
+  }, []);
 
   return (
     <>
