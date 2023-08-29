@@ -33,7 +33,6 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
     abi: swopContractAbi,
     functionName: 'acceptSwap',
     args: [swapId && swapId],
-    value: fee,
     onSuccess: (res: any) => {
       // TODO: Call read to get swapId
       console.log('sucess: ', res);
@@ -60,7 +59,7 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
     window.nftInfoModal.showModal();
   }
 
-  // Finalize oand accept offer
+  // Finalize and accept offer
   const [isApprovalLoading, setIsApprovalLoading] = useState(false);
   const handleAcceptOffer = async () => {
     const collectionBAddresses = offer.offerB.map((offer: any) => offer.collectionAddress);
