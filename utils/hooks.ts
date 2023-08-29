@@ -54,8 +54,8 @@ export function useUserSwaps() {
         console.log("set a swaps error", e);
       });
     }
-    handleChainChange();
-  }, [chain]);
+    if (account?.address) handleChainChange();
+  }, [chain, account?.address]);
   return swaps;
 }
 

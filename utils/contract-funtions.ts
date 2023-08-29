@@ -31,7 +31,7 @@ export const verifyApproval = async (
       if (!approved) {
         // @ts-ignore
         await collectionContract.write.setApprovalForAll([
-          address,
+          swopMainContractAddress,
           true,
         ]);
 
