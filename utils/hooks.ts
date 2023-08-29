@@ -27,7 +27,7 @@ export function useUserSwaps() {
     function handleChainChange() {
       let swaps;
       const query = gql`query QuerySwaps {
-                  Swaps(filter: {a: ${account}, chain: ${chain?.id}}) {
+                  Swaps(filter: {a: "${account.address}", chain: ${chain?.id}}) {
                     swapId
                     a
                     aCollections
@@ -40,6 +40,7 @@ export function useUserSwaps() {
                     toDecide
                   }
                 }`;
+      console.log("query", query);
       client.query({
         query: query,
       }).then((result) => {
