@@ -34,12 +34,14 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
   const [collectionList, setCollectionList] = useState([] as string[]);
   const [imutableNftList, setImutableNftList] = useState([] as any[]);
   const [nftInfoModal, setNftInfoModal] = useState<any>();
+  const [swopId, setSwopId] = useState<number>();
   const swopContract = useSwopContract();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
     address: swopContract?.address,
     abi: swopContractAbi,
     functionName: 'counterSwap',
     args: [
+      swopId,
       senderOffers.map((offer: any) => offer.collectionAddress), // collectionAAddresses
       senderOffers.map((offer: any) => offer.numTokenId), // tokenAIds
       0,
@@ -60,6 +62,7 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
   useEffect(() => {
     getOfferById(params.id).then((res: Offer) => {
       console.log('response: ', res);
+      setSwopId(res?.swapId)
       setSenderAddress(res?.sender)
       setSenderOffers(res?.offerA)
     });

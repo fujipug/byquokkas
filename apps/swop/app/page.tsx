@@ -51,7 +51,7 @@ export default function Page() {
 
   // Get Private Offers
   useEffect(() => {
-    if (account && account?.address) {
+    if (account?.address) {
       const unsubscribe = getPrivateOffers(account?.address, setPrivateOffers);
       return () => {
         unsubscribe(); // Clean up the listener when the component unmounts
@@ -78,7 +78,7 @@ export default function Page() {
     <>
       <div className="bg-base-200">
         <div className="grid grid-cols-1 sm:grid-cols-3 item-center mx-auto max-w-7xl sm:px-6 lg:px-8 py-8 sm:py-12 px-4 drop-shadow-md">
-          <div className="col-span-1 space-y-5 flex">
+          <div className="col-span-1 space-y-5 sm:mr-2">
             <div className="space-y-5 block">
               <div>
                 <div className="mt-24 sm:mt-32 lg:mt-16">
