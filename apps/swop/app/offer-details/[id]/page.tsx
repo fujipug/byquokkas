@@ -15,6 +15,7 @@ import { firebaseConfig } from '../../../../../packages/firebase-config';
 import { Offer } from '../../../types';
 import { getOfferById } from '../../../../../apis/swop';
 import { useUserSwaps } from '../../../../../utils/hooks';
+import { maskDecimalInput } from '../../../../../utils/functions';
 
 //Initialize firebase backend
 const app = initializeApp(firebaseConfig);
@@ -35,7 +36,8 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
   const [collectionList, setCollectionList] = useState([] as string[]);
   const [imutableNftList, setImutableNftList] = useState([] as any[]);
   const [nftInfoModal, setNftInfoModal] = useState<any>();
-  const [swopId, setSwopId] = useState<number>();
+  const [details, setDetails] = useState<any>();
+  const [inputBAmountValue, setInputBAmountValue] = useState('');
   const swopContract = useSwopContract();
   const userSwaps = useUserSwaps();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
@@ -43,13 +45,13 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
     abi: swopContractAbi,
     functionName: 'counterSwap',
     args: [
-      swopId,
+      details?.swapId,
       senderOffers.map((offer: any) => offer.collectionAddress), // collectionAAddresses
       senderOffers.map((offer: any) => offer.numTokenId), // tokenAIds
-      0,
+      details?.amountA ? BigInt(details?.amountA) : 0,
       myOffers.map((offer: any) => offer.collectionAddress), // collectionBAddresses
       myOffers.map((offer: any) => offer.numTokenId), // tokenBIds
-      0
+      inputBAmountValue ? BigInt(inputBAmountValue) : 0
     ],
     onSuccess: (res: any) => {
       // TODO: Call read to get swapId
@@ -62,10 +64,10 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
   });
 
   useEffect(() => {
-    console.log(userSwaps);
+    console.log('what is this', userSwaps);
     getOfferById(params.id).then((res: Offer) => {
       console.log('response: ', res);
-      setSwopId(res?.swapId)
+      setDetails(res)
       setSenderAddress(res?.sender)
       setSenderOffers(res?.offerA)
     });
@@ -145,7 +147,7 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
     const offer: Offer = {
       receiver: address,
       offerB: myOffers,
-      amountB: 0,
+      amountB: inputBAmountValue ? Number(inputBAmountValue) : 0,
       status: 'Closed',
     }
     addDoc(collection(db, 'offers'), offer).then((response) => {
@@ -154,6 +156,12 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
       console.error("Error adding document: ", error);
     });
   }
+
+  const handleInputBAmountChange = (event) => {
+    const newValue = event.target.value;
+    const maskedValue = maskDecimalInput(newValue);
+    setInputBAmountValue(maskedValue);
+  };
 
   return (
     <>
@@ -177,29 +185,53 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
             </details>
             <span className='bg-neutral rounded-box py-3 px-4 drop-shadow-md'>My Wallet</span>
           </div>
-          <div className='h-screen overflow-y-scroll'>
+          <div className='h-5/6 overflow-y-scroll'>
             <NftGrid nfts={nfts} onDataEmit={handleSelectedNft} />
           </div>
         </div>
         <div className='col-span-1 sm:col-span-2'>
           <div>
-            <div className='flex justify-start'>
-              <div className='flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md w-fit'>
+            <div className='flex justify-between mb-2'>
+              <div className='flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md w-fit'>
                 <RenderName address={senderAddress} classData={''} />
               </div>
+              {details?.amountA !== 0 &&
+                <div className="join items-center">
+                  <div className='flex justify-center bg-neutral rounded-l-lg rounded-r-none py-3 px-4 drop-shadow-md w-fit'>
+                    <span>{details?.amountA}</span>
+                  </div>
+                  <div className="dropdown join-item">
+                    <label tabIndex={0} className="btn bg-neutral rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
+                    {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a>WAVAX</a></li>
+                <li><a>WETH</a></li>
+              </ul> */}
+                  </div>
+                </div>
+              }
             </div>
             <OfferContainer active={false} offers={senderOffers} placeholderText={'Choose up to 6 NFTs to receive'} showRemove={false}
               onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
           </div>
           <div className='mt-8'>
-            <div className='flex justify-end'>
-              <div className='flex justify-center bg-teal-800 rounded-box py-3 px-4 mb-2 drop-shadow-md sm:w-36'>You</div>
+            <div className='flex justify-between mb-2'>
+              <div className="join items-center">
+                <input type="text" value={inputBAmountValue} onChange={handleInputBAmountChange} placeholder="Amount (Optional)" className="join-item input bg-teal-800 w-full max-w-xs" />
+                <div className="dropdown join-item">
+                  <label tabIndex={0} className="btn bg-teal-800 rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
+                  {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a>WAVAX</a></li>
+                <li><a>WETH</a></li>
+              </ul> */}
+                </div>
+              </div>
+              <div className='flex justify-center bg-teal-800 rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
             </div>
             <OfferContainer active={true} offers={myOffers} placeholderText={'Choose up to 6 NFTs to offer'} showRemove={true}
               onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
           </div>
           <div className='flex justify-end'>
-            <button onClick={() => handleOfferRequest()} className="btn btn-secondary mt-4 drop-shadow-md">Send Offer Request</button>
+            <button onClick={() => handleOfferRequest()} className="btn btn-warning mt-4 drop-shadow-md">Send Offer Request</button>
           </div>
         </div>
       </div>

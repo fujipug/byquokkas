@@ -90,6 +90,7 @@ export default function Page() {
                   </a>
                 </div>
                 <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-6xl text-center sm:text-start"><span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">SWOP</span> With A Partner</h1>
+                <p className="block sm:hidden text-center text-lg leading-8"><span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">ZERO</span> fees!</p>
               </div>
               <div className="flex justify-center sm:justify-start gap-x-4 items-center pt-2">
                 <div><Link href="/create-public-offer" className="btn text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 outline outline-offset-2 outline-1 outline-yellow-400 drop-shadow-md">Create A <br />Public Offfer</Link></div>
@@ -100,15 +101,15 @@ export default function Page() {
           <div className="col-span-1 sm:col-span-2 mt-8 sm:mt-0">
             <label className="text-2xl sm:text-3xl">My Offers</label>
             {/* Chat Bubble */}
-            <div className="hidden sm:block z-0 transform animate-moveUpDown ml-80 fixed">
+            <div className="hidden sm:block z-0 transform animate-moveUpDown ml-80 absolute">
               <div className="chat chat-start">
                 <div className="chat-bubble border border-yellow-400">Swap with <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">ZERO</span> fees!</div>
               </div>
             </div>
-            <div className="hidden sm:block z-0 transform animate-moveUpDown -mt-4 ml-36 fixed">
+            <div className="hidden sm:block z-0 transform animate-moveUpDown -mt-4 ml-36 absolute">
               <Image src={'/images/Face_2.png'} alt="Quokka Face" width={200} height={200}></Image>
             </div>
-            <div className="hidden sm:block z-30 -mt-7 ml-36 fixed"><Image src="/images/Hands_2.png" alt="Quokka Hands" width={200} height={200}></Image></div>
+            <div className="hidden sm:block z-30 -mt-7 ml-36 absolute"><Image src="/images/Hands_2.png" alt="Quokka Hands" width={200} height={200}></Image></div>
             <div className="z-10 p-6 bg-neutral rounded-box drop-shadow-md h-96 space-y-2 overflow-y-scroll">
               {privateOffers?.map((offer, index) => (
                 <div key={index} className="indicator w-full">

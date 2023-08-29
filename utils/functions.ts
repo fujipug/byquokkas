@@ -119,9 +119,8 @@ export function generateToken() {
     publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY,
   }));
   const expires = Date.now() + 30000;
-  return `${str}$$${expires}$$${
-    md5(str + expires + process.env.NEXT_PUBLIC_PRIVATE_KEY)
-  }`;
+  return `${str}$$${expires}$$${md5(str + expires + process.env.NEXT_PUBLIC_PRIVATE_KEY)
+    }`;
 }
 
 export const truncateAddress = (address: string) => {
@@ -155,3 +154,14 @@ export const avvyAddress = async (
     console.log("approval error", e);
   }
 };
+
+export function maskDecimalInput(inputValue) {
+  // Remove non-numeric characters and all but the first decimal point
+  const numericValue = inputValue
+    .replace(/[^\d.]/g, '')   // Remove non-numeric and non-decimal-point characters
+    .replace(/\./, '$#$')    // Temporarily replace the first decimal point
+    .replace(/\./g, '')      // Remove any remaining decimal points
+    .replace('$#$', '.');    // Restore the first decimal point
+
+  return numericValue;
+}

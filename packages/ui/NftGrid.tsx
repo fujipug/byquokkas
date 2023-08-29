@@ -20,17 +20,17 @@ export default function NftGrid({ nfts, onDataEmit }: ChildProps) {
     <div className="flex justify-center bg-neutral rounded-box p-5 drop-shadow-md w-fit">
       <span role="list" className="grid grid-cols-3 gap-x-3 gap-y-3">
         {nftsFromParent?.map((nft: any, index: any) => (
-          < span id={nft.tokenId} onClick={() => !nft.disabled && handleNftSelect(nft)} key={index} className="relative cursor-pointer">
+          <span id={nft.tokenId} onClick={() => !nft.disabled && handleNftSelect(nft)} key={index} className="relative cursor-pointer">
             <div>
               <div className="relative group">
                 <>
                   {nft?.metadata?.pImage ?
-                    <Image className="transform transition-transform rounded-lg drop-shadow-md outline outline-offset-1 outline-2 outline-accent group-hover:outline-success"
+                    <Image className="transform transition-transform rounded-lg drop-shadow-md outline outline-offset-1 outline-2 outline-warning group-hover:outline-success"
                       src={nft?.metadata?.pImage}
                       alt="NFT image unreachable" width={150} height={150} />
                     :
                     // No Image Available from Pickasso
-                    <Image className="transform transition-transform rounded-lg drop-shadow-md outline outline-offset-1 outline-2 outline-accent group-hover:outline-success"
+                    <Image className="transform transition-transform rounded-lg drop-shadow-md outline outline-offset-1 outline-2 outline-warning group-hover:outline-success"
                       src="/images/no-image.png"
                       alt="NFT image unreachable" width={150} height={150} />
                   }

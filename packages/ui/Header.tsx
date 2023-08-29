@@ -77,7 +77,7 @@ export default function Header(props: { appName: string, showLogo?: boolean }) {
                 {(() => {
                   if (!connected) {
                     return (
-                      <button className="btn btn-outline btn-secondary" onClick={openConnectModal} type="button">
+                      <button className="btn btn-outline btn-warning" onClick={openConnectModal} type="button">
                         Connect Wallet
                       </button>
                     );
@@ -85,7 +85,7 @@ export default function Header(props: { appName: string, showLogo?: boolean }) {
 
                   if (chain.unsupported) {
                     return (
-                      <button className="btn btn-outline btn-secondary" onClick={openChainModal} type="button">
+                      <button className="btn btn-outline btn-warning" onClick={openChainModal} type="button">
                         Wrong network
                       </button>
                     );
@@ -120,7 +120,7 @@ export default function Header(props: { appName: string, showLogo?: boolean }) {
                         <span className="hidden sm:flex">{chain.name}</span>
                       </button>
 
-                      <button className="btn btn-outline btn-secondary" onClick={openAccountModal} type="button">
+                      <button className="btn btn-outline btn-warning" onClick={openAccountModal} type="button">
                         {avvyName ? avvyName
                           //  : ensName ? ensName
                           : account.displayName}
