@@ -8,6 +8,8 @@
   },
   "devDependencies": {
     "@turbo/gen": "^1.9.7",
+    "@types/canvas-confetti": "^1.6.0",
+    "@types/md5": "^2.3.2",
     "autoprefixer": "^10.4.15",
     "daisyui": "^3.5.1",
     "eslint": "^7.32.0",

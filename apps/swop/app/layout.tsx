@@ -49,7 +49,7 @@ export default function RootLayout({
           </div>
           <div>
             <span className="footer-title">Transparency</span>
-            <Link href="https://snowtrace.io/address/0x613FcaF6a06Bf6D7D3A219b509B4782F2C28d29c#code" className="link link-hover">Contract</Link>
+            <Link href="https://snowtrace.io/address/0x098296F8777cE606fb19BEbD7f5FE16d3d13675c#code" className="link link-hover">Contract</Link>
             <Link href="/learn-more" className="link link-hover">Learn More</Link>
           </div>
           <div className="w-52">

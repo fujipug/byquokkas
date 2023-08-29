@@ -58,7 +58,8 @@ export default function CreatePrivateOffer() {
       console.log('sucess: ', res);
       getSwapId().then((swapId) => {
         console.log('swapId: ', swapId);
-        createFirebaseOffer(Number(swapId));
+        const updatedSwapId = Number(swapId) + 1;
+        createFirebaseOffer(updatedSwapId);
       })
     },
     onError(error) {

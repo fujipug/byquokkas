@@ -155,7 +155,7 @@ export const avvyAddress = async (
   }
 };
 
-export function maskDecimalInput(inputValue) {
+export function maskDecimalInput(inputValue: string) {
   // Remove non-numeric characters and all but the first decimal point
   const numericValue = inputValue
     .replace(/[^\d.]/g, '')   // Remove non-numeric and non-decimal-point characters
