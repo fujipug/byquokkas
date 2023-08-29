@@ -27,7 +27,10 @@ export function useUserSwaps() {
     function handleChainChange() {
       let swaps;
       const query = gql`query QuerySwaps {
-                  Swaps(filter: {a: "${account.address}", chain: ${chain?.id}}) {
+                  Swaps(filter: {OR: [
+                    { a: "${account.address}" },
+                    { b: "${account.address}" }
+                  ], chain: ${chain?.id}}) {
                     swapId
                     a
                     aCollections
@@ -40,11 +43,12 @@ export function useUserSwaps() {
                     toDecide
                   }
                 }`;
-      console.log("query", query);
+
       client.query({
         query: query,
       }).then((result) => {
         swaps = [...result.data.Swaps];
+        console.log("swaps", swaps);
         setSwaps(swaps);
       }).catch((e) => {
         console.log("set a swaps error", e);
@@ -57,14 +61,14 @@ export function useUserSwaps() {
 
 export function usePendingSwaps() {
   const [swaps, setSwaps] = useState([]);
-  const addressZero = "0x00000000000000000000000000000000";
+  const addressZero = "0x0000000000000000000000000000000000000000";
   const { chain } = useNetwork();
 
   useEffect(() => {
     function handleChainChange() {
       let swaps;
       const query = gql`query QuerySwaps {
-                  Swaps(filter: {toDecide: ${addressZero}, chain: ${chain?.id}}) {
+                  Swaps(filter: {toDecide: "${addressZero}", chain: ${chain?.id}}) {
                     swapId
                     a
                     aCollections
@@ -83,7 +87,7 @@ export function usePendingSwaps() {
         swaps = [...result.data.Swaps];
         setSwaps(swaps);
       }).catch((e) => {
-        console.log("set blacklist error", e);
+        console.log("set pending swaps error", e);
       });
     }
     handleChainChange();
