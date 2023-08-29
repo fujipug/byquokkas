@@ -151,7 +151,7 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <div className='grid grid-cols-3 space-x-8'>
+      <div className='grid grid-cols-1 sm:grid-cols-3 sm:space-x-8'>
         <div className='col-span-1'>
           <div className='flex justify-between items-center mb-2'>
             <details className="dropdown">
@@ -175,7 +175,7 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
             <NftGrid nfts={nfts} onDataEmit={handleSelectedNft} />
           </div>
         </div>
-        <div className='col-span-2'>
+        <div className='col-span-1 sm:col-span-2'>
           <div>
             <div className='flex justify-start'>
               <div className='flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md w-fit'>
@@ -187,7 +187,7 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
           </div>
           <div className='mt-8'>
             <div className='flex justify-end'>
-              <div className='flex justify-center bg-teal-800 rounded-box py-3 px-4 mb-2 drop-shadow-md w-36'>You</div>
+              <div className='flex justify-center bg-teal-800 rounded-box py-3 px-4 mb-2 drop-shadow-md sm:w-36'>You</div>
             </div>
             <OfferContainer active={true} offers={myOffers} placeholderText={'Choose up to 6 NFTs to offer'} showRemove={true}
               onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />

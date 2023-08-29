@@ -91,14 +91,24 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
     <>
       <h1 className='text-3xl text-center'>Thank you for choosing SWOP</h1>
       <div className='my-6'>
-        <div className='flex justify-end'>
-          <div className='flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md w-36'>You</div>
+        <div className='flex justify-between items-center mb-2'>
+          <div className="join items-center">
+            <input type="text" placeholder="Amount (Optional)" className="join-item input bg-neutral w-full max-w-xs" />
+            <div className="dropdown join-item">
+              <label tabIndex={0} className="btn btn-neutral rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
+              {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a>WAVAX</a></li>
+                <li><a>WETH</a></li>
+              </ul> */}
+            </div>
+          </div>
+          <div className='flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
         </div>
         <OfferContainer active={false} offers={offer?.offerA} placeholderText='Loading ...' showRemove={false} onSelectedNftEmit={handleInfoModal} />
       </div>
       <div className='my-6'>
-        <div className='flex justify-start'>
-          <div className='flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md w-36'>
+        <div className='flex justify-start items-center'>
+          <div className='flex justify-center bg-neutral rounded-box py-3 px-4 mb-2 drop-shadow-md sm:w-36'>
             <RenderName address={offer?.sender} classData={''} />
           </div>
         </div>

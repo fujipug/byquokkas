@@ -168,7 +168,7 @@ export default function CreatePublicOffer() {
           <span>Sender must have at least 1 NFT.</span>
         </div>
       }
-      <div className='grid grid-cols-3 space-x-8'>
+      <div className='grid grid-cols-1 sm:grid-cols-3 sm:space-x-8'>
         <div className='col-span-1'>
           <div className='flex justify-between items-center mb-2'>
             <details className="dropdown">
@@ -191,10 +191,20 @@ export default function CreatePublicOffer() {
             <NftGrid nfts={nfts} onDataEmit={handleSelectedNft} />
           </div>
         </div>
-        <div className='col-span-2'>
+        <div className='col-span-1 sm:col-span-2'>
           <div>
-            <div className='flex justify-start'>
-              <div className='flex justify-center bg-teal-800 rounded-box py-3 px-4 mb-2 drop-shadow-md w-36'>You</div>
+            <div className='flex justify-between items-center mb-2'>
+              <div className='flex justify-center bg-teal-800 rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
+              <div className="join items-center">
+                <input type="number" placeholder="Amount (Optional)" className="join-item input bg-teal-800 w-full max-w-xs" />
+                <div className="dropdown join-item">
+                  <label tabIndex={0} className="btn bg-teal-800 rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
+                  {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a>WAVAX</a></li>
+                <li><a>WETH</a></li>
+              </ul> */}
+                </div>
+              </div>
             </div>
             <OfferContainer active={true} offers={myOffers} placeholderText={'Choose up to 6 NFTs to offer'} showRemove={true}
               onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />

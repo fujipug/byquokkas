@@ -8,7 +8,7 @@ import RenderName from 'ui/RenderName';
 import Image from 'next/image'
 import { getSwapId, verifyApproval } from '../../../../utils/contract-funtions';
 import { swopContractAbi } from '../../../../packages/swop-config';
-import { useSwopContract, useFee } from '../../../../utils/hooks';
+import { useSwopContract } from '../../../../utils/hooks';
 import { initializeApp } from "firebase/app";
 import { Timestamp, addDoc, collection, getFirestore } from "firebase/firestore";
 import { firebaseConfig } from '../../../../packages/firebase-config';
@@ -39,7 +39,6 @@ export default function CreatePrivateOffer() {
   const [nftInfoModal, setNftInfoModal] = useState<any>();
   const [showError, setShowError] = useState<boolean>(false);
   const swopContract = useSwopContract();
-  const fee = useFee();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
     address: swopContract?.address,
     abi: swopContractAbi,
@@ -52,7 +51,6 @@ export default function CreatePrivateOffer() {
       receiverOffers.map((offer: any) => offer.numTokenId), // tokenBIds
       0
     ],
-    value: fee,
     onSuccess: (res: any) => {
       // TODO: Call read to get swapId
       console.log('sucess: ', res);
@@ -222,16 +220,16 @@ export default function CreatePrivateOffer() {
         </div>
       }
       <div className='flex justify-center items-center mb-12'>
-        <span className='mr-4 text-lg'>Search Wallet:</span>
+        <span className='hidden sm:flex mr-4 text-lg'>Search Wallet:</span>
         <input type="text" onChange={handleInputChange} placeholder="Ex: 0x00000000000000" className="input input-bordered w-full max-w-xs" />
         <button onClick={() => walletSearch()} className="btn btn-secondary ml-4">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
           </svg>
-          Search
+          <span className='hidden sm:flex'>Search</span>
         </button>
       </div>
-      <div className='grid grid-cols-3 space-x-8'>
+      <div className='grid grid-cols-1 sm:grid-cols-3 sm:space-x-8'>
         <div className='col-span-1'>
           <div className='flex justify-between items-center mb-2'>
             <details className="dropdown">
@@ -255,7 +253,7 @@ export default function CreatePrivateOffer() {
             <NftGrid nfts={viewMyWallet ? nfts : receiverNfts} onDataEmit={handleSelectedNft} />
           </div>
         </div>
-        <div className='col-span-2'>
+        <div className='col-span-1 sm:col-span-2'>
           <div>
             <div className='flex justify-start'>
               {viewMyWallet ?
