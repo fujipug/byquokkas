@@ -143,10 +143,15 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
   // Create Firebase offer request
   const createFirebaseOffer = async () => {
     const offerRef = doc(db, 'offers', params.id);
+    // This will swap who the sender and receiver
     await updateDoc(offerRef, {
-      receiver: address,
-      offerB: myOffers,
-      amountB: inputBAmountValue ? Number(inputBAmountValue) : 0,
+      sender: address,
+      offerA: myOffers,
+      amountA: inputBAmountValue ? Number(inputBAmountValue) : 0,
+      //Seperation
+      receiver: senderAddress,
+      offerB: senderOffers,
+      amountB: details.amountA ? Number(details.amountA) : 0,
       status: 'Pending',
       type: 'Private',
       viewed: false
