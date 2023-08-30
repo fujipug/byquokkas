@@ -93,9 +93,9 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
     });
   }
 
-  const handleCounterOffer = async () => {
-    console.log('counter offer; temp placeholder');
-  }
+  // const handleCounterOffer = async () => {
+  //   console.log('counter offer; temp placeholder');
+  // }
 
   return (
     <>
@@ -104,16 +104,13 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
           <h1 className='text-3xl text-center'>Thank you for choosing SWOP</h1>
           <div className='my-6'>
             <div className='flex justify-between items-center mb-2'>
-              <div className="hidden join items-center">
+              {/* <div className="hidden join items-center">
                 <input type="text" placeholder="Amount (Optional)" className="join-item input bg-neutral w-full max-w-xs" />
                 <div className="dropdown join-item">
                   <label tabIndex={0} className="btn btn-neutral rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
-                  {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                <li><a>WAVAX</a></li>
-                <li><a>WETH</a></li>
-              </ul> */}
+ 
                 </div>
-              </div>
+              </div> */}
               <div className='flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
             </div>
             <OfferContainer active={false} offers={offer?.offerA} placeholderText='Loading ...' showRemove={false} onSelectedNftEmit={handleInfoModal} />
@@ -123,16 +120,13 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
               <div className='flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md sm:w-36'>
                 <RenderName address={offer?.sender} classData={''} />
               </div>
-              <div className="hidden join items-center">
+              {/* <div className="hidden join items-center">
                 <input type="text" placeholder="Amount (Optional)" className="join-item input bg-neutral w-full max-w-xs" />
                 <div className="dropdown join-item">
                   <label tabIndex={0} className="btn btn-neutral rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
-                  {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                <li><a>WAVAX</a></li>
-                <li><a>WETH</a></li>
-              </ul> */}
+   
                 </div>
-              </div>
+              </div> */}
             </div>
             <OfferContainer active={false} offers={offer?.offerB} placeholderText='Loading ...' showRemove={false} onSelectedNftEmit={handleInfoModal} />
           </div>
@@ -143,12 +137,12 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
               </svg>
               Accept Offer
             </button>
-            <button onClick={() => handleCounterOffer()} className='hidden btn btn-warning'>
+            {/* <button onClick={() => handleCounterOffer()} className='hidden btn btn-warning'>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
               </svg>
               Counter Offer
-            </button>
+            </button> */}
           </div>
         </>
       }

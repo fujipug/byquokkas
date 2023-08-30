@@ -21,7 +21,7 @@ export default function NftGrid({ nfts, onDataEmit }: ChildProps) {
 
   return (
     <>
-      {(!address && !isConnected) ?
+      {(!address && !isConnected && nftsFromParent) ?
         <div className="bg-neutral rounded-box p-5 drop-shadow-md mb-6 sm:mb-0">
           <h1 className="font-semibold text-xl mb-4 text-center">Sign into your wallet to continue</h1>
           <div className="w-full flex justify-center">
