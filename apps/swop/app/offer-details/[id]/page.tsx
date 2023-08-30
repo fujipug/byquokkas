@@ -142,18 +142,14 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
 
   // Create Firebase offer request
   const createFirebaseOffer = async () => {
-    const offer: Offer = {
+    const offerRef = doc(db, 'offers', params.id);
+    await updateDoc(offerRef, {
       receiver: address,
       offerB: myOffers,
       amountB: inputBAmountValue ? Number(inputBAmountValue) : 0,
       status: 'Pending',
       type: 'Private',
       viewed: false
-    }
-
-    const offerRef = doc(db, 'offers', params.id);
-    await updateDoc(offerRef, {
-      offer
     }).then(() => {
       setStepper(1);
       fireAction();
