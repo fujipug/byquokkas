@@ -10,7 +10,7 @@ import { verifyApproval } from '../../../../../utils/contract-funtions';
 import { swopContractAbi } from '../../../../../packages/swop-config';
 import { useSwopContract } from '../../../../../utils/hooks';
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { addDoc, collection, doc, getFirestore, updateDoc } from "firebase/firestore";
 import { firebaseConfig } from '../../../../../packages/firebase-config';
 import { Offer } from '../../../types';
 import { getOfferById } from '../../../../../apis/swop';
@@ -145,13 +145,20 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
       receiver: address,
       offerB: myOffers,
       amountB: inputBAmountValue ? Number(inputBAmountValue) : 0,
-      status: 'Closed',
+      status: 'Private',
     }
-    addDoc(collection(db, 'offers'), offer).then((response) => {
-      // TODO: Maybe a share link to the offer
+    // updateDoc(collection(db, 'offers'), offer).then((response) => {
+    //   // TODO: Maybe a share link to the offer
+    // }).catch((error) => {
+    //   console.error("Error adding document: ", error);
+    // });
+
+    const offerRef = doc(db, 'offers', params.id);
+    await updateDoc(offerRef, {
+      offer
     }).catch((error) => {
       console.error("Error adding document: ", error);
-    });
+    });;
   }
 
   const handleInputBAmountChange = (event) => {

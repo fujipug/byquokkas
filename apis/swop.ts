@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { collection, doc, getCountFromServer, getDoc, getDocs, getFirestore, limit, onSnapshot, orderBy, query, startAfter, updateDoc, where } from "firebase/firestore";
+import { collection, doc, getCountFromServer, getDoc, getDocs, getFirestore, limit, onSnapshot, orderBy, query, startAfter, where } from "firebase/firestore";
 import { firebaseConfig } from "../packages/firebase-config";
 import { Offer } from '../apps/swop/types';
 
