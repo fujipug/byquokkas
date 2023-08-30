@@ -94,7 +94,7 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
   }
 
   const handleCounterOffer = async () => {
-
+    console.log('counter offer');
   }
 
   return (
