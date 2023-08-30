@@ -207,7 +207,7 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
                     <div className='flex justify-center bg-neutral rounded-l-lg rounded-r-none py-3 px-4 drop-shadow-md w-fit'>
                       <span>{details?.amountA}</span>
                     </div>
-                    <div className="dropdown join-item">
+                    <div className="hidden dropdown join-item">
                       <label tabIndex={0} className="btn bg-neutral rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
                       {/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                 <li><a>WAVAX</a></li>
@@ -221,8 +221,8 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
                 onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
             </div>
             <div className='mt-8'>
-              <div className='flex justify-between mb-2'>
-                <div className="join items-center">
+              <div className='flex justify-end mb-2'>
+                <div className="hidden join items-center">
                   <input type="text" value={inputBAmountValue} onChange={handleInputBAmountChange} placeholder="Amount (Optional)" className="join-item input bg-teal-800 w-full max-w-xs" />
                   <div className="dropdown join-item">
                     <label tabIndex={0} className="btn bg-teal-800 rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>

@@ -278,7 +278,7 @@ export default function CreatePrivateOffer() {
                   {viewMyWallet ?
                     <>
                       <div onClick={() => setViewMyWallet(true)} className='cursor-pointer flex justify-center bg-teal-800 rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
-                      <div className="join items-center">
+                      <div className="hidden join items-center">
                         <input type="text" value={inputAAmountValue} onChange={handleInputAAmountChange} placeholder="Amount (Optional)" className="join-item input bg-teal-800 w-full max-w-xs" />
                         <div className="dropdown join-item">
                           <label tabIndex={0} className="btn bg-teal-800 rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
@@ -292,7 +292,7 @@ export default function CreatePrivateOffer() {
                     :
                     <>
                       <div onClick={() => setViewMyWallet(true)} className='cursor-pointer flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
-                      <div className="join items-center">
+                      <div className="hidden join items-center">
                         <input type="text" value={inputAAmountValue} onChange={handleInputAAmountChange} placeholder="Amount (Optional)" className="join-item input bg-neutral w-full max-w-xs" />
                         <div className="dropdown join-item">
                           <label tabIndex={0} className="btn bg-neutral rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
@@ -309,9 +309,9 @@ export default function CreatePrivateOffer() {
                   onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
               </div>
               <div className='mt-8'>
-                <div className='flex justify-between mb-2'>
+                <div className='flex justify-end mb-2'>
                   {!viewMyWallet ?
-                    <div className="join items-center">
+                    <div className="hidden join items-center">
                       <input type="text" value={inputBAmountValue} onChange={handleInputBAmountChange} placeholder="Amount (Optional)" className="join-item input bg-teal-800 w-full max-w-xs" />
                       <div className="dropdown join-item">
                         <label tabIndex={0} className="btn bg-teal-800 rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
@@ -322,7 +322,7 @@ export default function CreatePrivateOffer() {
                       </div>
                     </div>
                     :
-                    <div className="join items-center">
+                    <div className="hidden join items-center">
                       <input type="text" value={inputBAmountValue} onChange={handleInputBAmountChange} placeholder="Amount (Optional)" className="join-item input bg-neutral w-full max-w-xs" />
                       <div className="dropdown join-item">
                         <label tabIndex={0} className="btn bg-neutral rounded-r-lg rounded-l-none ml-1 cursor-default">WAVAX</label>
