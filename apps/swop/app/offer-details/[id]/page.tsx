@@ -146,7 +146,8 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
       receiver: address,
       offerB: myOffers,
       amountB: inputBAmountValue ? Number(inputBAmountValue) : 0,
-      status: 'Private',
+      status: 'Pending',
+      type: 'Private',
       viewed: false
     }
 

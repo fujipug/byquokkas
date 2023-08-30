@@ -85,7 +85,8 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
   const updateFirebaseOffer = async () => {
     const offerRef = doc(db, 'offers', offer.id);
     await updateDoc(offerRef, {
-      status: 'Closed',
+      status: 'Accepted',
+      type: null
     }).then(() => {
       setStepper(1);
       fireAction();
