@@ -29,7 +29,7 @@ export default function LearnMore() {
           <Image src={'/images/Quokka_Wave.png'} width={400} height={400} className="hidden sm:block max-w-sm" alt="Quokka Wave" />
           <div>
             <h1 className="text-5xl font-bold">Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">SWOP</span></h1>
-            <p className="py-6 text-lg sm:text-xl">Swap your NFTs and stuff!</p>
+            <p className="py-6 text-lg sm:text-xl">Swap your NFTs with the homies!</p>
           </div>
         </div>
       </div>
@@ -37,60 +37,73 @@ export default function LearnMore() {
       <div className="collapse bg-base-200 my-4">
         <input type="radio" name="my-accordion-1" />
         <div className="collapse-title text-xl font-medium">
-          How does <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">SWOP</span> work?
+          What is the functionality of  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">SWOP</span> ?
         </div>
         <div className="collapse-content">
-          <p><span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">SWOP</span> is an engaging and interactive raffle platform where one person creates a lobby to bet their NFTs against their friends.</p>
+          <p><span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">SWOP</span> provides a user-friendly and efficient method for discovering and exchanging offers.</p>
         </div>
       </div>
 
-      <div className="collapse bg-base-200 mb-4">
+      <div className="collapse bg-base-200 my-4">
         <input type="radio" name="my-accordion-1" />
         <div className="collapse-title text-xl font-medium">
-          Ensuring fairness with Chainlink VRF:
+          Generating a Public Offer
         </div>
         <div className="collapse-content">
-          <p>To maintain absolute fairness, we utilize <Link className="text-indigo-500 hover:text-indigo-600" href="https://docs.chain.link/vrf/v2/introduction">Chainlink VRF</Link> for random selection.</p>
+          <p>Public lobbies are accessible to all users from the main page.
+            These lobbies can be responded to by a single individual.After an offer is submitted, it transitions to a private status.</p>
         </div>
       </div>
 
-      <div className="collapse bg-base-200 mb-4">
+      <div className="collapse bg-base-200 my-4">
         <input type="radio" name="my-accordion-1" />
         <div className="collapse-title text-xl font-medium">
-          Simple participation fee:
+          Generating a Public Offer
         </div>
         <div className="collapse-content">
-          <p>For each participant joining or creating a lobby, there is a nominal 0.1 AVAX charge.</p>
+          <p>Public lobbies are accessible to all users from the main page.
+            These lobbies can be responded to by a single individual.
+            After an offer is submitted, it transitions to a private status.
+            The creator of the lobby holds the authority to accept or decline the offer.</p>
         </div>
       </div>
 
-      <div className="collapse bg-base-200 mb-4">
+      <div className="collapse bg-base-200 my-4">
         <input type="radio" name="my-accordion-1" />
         <div className="collapse-title text-xl font-medium">
-          Easy Lobby Creation:
+          Initiating a Private Offer
         </div>
         <div className="collapse-content">
-          <p>To begin, the host creates the lobby for the raffle, specifying the number of participants, the NFT collection to be raffled, and the choice between private or public settings.</p>
+          <p>A private offer pertains to the creation of an offer with a specific wallet in consideration. The process involves:</p>
+          <ol>
+            <br />
+            <li>&nbsp;&nbsp;&nbsp;&nbsp; 1. Identifying a wallet</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp; 2. Selecting NFTs and the wavax amount</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp; 3. Receiving the offer</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp; 4. Making a decision to accept, cancel, or propose a counteroffer</li>
+          </ol>
         </div>
       </div>
 
-      <div className="collapse bg-base-200 mb-4">
+      <div className="collapse bg-base-200 my-4">
         <input type="radio" name="my-accordion-1" />
         <div className="collapse-title text-xl font-medium">
-          Share the fun:
+          Free of Charge Swap
         </div>
         <div className="collapse-content">
-          <p>Once the lobby is set up, the host launches lobby links, which can then be shared with friends.</p>
+          <p>We have made the deliberate choice to refrain from imposing any fees on swaps.
+            We believe that swapping with friends should be an expense - free endeavor.
+            Enjoy swapping!</p>
         </div>
       </div>
 
-      <div className="collapse bg-base-200 mb-4">
+      <div className="collapse bg-base-200 my-4">
         <input type="radio" name="my-accordion-1" />
         <div className="collapse-title text-xl font-medium">
-          Collection Eligibility:
+          Qualification of Collections
         </div>
         <div className="collapse-content">
-          <p>To ensure a level playing field, currently, only one collection can participate in a single lobby.</p>
+          <p>Only collections verified on the Pickasso API platform are eligible for swapping.</p>
         </div>
       </div>
 
