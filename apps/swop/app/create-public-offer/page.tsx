@@ -251,7 +251,13 @@ export default function CreatePublicOffer() {
               </div>
             </div>
             <div className='flex justify-end'>
-              <button onClick={() => handleFinalizePublicOffer()} className="btn btn-warning mt-4 drop-shadow-md">Create Public Offer</button>
+              <button onClick={() => handleFinalizePublicOffer()} className="btn btn-warning mt-4 drop-shadow-md">
+                {isLoading || isApprovalLoading ?
+                  <span className="loading loading-spinner loading-md"></span>
+                  :
+                  <span>Create Public Offer</span>
+                }
+              </button>
             </div>
           </div>
         </div>

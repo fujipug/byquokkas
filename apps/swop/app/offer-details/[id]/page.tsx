@@ -244,7 +244,13 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
             </div>
             <div className='flex justify-end'>
               {address !== details?.sender ?
-                <button onClick={() => handleOfferRequest()} className="btn btn-warning mt-4 drop-shadow-md">Send Offer Request</button>
+                <button onClick={() => handleOfferRequest()} className="btn btn-warning mt-4 drop-shadow-md">
+                  {isLoading || isApprovalLoading ?
+                    <span className="loading loading-spinner loading-md"></span>
+                    :
+                    <span>Send Offer Request</span>
+                  }
+                </button>
                 :
                 <button onClick={() => handleOfferRequest()} disabled className="btn btn-error mt-4 drop-shadow-md">Send Offer Request</button>
               }

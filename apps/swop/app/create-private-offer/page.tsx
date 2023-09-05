@@ -341,7 +341,13 @@ export default function CreatePrivateOffer() {
                   onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
               </div>
               <div className='flex justify-end'>
-                <button onClick={() => handleFinalizePrivateOffer()} className="btn btn-warning mt-4 drop-shadow-md">Send Private Offer</button>
+                <button onClick={() => handleFinalizePrivateOffer()} className="btn btn-warning mt-4 drop-shadow-md">
+                  {isLoading || isApprovalLoading ?
+                    <span className="loading loading-spinner loading-md"></span>
+                    :
+                    <span>Send Private Offer</span>
+                  }
+                </button>
               </div>
             </div>
           </div>
