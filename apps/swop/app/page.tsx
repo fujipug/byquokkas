@@ -2,11 +2,11 @@
 import Table from "ui/Table";
 import Image from "next/image";
 import Link from "next/link";
-import { getAccount } from "@wagmi/core";
 import { useEffect, useState } from "react";
 import { Offer } from "../types";
 import { getPublicOfferCount, getPublicOffers, getMorePublicOffers, getPrivateOffers, getPublicToPrivateOffers } from "../../../apis/swop";
 import { fireAction } from "../../../utils/functions";
+import { useAccount } from "wagmi";
 
 const tableHeaders = ['Nfts Offered', 'Offer Name', 'Creator', 'Status', 'Created At'];
 
@@ -19,7 +19,7 @@ export default function Page() {
   const [publicToPrivateOffers, setPublicToPrivateOffers] = useState([]) as Offer[];
   const [allPrivateOffers, setAllPrivateOffers] = useState([]) as Offer[];
   // const [privateOfferCount, setPrivateOfferCount] = useState(0);
-  const account = getAccount();
+  const { address } = useAccount();
 
   // Get Public Offers
   useEffect(() => {
@@ -52,42 +52,42 @@ export default function Page() {
 
   // Get Private Offers
   useEffect(() => {
-    if (account?.address) {
-      const unsubscribe1 = getPrivateOffers(account?.address, setPrivateOffers);
+    if (address) {
+      const unsubscribe1 = getPrivateOffers(address, setPrivateOffers);
       return () => {
         unsubscribe1(); // Clean up the listener when the component unmounts
       };
     }
-  }, [account?.address]);
+  }, [address]);
 
   useEffect(() => {
-    if (account?.address) {
-      const unsubscribe2 = getPublicToPrivateOffers(account?.address, setPublicToPrivateOffers);
+    if (address) {
+      const unsubscribe2 = getPublicToPrivateOffers(address, setPublicToPrivateOffers);
       return () => {
         unsubscribe2(); // Clean up the listener when the component unmounts
       };
     }
-  }, [account?.address]);
+  }, [address]);
 
   useEffect(() => {
-    if (account?.address) {
+    if (address) {
       setAllPrivateOffers([...privateOffers, ...publicToPrivateOffers]);
       return () => {
         setAllPrivateOffers([]); // Clean up the listener when the component unmounts
       };
     }
-  }, [account?.address, privateOffers, publicToPrivateOffers]);
+  }, [address, privateOffers, publicToPrivateOffers]);
 
 
   // Get Private Offer Count
   // useEffect(() => {
   //   async function fetchPrivateOfferCount() {
-  //     const count = await getPrivateOfferCount(account?.address);
+  //     const count = await getPrivateOfferCount(address);
   //     setPrivateOfferCount(count);
   //   }
 
-  //   if (account?.address) fetchPrivateOfferCount();
-  // }, [account?.address]);
+  //   if (address) fetchPrivateOfferCount();
+  // }, [address]);
 
   const handleButtonClick = (e, offerId) => {
     e.stopPropagation(); // Prevent event propagation
