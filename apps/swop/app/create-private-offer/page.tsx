@@ -55,9 +55,7 @@ export default function CreatePrivateOffer() {
       inputBAmountValue ? BigInt(inputBAmountValue) : 0
     ],
     onSuccess: (res: any) => {
-      console.log('sucess: ', res);
       getSwapId().then((swapId) => {
-        console.log('swapId: ', swapId);
         const updatedSwapId = Number(swapId) + 1;
         createFirebaseOffer(updatedSwapId);
       })
@@ -196,9 +194,9 @@ export default function CreatePrivateOffer() {
     const offer: Offer = {
       swapId: swapId,
       sender: address,
-      receiver: inputValue,
       offerA: myOffers,
       amountA: inputAAmountValue ? Number(inputAAmountValue) : 0,
+      receiver: inputValue,
       offerB: receiverOffers,
       amountB: inputBAmountValue ? Number(inputBAmountValue) : 0,
       status: 'Open',

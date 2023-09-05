@@ -56,8 +56,24 @@ export const getPublicOfferCount = async () => {
 
 // For Private Offers
 export const getPrivateOffers = (accountAddress, callback: any) => {
-  const q = query(collection(db, 'offers'), where('type', '==', 'Private'), where('receiver', '==', accountAddress), orderBy('createdAt', 'desc'));
-  const unsubscribe = onSnapshot(q, (snapshot) => {
+  const q1 = query(collection(db, 'offers'), where('type', '==', 'Private'), where('pubToPri', '==', false), where('receiver', '==', accountAddress), orderBy('createdAt', 'desc'));
+  const unsubscribe = onSnapshot(q1, (snapshot) => {
+    const results: Offer[] = [];
+
+    snapshot.forEach((doc) => {
+      results.push({ id: doc.id, ...doc.data() });
+    });
+
+    callback(results);
+  });
+
+  return unsubscribe;
+};
+
+export const getPublicToPrivateOffers = (accountAddress, callback: any) => {
+  const q2 = query(collection(db, 'offers'), where('type', '==', 'Private'), where('pubToPri', '==', true), where('sender', '==', accountAddress), orderBy('createdAt', 'desc'));
+
+  const unsubscribe = onSnapshot(q2, (snapshot) => {
     const results: Offer[] = [];
 
     snapshot.forEach((doc) => {

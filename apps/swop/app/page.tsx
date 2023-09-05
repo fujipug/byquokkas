@@ -5,7 +5,7 @@ import Link from "next/link";
 import { getAccount } from "@wagmi/core";
 import { useEffect, useState } from "react";
 import { Offer } from "../types";
-import { getPublicOfferCount, getPublicOffers, getMorePublicOffers, getPrivateOffers, getPrivateOfferCount } from "../../../apis/swop";
+import { getPublicOfferCount, getPublicOffers, getMorePublicOffers, getPrivateOffers, getPublicToPrivateOffers } from "../../../apis/swop";
 import { fireAction } from "../../../utils/functions";
 
 const tableHeaders = ['Nfts Offered', 'Offer Name', 'Creator', 'Status', 'Created At'];
@@ -16,6 +16,8 @@ export default function Page() {
   const [publicOfferCount, setPublicOfferCount] = useState(0);
   const [showMoreButton, setShowMoreButton] = useState(false);
   const [privateOffers, setPrivateOffers] = useState([]) as Offer[];
+  const [publicToPrivateOffers, setPublicToPrivateOffers] = useState([]) as Offer[];
+  const [allPrivateOffers, setAllPrivateOffers] = useState([]) as Offer[];
   // const [privateOfferCount, setPrivateOfferCount] = useState(0);
   const account = getAccount();
 
@@ -51,12 +53,31 @@ export default function Page() {
   // Get Private Offers
   useEffect(() => {
     if (account?.address) {
-      const unsubscribe = getPrivateOffers(account?.address, setPrivateOffers);
+      const unsubscribe1 = getPrivateOffers(account?.address, setPrivateOffers);
       return () => {
-        unsubscribe(); // Clean up the listener when the component unmounts
+        unsubscribe1(); // Clean up the listener when the component unmounts
       };
     }
   }, [account?.address]);
+
+  useEffect(() => {
+    if (account?.address) {
+      const unsubscribe2 = getPublicToPrivateOffers(account?.address, setPublicToPrivateOffers);
+      return () => {
+        unsubscribe2(); // Clean up the listener when the component unmounts
+      };
+    }
+  }, [account?.address]);
+
+  useEffect(() => {
+    if (account?.address) {
+      setAllPrivateOffers([...privateOffers, ...publicToPrivateOffers]);
+      return () => {
+        setAllPrivateOffers([]); // Clean up the listener when the component unmounts
+      };
+    }
+  }, [account?.address, privateOffers, publicToPrivateOffers]);
+
 
   // Get Private Offer Count
   // useEffect(() => {
@@ -110,9 +131,9 @@ export default function Page() {
             </div>
             <div className="hidden sm:block z-30 -mt-7 ml-36 absolute"><Image src="/images/Hands_2.png" alt="Quokka Hands" width={200} height={200}></Image></div>
             <div className="z-10 p-6 bg-neutral rounded-box drop-shadow-md h-96 space-y-2 overflow-y-scroll">
-              {privateOffers && privateOffers?.length > 0 ?
+              {allPrivateOffers && allPrivateOffers?.length > 0 ?
                 <div>
-                  {privateOffers?.map((offer, index) => (
+                  {allPrivateOffers?.map((offer, index) => (
                     <div key={index} className="indicator w-full">
                       {!offer?.viewed &&
                         <span className="indicator-item indicator-start badge badge-secondary ml-2">New</span>

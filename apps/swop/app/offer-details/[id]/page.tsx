@@ -143,17 +143,13 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
   // Create Firebase offer request
   const createFirebaseOffer = async () => {
     const offerRef = doc(db, 'offers', params.id);
-    // This will swap who the sender and receiver
     await updateDoc(offerRef, {
-      sender: address,
-      offerA: myOffers,
-      amountA: inputBAmountValue ? Number(inputBAmountValue) : 0,
-      //Seperation
-      receiver: senderAddress,
-      offerB: senderOffers,
-      amountB: details.amountA ? Number(details.amountA) : 0,
+      receiver: address,
+      offerB: myOffers,
+      amountB: inputBAmountValue ? Number(inputBAmountValue) : 0,
       status: 'Pending',
       type: 'Private',
+      pubToPri: true,
       viewed: false
     }).then(() => {
       setStepper(1);
@@ -193,6 +189,7 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
               <span className='bg-neutral rounded-box py-3 px-4 drop-shadow-md'>My Wallet</span>
             </div>
             <div className='h-5/6 overflow-y-scroll'>
+              {/* Hydration errors */}
               <NftGrid nfts={nfts} onDataEmit={handleSelectedNft} />
             </div>
           </div>
@@ -226,13 +223,31 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
                    
                   </div>
                 </div> */}
-                <div className='flex justify-center bg-teal-800 rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
+                {address !== details?.sender ?
+                  <div className='flex justify-center bg-teal-800 rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
+                  :
+                  <div className='flex justify-center bg-red-800 rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
+                }
               </div>
-              <OfferContainer active={true} offers={myOffers} placeholderText={'Choose up to 6 NFTs to offer'} showRemove={true}
-                onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
+              {address !== details?.sender ?
+                <OfferContainer active={true} offers={myOffers} placeholderText={'Choose up to 6 NFTs to offer'} showRemove={true}
+                  onDataEmit={handleOnRemove} onSelectedNftEmit={handleNftInfoModal} />
+                :
+                <span className="relative block w-full rounded-lg border-2 border-dashed border-red-600 p-24 text-center hover:red-teal-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="mx-auto w-10 h-10">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                  </svg>
+
+                  <span className="mt-2 block text-sm font-semibold">Find someone else to SWOP with</span>
+                </span >
+              }
             </div>
             <div className='flex justify-end'>
-              <button onClick={() => handleOfferRequest()} className="btn btn-warning mt-4 drop-shadow-md">Send Offer Request</button>
+              {address !== details?.sender ?
+                <button onClick={() => handleOfferRequest()} className="btn btn-warning mt-4 drop-shadow-md">Send Offer Request</button>
+                :
+                <button onClick={() => handleOfferRequest()} disabled className="btn btn-error mt-4 drop-shadow-md">Send Offer Request</button>
+              }
             </div>
           </div>
         </div>
