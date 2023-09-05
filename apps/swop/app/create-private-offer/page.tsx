@@ -193,10 +193,10 @@ export default function CreatePrivateOffer() {
   const createFirebaseOffer = async (swapId) => {
     const offer: Offer = {
       swapId: swapId,
-      sender: address,
+      sender: address.toLowerCase(),
       offerA: myOffers,
       amountA: inputAAmountValue ? Number(inputAAmountValue) : 0,
-      receiver: inputValue,
+      receiver: inputValue.toLowerCase(),
       offerB: receiverOffers,
       amountB: inputBAmountValue ? Number(inputBAmountValue) : 0,
       status: 'Open',

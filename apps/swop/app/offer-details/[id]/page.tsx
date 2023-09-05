@@ -144,7 +144,7 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
   const createFirebaseOffer = async () => {
     const offerRef = doc(db, 'offers', params.id);
     await updateDoc(offerRef, {
-      receiver: address,
+      receiver: address.toLowerCase(),
       offerB: myOffers,
       amountB: inputBAmountValue ? Number(inputBAmountValue) : 0,
       status: 'Pending',

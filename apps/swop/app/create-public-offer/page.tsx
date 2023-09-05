@@ -151,7 +151,7 @@ export default function CreatePublicOffer() {
   const createFirebaseOffer = async (swapId) => {
     const offer: Offer = {
       swapId: swapId,
-      sender: address,
+      sender: address.toLowerCase(),
       offerA: myOffers,
       amountA: inputAAmountValue ? Number(inputAAmountValue) : 0,
       offerName: inputValue && inputValue,
@@ -161,7 +161,6 @@ export default function CreatePublicOffer() {
       createdAt: Timestamp.now(),
     }
     addDoc(collection(db, 'offers'), offer).then((response) => {
-      console.log('response: ', response.id);
       setShareUrl(`${window.location.href.split('/create')[0]}/offer-details/${response.id}`);
       setStepper(1);
       fireAction();

@@ -35,7 +35,6 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
     functionName: 'acceptSwap',
     args: [swapId && BigInt(swapId)],
     onSuccess: (res: any) => {
-      console.log('sucess: ', res);
       updateFirebaseOffer();
     },
     onError(error) {
