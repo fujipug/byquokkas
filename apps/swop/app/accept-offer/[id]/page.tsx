@@ -26,14 +26,14 @@ const db = getFirestore(app);
 export default function AcceptOffer({ params }: { params: { id: string } }) {
   const [offer, setOffer] = useState<Offer>(null);
   const [nftInfoModal, setNftInfoModal] = useState<any>();
-  const [swapId, setSwapId] = useState<any>(null);
+  // const [swapId, setSwapId] = useState<any>(null);
   const [stepper, setStepper] = useState(() => 0);
   const swopContract = useSwopContract();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
     address: swopContract?.address,
     abi: swopContractAbi,
     functionName: 'acceptSwap',
-    args: [swapId && BigInt(swapId)],
+    args: [offer?.swapId && BigInt(offer?.swapId)],
     onSuccess: (res: any) => {
       updateFirebaseOffer();
     },
@@ -47,9 +47,10 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
       setOffer(res)
     });
 
-    getSwapId().then((swapId) => {
-      setSwapId(swapId);
-    });
+    // getSwapId().then((swapId) => {
+    //   console.log('swapId', swapId);
+    //   setSwapId(swapId);
+    // });
   }, [params.id]);
 
   const handleInfoModal = (info: any) => {
