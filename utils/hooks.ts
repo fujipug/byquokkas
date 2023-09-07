@@ -3,12 +3,15 @@ import {
   getAccount,
   getContract,
   getNetwork,
+  getPublicClient,
   getWalletClient,
 } from "@wagmi/core";
 import { useNetwork } from "wagmi";
 import {
   swopContractAbi,
   swopMainContractAddress,
+  wavaxAbi,
+  wavaxAddress,
 } from "../packages/swop-config";
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 
@@ -17,6 +20,8 @@ const client = new ApolloClient({
   uri: "https://data.staging.arkiver.net/primata/swop-events/graphql",
   // uri: "http://localhost:4000/graphql",
 });
+
+const publicClient = getPublicClient();
 
 export function useUserSwaps() {
   const [swaps, setSwaps] = useState([]);

@@ -3,9 +3,13 @@ import {
   getContract,
   getNetwork,
   getWalletClient,
-  readContract
+  readContract,
 } from "@wagmi/core";
-import { nftAbi, swopContractAbi, swopMainContractAddress } from "../packages/swop-config";
+import {
+  nftAbi,
+  swopContractAbi,
+  swopMainContractAddress,
+} from "../packages/swop-config";
 
 export const verifyApproval = async (
   collectionAAddresses: any[],
@@ -31,7 +35,7 @@ export const verifyApproval = async (
       if (!approved) {
         // @ts-ignore
         await collectionContract.write.setApprovalForAll([
-          address,
+          swopMainContractAddress,
           true,
         ]);
 
