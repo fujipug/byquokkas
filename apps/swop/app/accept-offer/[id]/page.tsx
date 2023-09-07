@@ -116,7 +116,7 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
           <div className='my-6'>
             <div className='flex justify-end items-center mb-2'>
               <div className='flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md sm:w-36'>
-                <RenderName address={offer?.sender} classData={''} />
+                <RenderName address={offer?.receiver} classData={''} />
               </div>
               {/* <div className="hidden join items-center">
                 <input type="text" placeholder="Amount (Optional)" className="join-item input bg-neutral w-full max-w-xs" />
