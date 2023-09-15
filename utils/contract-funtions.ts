@@ -63,3 +63,14 @@ export const getSwapId = async () => {
 
   return swapId;
 };
+
+export const getSwapById = async (id: number) => {
+  const swap = await readContract({
+    address: swopMainContractAddress,
+    abi: swopContractAbi,
+    functionName: "swaps",
+    args: [BigInt(id)],
+  });
+
+  return swap;
+};

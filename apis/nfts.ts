@@ -3,7 +3,7 @@ import { generateToken } from "../utils/functions";
 export const getPickassoNfts = async (address: string) => {
   let result: any = [];
   await fetch(
-    `https://api.pickasso.net/v1/wallet/${address.toLowerCase()}/tokens?count=1000&sortBy=updatedBlock&sortOrder=desc&verified=false`,
+    `https://api.pickasso.net/v1/wallet/${address?.toLowerCase()}/tokens?count=1000&sortBy=updatedBlock&sortOrder=desc&verified=false`,
     {
       headers: {
         'x-api-token': generateToken(),

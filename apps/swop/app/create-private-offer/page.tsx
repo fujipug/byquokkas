@@ -66,6 +66,7 @@ export default function CreatePrivateOffer() {
   });
 
   useEffect(() => {
+    setMyOffers([]);
     if (isConnected) {
       const getNfts = async () => {
         getPickassoNfts(address).then((nfts) => {
@@ -202,7 +203,8 @@ export default function CreatePrivateOffer() {
       status: 'Open',
       type: 'Private',
       createdAt: Timestamp.now(),
-      viewed: false
+      viewed: false,
+      toDecide: inputValue.toLowerCase()
     }
     addDoc(collection(db, 'offers'), offer).then((response) => {
       setStepper(1);

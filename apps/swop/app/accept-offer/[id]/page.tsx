@@ -4,10 +4,10 @@ import OfferContainer from 'ui/OfferContainer'
 import { getOfferById } from '../../../../../apis/swop'
 import RenderName from 'ui/RenderName';
 import Image from 'next/image'
-import { useContractWrite } from 'wagmi';
+import { useAccount, useContractWrite } from 'wagmi';
 import { useSwopContract } from '../../../../../utils/hooks';
 import { swopContractAbi } from '../../../../../packages/swop-config';
-import { getSwapId, verifyApproval } from '../../../../../utils/contract-funtions';
+import { verifyApproval } from '../../../../../utils/contract-funtions';
 import { doc, getFirestore, updateDoc } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../../../../packages/firebase-config';
@@ -29,6 +29,7 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
   // const [swapId, setSwapId] = useState<any>(null);
   const [stepper, setStepper] = useState(() => 0);
   const swopContract = useSwopContract();
+  const { address } = useAccount();
   let { data, isLoading, isSuccess, write } = useContractWrite<any, any, any>({
     address: swopContract?.address,
     abi: swopContractAbi,
@@ -46,11 +47,6 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
     getOfferById(params.id).then((res) => {
       setOffer(res)
     });
-
-    // getSwapId().then((swapId) => {
-    //   console.log('swapId', swapId);
-    //   setSwapId(swapId);
-    // });
   }, [params.id]);
 
   const handleInfoModal = (info: any) => {
@@ -91,9 +87,9 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
     });
   }
 
-  // const handleCounterOffer = async () => {
-  //   console.log('counter offer; temp placeholder');
-  // }
+  const handleCounterOffer = async () => {
+    window.location.href = '/counter-offer/' + offer.id;
+  }
 
   return (
     <>
@@ -109,15 +105,18 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
  
                 </div>
               </div> */}
-              <div className='flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md sm:w-36'>You</div>
+              <div className='flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md sm:w-36'>
+                {address.toLowerCase() === offer?.sender.toLowerCase() ? 'You' : <RenderName address={offer?.sender} classData={''} />}
+              </div>
             </div>
             <OfferContainer active={false} offers={offer?.offerA} placeholderText='Loading ...' showRemove={false} onSelectedNftEmit={handleInfoModal} />
           </div>
           <div className='my-6'>
             <div className='flex justify-end items-center mb-2'>
-              <div className='flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md sm:w-36'>
-                <RenderName address={offer?.receiver} classData={''} />
+              <div className='cursor-pointer flex justify-center bg-neutral rounded-box py-3 px-4 drop-shadow-md sm:w-36'>
+                {address.toLowerCase() === offer?.receiver.toLowerCase() ? 'You' : <RenderName address={offer?.receiver} classData={''} />}
               </div>
+
               {/* <div className="hidden join items-center">
                 <input type="text" placeholder="Amount (Optional)" className="join-item input bg-neutral w-full max-w-xs" />
                 <div className="dropdown join-item">
@@ -141,12 +140,12 @@ export default function AcceptOffer({ params }: { params: { id: string } }) {
                 </>
               }
             </button>
-            {/* <button onClick={() => handleCounterOffer()} className='hidden btn btn-warning'>
+            <button onClick={() => handleCounterOffer()} className='btn btn-warning'>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
               </svg>
               Counter Offer
-            </button> */}
+            </button>
           </div>
         </>
       }

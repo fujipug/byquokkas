@@ -149,8 +149,8 @@ export default function OfferDetails({ params }: { params: { id: string } }) {
       amountB: inputBAmountValue ? Number(inputBAmountValue) : 0,
       status: 'Pending',
       type: 'Private',
-      pubToPri: true,
-      viewed: false
+      viewed: false,
+      toDecide: details?.sender.toLowerCase()
     }).then(() => {
       setStepper(1);
       fireAction();

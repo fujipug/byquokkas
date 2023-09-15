@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Offer } from "../types";
-import { getPublicOfferCount, getPublicOffers, getMorePublicOffers, getPrivateOffers, getPublicToPrivateOffers } from "../../../apis/swop";
+import { getPublicOfferCount, getPublicOffers, getMorePublicOffers, getCounterOffers } from "../../../apis/swop";
 import { fireAction } from "../../../utils/functions";
 import { useAccount } from "wagmi";
 
@@ -16,7 +16,7 @@ export default function Page() {
   const [publicOfferCount, setPublicOfferCount] = useState(0);
   const [showMoreButton, setShowMoreButton] = useState(false);
   const [privateOffers, setPrivateOffers] = useState([]) as Offer[];
-  const [publicToPrivateOffers, setPublicToPrivateOffers] = useState([]) as Offer[];
+  const [counterOffers, setCounterOffers] = useState([]) as Offer[];
   const [allPrivateOffers, setAllPrivateOffers] = useState([]) as Offer[];
   // const [privateOfferCount, setPrivateOfferCount] = useState(0);
   const { address } = useAccount();
@@ -51,18 +51,18 @@ export default function Page() {
   };
 
   // Get Private Offers
-  useEffect(() => {
-    if (address) {
-      const unsubscribe1 = getPrivateOffers(address, setPrivateOffers);
-      return () => {
-        unsubscribe1(); // Clean up the listener when the component unmounts
-      };
-    }
-  }, [address]);
+  // useEffect(() => {
+  //   if (address) {
+  //     const unsubscribe1 = getPrivateOffers(address, setPrivateOffers);
+  //     return () => {
+  //       unsubscribe1(); // Clean up the listener when the component unmounts
+  //     };
+  //   }
+  // }, [address]);
 
   useEffect(() => {
     if (address) {
-      const unsubscribe2 = getPublicToPrivateOffers(address, setPublicToPrivateOffers);
+      const unsubscribe2 = getCounterOffers(address, setCounterOffers);
       return () => {
         unsubscribe2(); // Clean up the listener when the component unmounts
       };
@@ -71,12 +71,12 @@ export default function Page() {
 
   useEffect(() => {
     if (address) {
-      setAllPrivateOffers([...privateOffers, ...publicToPrivateOffers]);
+      setAllPrivateOffers([...privateOffers, ...counterOffers]);
       return () => {
         setAllPrivateOffers([]); // Clean up the listener when the component unmounts
       };
     }
-  }, [address, privateOffers, publicToPrivateOffers]);
+  }, [address, privateOffers, counterOffers]);
 
 
   // Get Private Offer Count
