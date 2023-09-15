@@ -105,7 +105,7 @@ export default function Page() {
                   <a onClick={() => fireAction()} className="inline-flex space-x-6 cursor-pointer">
                     <div className="badge badge-outline p-3">What&apos;s new</div>
                     <span className="inline-flex items-center space-x-2 text-sm font-medium leading-6">
-                      <span>Just shipped Beta v1.0  🎉</span>
+                      <span>Just shipped Beta v1.1  🎉</span>
                     </span>
                   </a>
                 </div>
