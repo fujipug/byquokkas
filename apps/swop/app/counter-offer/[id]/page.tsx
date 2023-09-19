@@ -192,7 +192,6 @@ export default function CounterOffer({ params }: { params: { id: string } }) {
   const updateFirebaseOffer = async () => {
     const offerRef = doc(db, 'offers', offer.id);
     await getSwapById(offer?.swapId).then(async (res) => {
-      console.log('res', res);
       await updateDoc(offerRef, {
         offerA: senderCounterOffers?.length > 0 ? senderCounterOffers : offer?.offerA,
         offerB: receiverCounterOffers?.length > 0 ? receiverCounterOffers : offer?.offerB,

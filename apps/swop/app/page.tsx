@@ -15,9 +15,9 @@ export default function Page() {
   const [publicOffers, setPublicOffers] = useState([]) as Offer[];
   const [publicOfferCount, setPublicOfferCount] = useState(0);
   const [showMoreButton, setShowMoreButton] = useState(false);
-  const [privateOffers, setPrivateOffers] = useState([]) as Offer[];
+  // const [privateOffers, setPrivateOffers] = useState([]) as Offer[];
   const [counterOffers, setCounterOffers] = useState([]) as Offer[];
-  const [allPrivateOffers, setAllPrivateOffers] = useState([]) as Offer[];
+  // const [allPrivateOffers, setAllPrivateOffers] = useState([]) as Offer[];
   // const [privateOfferCount, setPrivateOfferCount] = useState(0);
   const { address } = useAccount();
 
@@ -69,14 +69,14 @@ export default function Page() {
     }
   }, [address]);
 
-  useEffect(() => {
-    if (address) {
-      setAllPrivateOffers([...privateOffers, ...counterOffers]);
-      return () => {
-        setAllPrivateOffers([]); // Clean up the listener when the component unmounts
-      };
-    }
-  }, [address, privateOffers, counterOffers]);
+  // useEffect(() => {
+  //   if (address) {
+  //     setAllPrivateOffers([...counterOffers]);
+  //     return () => {
+  //       setAllPrivateOffers([]); // Clean up the listener when the component unmounts
+  //     };
+  //   }
+  // }, [address, counterOffers]);
 
 
   // Get Private Offer Count
@@ -131,9 +131,9 @@ export default function Page() {
             </div>
             <div className="hidden sm:block z-30 -mt-7 ml-36 absolute"><Image src="/images/Hands_2.png" alt="Quokka Hands" width={200} height={200}></Image></div>
             <div className="z-10 p-6 bg-neutral rounded-box drop-shadow-md h-96 space-y-2 overflow-y-scroll">
-              {allPrivateOffers && allPrivateOffers?.length > 0 ?
+              {counterOffers && counterOffers?.length > 0 ?
                 <div>
-                  {allPrivateOffers?.map((offer, index) => (
+                  {counterOffers?.map((offer, index) => (
                     <div key={index} className="indicator w-full">
                       {!offer?.viewed &&
                         <span className="indicator-item indicator-start badge badge-secondary ml-2">New</span>

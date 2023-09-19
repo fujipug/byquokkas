@@ -3,7 +3,8 @@ import {
   getContract,
   getNetwork,
   getWalletClient,
-  readContract
+  readContract,
+  writeContract
 } from "@wagmi/core";
 import { nftAbi, swopContractAbi, swopMainContractAddress } from "../packages/swop-config";
 
@@ -74,3 +75,14 @@ export const getSwapById = async (id: number) => {
 
   return swap;
 };
+
+export const cancelSwap = async (id: number) => {
+  const swap = await writeContract({
+    address: swopMainContractAddress,
+    abi: swopContractAbi,
+    functionName: "cancelSwap",
+    args: [BigInt(id)],
+  });
+
+  return swap;
+}

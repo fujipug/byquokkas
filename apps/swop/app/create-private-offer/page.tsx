@@ -200,7 +200,7 @@ export default function CreatePrivateOffer() {
       receiver: inputValue.toLowerCase(),
       offerB: receiverOffers,
       amountB: inputBAmountValue ? Number(inputBAmountValue) : 0,
-      status: 'Open',
+      status: 'Pending',
       type: 'Private',
       createdAt: Timestamp.now(),
       viewed: false,

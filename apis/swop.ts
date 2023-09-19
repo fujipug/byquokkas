@@ -72,7 +72,8 @@ export const getPublicOfferCount = async () => {
 // };
 
 export const getCounterOffers = (accountAddress, callback: any) => {
-  const q2 = query(collection(db, 'offers'), where('type', '==', 'Private'), where('toDecide', '==', accountAddress.toLowerCase()), orderBy('createdAt', 'desc'));
+  const q2 = query(collection(db, 'offers'), where('type', '==', 'Private'), where('toDecide', '==', accountAddress.toLowerCase()),
+    where('status', '==', 'Pending'), orderBy('createdAt', 'desc'));
 
   const unsubscribe = onSnapshot(q2, (snapshot) => {
     const results: Offer[] = [];
@@ -89,7 +90,7 @@ export const getCounterOffers = (accountAddress, callback: any) => {
 
 export const getPrivateOfferCount = async (accountAddress) => {
   try {
-    const offerRef = query(collection(db, 'offers'), where('type', '==', 'Private'), where('receiver', '==', accountAddress));
+    const offerRef = query(collection(db, 'offers'), where('type', '==', 'Private'), where('status', '==', 'Pending'), where('receiver', '==', accountAddress));
     const snapshot = await getCountFromServer(offerRef);
     return snapshot.data().count;
   } catch (error) {
@@ -108,3 +109,20 @@ export const getOfferById = async (offerId: string) => {
     console.log("No such document!");
   }
 };
+
+// Get sent and pending offers
+export const getSentOffers = (accountAddress, callback: any) => {
+  const q3 = query(collection(db, 'offers'), where('type', '==', 'Private'), where('sender', '==', accountAddress.toLowerCase()), where('status', '==', 'Pending'), orderBy('createdAt', 'desc'));
+
+  const unsubscribe = onSnapshot(q3, (snapshot) => {
+    const results: Offer[] = [];
+
+    snapshot.forEach((doc) => {
+      results.push({ id: doc.id, ...doc.data() });
+    });
+
+    callback(results);
+  });
+
+  return unsubscribe;
+}
